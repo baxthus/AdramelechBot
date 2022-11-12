@@ -31,7 +31,7 @@ export = {
         const response = await (await fetch(`https://lolibooru.moe/post/index.json?tags=nude&limit=${value}`)).json();
 
         const embed = new EmbedBuilder().setColor([203, 166, 247])
-        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI
+            // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI
             .setImage(encodeURI(response[value - 1].file_url))
             .setFooter({ text: 'Powered by https://lolibooru.moe' });
 

@@ -22,7 +22,8 @@ export = {
             errorTest.startsWith('Invalid') ||
             errorTest.startsWith('No match') ||
             errorTest.startsWith('Domain not') ||
-            errorTest.startsWith('NOT FOUND')) {
+            errorTest.startsWith('NOT FOUND')
+        ) {
             return await interaction.reply({ embeds: [
                 new EmbedBuilder().setColor('Red')
                     .setTitle('__Error!__'),

@@ -13,7 +13,7 @@ export = {
     async execute(interaction: ChatInputCommandInteraction) {
         const target = interaction.options.getUser('user');
 
-        interaction.reply({ embeds: [
+        await interaction.reply({ embeds: [
             new EmbedBuilder().setColor([203, 166, 247])
                 .setImage(target?.avatarURL() + '?size=1024'),
         ] });

@@ -9,7 +9,6 @@ export = {
             option.setName('url')
                 .setDescription('URL that you want obfuscate')
                 .setRequired(true)),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async execute(interaction: ChatInputCommandInteraction) {
         const rawURL = interaction.options.getString('url');
 

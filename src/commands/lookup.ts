@@ -26,16 +26,16 @@ export = {
             ip = userInput;
         } else {
             const getIp = await (await fetch(`https://da.gd/host/${userInput}`)).text();
-            if (!getIp.startsWith('No')) {
-                // https://stackoverflow.com/a/9133209
-                ip = getIp.substring(0, getIp.indexOf(','));
-            } else {
+            if (getIp.startsWith('No')) {
                 return await interaction.reply({ embeds: [
                     new EmbedBuilder().setColor('Red')
                         .setTitle('__Error!__')
                         .setDescription('Error getting domain IP'),
                 ], ephemeral: true });
             }
+
+            // https://stackoverflow.com/a/9133209
+            ip = getIp.substring(0, getIp.indexOf(','));
         }
 
         const res = await (await fetch(`https://ipwho.is/${ip}`)).json();
