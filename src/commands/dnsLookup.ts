@@ -26,8 +26,13 @@ export = {
 
         const embed = new EmbedBuilder().setColor([203, 166, 247])
             .setTitle('__Adramelech DNS Lookup__')
-            .setDescription('**Domain:** `' + domain + '`')
             .setThumbnail(config.bot.image)
+            .addFields(
+                {
+                    name: ':link: **Domain**',
+                    value: '```' + domain + '```',
+                }
+            )
             .setFooter({ text: 'Powered by https://da.gd' });
 
         await interaction.reply({ embeds: [embed], files: [file] });

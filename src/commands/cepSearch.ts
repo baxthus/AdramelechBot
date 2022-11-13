@@ -11,7 +11,7 @@ export = {
                 .setRequired(true)),
     async execute(interaction: ChatInputCommandInteraction) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const cep = await interaction.options.getString('cep')!.replace('-', '');
+        const cep = interaction.options.getString('cep')!.replace('-', '');
 
         const res = await (await fetch(`https://brasilapi.com.br/api/cep/v2/${cep}`)).json();
 
@@ -45,12 +45,14 @@ export = {
             .setThumbnail(config.bot.image)
             .addFields(
                 {
-                    name: '**__Main__**',
+                    name: ':zap: **Main**',
                     value: main,
+                    inline: true,
                 },
                 {
-                    name: '**__Location__**',
+                    name: ':earth_americas: **Location**',
                     value: location,
+                    inline: true,
                 },
             )
             .setFooter({ text: 'Powered by https://brasilapi.com.br' });
@@ -60,7 +62,9 @@ export = {
                 new ButtonBuilder()
                     .setLabel('Open location in Google Maps')
                     .setStyle(ButtonStyle.Link)
-                    .setURL(`https://www.google.com/maps/search/?api=1&query=${res.location.coordinates.latitude},${res.location.coordinates.longitude}`),
+                    .setURL(`https://www.google.com/maps/search/?api=1&query=${res.location.coordinates.latitude},${res.location.coordinates.longitude}`)
+                    // "🗺️" is the map emoji
+                    .setEmoji('🗺️'),
             );
 
         await interaction.reply({ embeds: [embed], components: [button] });

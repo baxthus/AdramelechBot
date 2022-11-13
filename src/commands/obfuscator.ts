@@ -34,13 +34,39 @@ export = {
             ], ephemeral: true });
         }
 
-        // Sorry, it was the only way I found to give the desired output
-        const text = '**Destination:** `' + res.destination + '`\n**Result:** `' + res.result + '`\n**Prevent scrape:** `' + res.preventScrape + '`\n**Owoify:** `' + res.owoify + '`\n**Created at:** `' + res.createdAt + '`';
-
         const embed = new EmbedBuilder().setColor([203, 166, 247])
             .setTitle('__Adramelech URL Obfuscator__')
-            .setDescription(text)
             .setThumbnail(config.bot.image)
+            .addFields(
+                {
+                    name: ':outbox_tray: **Destination**',
+                    value: '```' + res.destination + '```',
+                    inline: true,
+                },
+                {
+                    name: ':inbox_tray: **Result**',
+                    value: '```' + res.result + '```',
+                    inline: true,
+                },
+                {
+                    name: '\u200b',
+                    value: '\u200b',
+                },
+                {
+                    name: ':information_source: **Prevent scrape**',
+                    value: '```' + res.preventScrape + '```',
+                    inline: true,
+                },
+                {
+                    name: ':smiling_imp: **Owoify**',
+                    value: '```' + res.owoify + '```',
+                    inline: true,
+                },
+                {
+                    name: ':clock1: **Created at**',
+                    value: '```' + res.createdAt + '```',
+                }
+            )
             .setFooter({ text: 'Powered by https://owo.vc' });
 
         await interaction.reply({ embeds: [embed] });

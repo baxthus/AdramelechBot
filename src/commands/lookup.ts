@@ -25,8 +25,10 @@ export = {
         if (await checkIp(userInput!)) {
             ip = userInput;
         } else {
-            const getIp = await (await fetch(`https://da.gd/host/${userInput}`)).text();
-            if (getIp.startsWith('No')) {
+            let getIp = await (await fetch(`https://da.gd/host/${userInput}`)).text();
+            getIp = getIp.replace('\n', '');
+
+            if (getIp.startsWith('No' || '')) {
                 return await interaction.reply({ embeds: [
                     new EmbedBuilder().setColor('Red')
                         .setTitle('__Error!__')
@@ -34,8 +36,12 @@ export = {
                 ], ephemeral: true });
             }
 
-            // https://stackoverflow.com/a/9133209
-            ip = getIp.substring(0, getIp.indexOf(','));
+            if (getIp.includes(',')) {
+                // https://stackoverflow.com/a/9133209
+                ip = getIp.substring(0, getIp.indexOf(','));
+            } else {
+                ip = getIp;
+            }
         }
 
         const res = await (await fetch(`https://ipwho.is/${ip}`)).json();
@@ -81,20 +87,28 @@ export = {
             .setThumbnail(config.bot.image)
             .addFields(
                 {
-                    name: '**__Main__**',
+                    name: ':zap: **Main**',
                     value: main_field,
+                    inline: true,
                 },
                 {
-                    name: '**__Location__**',
+                    name: ':earth_americas: **Location**',
                     value: location_field,
+                    inline: true,
                 },
                 {
-                    name: '**__Connection__**',
+                    name: '\u200b',
+                    value: '\u200b',
+                },
+                {
+                    name: ':satellite: **Connection**',
                     value: connection_field,
+                    inline: true,
                 },
                 {
-                    name: '**__Timezone__**',
+                    name: ':clock1: **Timezone**',
                     value: timezone_field,
+                    inline: true,
                 }
             )
             .setFooter({ text: 'Powered by https://ipwhois.io' });
@@ -105,6 +119,8 @@ export = {
                     .setLabel('Open location in Google Maps')
                     .setStyle(ButtonStyle.Link)
                     .setURL(`https://www.google.com/maps/search/?api=1&query=${res.latitude},${res.longitude}`)
+                    // "🗺️" is the map emoji
+                    .setEmoji('🗺️')
             );
 
         await interaction.reply({ embeds: [embed], components: [button] });

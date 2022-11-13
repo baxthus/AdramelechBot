@@ -11,7 +11,7 @@ export = {
     async execute(interaction: ChatInputCommandInteraction) {
         const url = interaction.options.getString('url');
 
-        const res = await (await fetch(`https://is.gd/create.php?url=${url}&format=simple`)).text();
+        const res = await (await fetch(`https://is.gd/create.php?format=simple&url=${url}`)).text();
 
         if (res.startsWith('Error')) {
             return await interaction.reply({ embeds: [
@@ -23,7 +23,16 @@ export = {
 
         const embed = new EmbedBuilder().setColor([203, 166, 247])
             .setTitle('__Adramelech URL Shortener__')
-            .setDescription('**Your URL:** `' + res + '`')
+            .addFields(
+                {
+                    name: ':outbox_tray: **URL**',
+                    value: '```' + url + '```',
+                },
+                {
+                    name: ':inbox_tray: **Result**',
+                    value: '```' + res + '```',
+                }
+            )
             .setFooter({ text: 'Powered by https://is.gd' });
 
         await interaction.reply({ embeds: [embed] });
