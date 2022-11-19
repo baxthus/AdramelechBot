@@ -49,7 +49,7 @@ export = {
                     .setCustomId('velocityButton'),
             );
 
-        const buttons2 = new ActionRowBuilder<ButtonBuilder>()
+        const buttons_end = new ActionRowBuilder<ButtonBuilder>()
             .addComponents(
                 new ButtonBuilder()
                     .setLabel('Author')
@@ -85,7 +85,7 @@ export = {
         });
 
         collector?.on('end', async () => {
-            await interaction.editReply({ embeds: [embed], components: [buttons2] });
+            await interaction.editReply({ embeds: [embed], components: [buttons_end] });
         });
     },
 };
