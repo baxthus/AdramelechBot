@@ -8,4 +8,4 @@ RUN yarn install
 
 RUN yarn build
 
-CMD yarn start:prod
+CMD ["yarn", "docker:start"]
