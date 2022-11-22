@@ -11,6 +11,7 @@ const commandsField = `
 **/covid** - Return COVID stats
 **/dnslookup** - DNS lookup for a domain
 **/dog** - Return a dog image
+**/github** - Get Github user or repository info
 **/help** - Help, I need to say more?
 **/kick** - Kicks a member
 **/loli** - Return a loli image (NSFW)
@@ -20,6 +21,7 @@ const commandsField = `
 **/obfuscator** - Obfuscate your URL
 **/ping** - Replies with Pong!
 **/send-dm** - DM a message (bot owner only)
+**/server** - Return server information
 **/short** - Short your URL
 **/whois** - Whois a given domain or IP
 **/yiff** - Return a yiff (furry porn) image (NSFW)
