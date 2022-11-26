@@ -14,7 +14,7 @@ export = {
                 .setDescription('Your message')
                 .setRequired(true)),
     async execute(interaction: ChatInputCommandInteraction) {
-        if (interaction.user.id !== config.author.id) {
+        if (interaction.user.id !== config.owner.id) {
             return await interaction.reply({ embeds: [
                 new EmbedBuilder().setColor('Red')
                     .setTitle('__Error!__')

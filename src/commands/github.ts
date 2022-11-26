@@ -76,7 +76,6 @@ export = {
             }
 
             const embed = new EmbedBuilder().setColor([203, 166, 247])
-                .setTitle('Github Repo Info__')
                 .addFields(
                     {
                         name: ':zap: **Main**',
@@ -176,11 +175,9 @@ export = {
         // I chose to use Switch because I intend to add more subcommands
         switch (subcommand) {
             case 'repo':
-                repoCommand();
-                break;
+                repoCommand(); break;
             case 'user':
-                userCommand();
-                break;
+                userCommand(); break;
         }
     },
 };

@@ -41,26 +41,18 @@ export = {
                 {
                     name: ':outbox_tray: **Destination**',
                     value: '```' + res.destination + '```',
-                    inline: true,
                 },
                 {
                     name: ':inbox_tray: **Result**',
                     value: '```' + res.result + '```',
-                    inline: true,
-                },
-                {
-                    name: '\u200b',
-                    value: '\u200b',
                 },
                 {
                     name: ':information_source: **Prevent scrape**',
                     value: '```' + res.preventScrape + '```',
-                    inline: true,
                 },
                 {
                     name: ':smiling_imp: **Owoify**',
                     value: '```' + res.owoify + '```',
-                    inline: true,
                 },
                 {
                     name: ':clock1: **Created at**',

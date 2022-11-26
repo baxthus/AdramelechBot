@@ -17,7 +17,7 @@ export = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async execute(interaction: any) {
         const user: GuildMember = interaction.options.getMentionable('user');
-        const reason = interaction.options.getString('reason') || undefined;
+        const reason = interaction.options.getString('reason') ?? undefined;
 
         if (user.id === interaction.user.id) {
             return interaction.reply({ embeds: [

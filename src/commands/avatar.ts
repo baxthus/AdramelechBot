@@ -10,7 +10,7 @@ export = {
                 .setDescription('Mention a user'))
         .setDMPermission(false),
     async execute(interaction: ChatInputCommandInteraction) {
-        const target = interaction.options.getUser('user') || interaction.user;
+        const target = interaction.options.getUser('user') ?? interaction.user;
 
         const png_image = target?.avatarURL({ size: 4096, extension: 'png' });
         const jpg_image = target?.avatarURL({ size: 4096, extension: 'jpg' });

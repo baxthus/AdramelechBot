@@ -37,7 +37,7 @@ export = {
             .setTitle('__Adramelech Help Page__')
             .setThumbnail(config.bot.image)
             .addFields({ name: '**__Commands__**', value: commandsField })
-            .setFooter({ text: 'Created by Abysmal#1608', iconURL: config.author.image });
+            .setFooter({ text: 'Created by Abysmal#1608', iconURL: 'https://abysmal.eu.org/avatar.png' });
 
         const buttons = new ActionRowBuilder<ButtonBuilder>()
             .addComponents(
@@ -84,10 +84,12 @@ export = {
                 .setDescription(`Response time from our servers to Discord Endpoint is ${responseTime}ms`);
 
             await i.update({ embeds: [velocityEmbed], components: [] });
+            return;
         });
 
         collector?.on('end', async () => {
             await interaction.editReply({ embeds: [embed], components: [buttons_end] });
+            return;
         });
     },
 };
