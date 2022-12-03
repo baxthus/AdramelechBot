@@ -1,10 +1,10 @@
-import { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, GuildMember } from 'discord.js';
+import { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, ChatInputCommandInteraction } from 'discord.js';
 
 export = {
     data: new SlashCommandBuilder()
         .setName('ban')
         .setDescription('Bans a member')
-        .addMentionableOption(option =>
+        .addUserOption(option =>
             option.setName('user')
                 .setDescription('User to ban')
                 .setRequired(true))
@@ -13,12 +13,13 @@ export = {
                 .setDescription('The reason of the ban'))
         .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
         .setDMPermission(false),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async execute(interaction: any) {
-        const user: GuildMember = interaction.options.getMentionable('user');
+    async execute(interaction: ChatInputCommandInteraction) {
+        const user = interaction.options.getUser('user');
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const member = interaction.guild?.members.cache.get(user!.id);
         const reason = interaction.options.getString('reason') ?? undefined;
 
-        if (user.id === interaction.user.id) {
+        if (member?.id === interaction.user.id) {
             return interaction.reply({ embeds: [
                 new EmbedBuilder().setColor('Red')
                     .setTitle('__Error!__')
@@ -26,7 +27,8 @@ export = {
             ], ephemeral: true });
         }
 
-        if (user.roles.highest > interaction.guild?.roles.highest) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
+        if (member?.guild.roles.highest! > interaction.guild?.roles.highest!) {
             return interaction.reply({ embeds: [
                 new EmbedBuilder().setColor('Red')
                     .setTitle('__Error!__')
@@ -34,7 +36,7 @@ export = {
             ], ephemeral: true });
         }
 
-        if (!user.bannable) {
+        if (!member?.bannable) {
             return interaction.reply({ embeds: [
                 new EmbedBuilder().setColor('Red')
                     .setTitle('__Error!__')
@@ -42,7 +44,7 @@ export = {
             ], ephemeral: true });
         }
 
-        user.ban({ reason: reason });
+        member?.ban({ reason: reason });
 
         const embed = new EmbedBuilder().setColor([203, 166, 247])
             .setTitle('__Adramelech Ban__')
