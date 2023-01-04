@@ -7,11 +7,10 @@
     "start": "doppler run -- ts-node src/bot.ts",
     "deploy": "doppler run -- ts-node src/deployCommands.ts",
     "build": "tsc",
-    "start:prod": "yarn build && doppler run -- node dist/bot.js",
-    "pm2:prod": "yarn build && bash doppler-pm2.sh",
+    "start:prod": "tsc && doppler run -- node dist/bot.js",
+    "pm2:prod": "tsc && doppler run -- pm2 start dist/bot.js",
     "lint": "eslint .",
     "docker": "doppler run -- docker-compose up -d",
-    "docker:start": "node dist/bot.js",
     "dev": "doppler run -- ts-node-dev src/bot.ts"
   },
   "author": "Abysmal",

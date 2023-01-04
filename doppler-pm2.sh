@@ -1,1 +1,0 @@
-doppler run -- pm2 start dist/bot.js

@@ -8,4 +8,4 @@ RUN yarn install
 
 RUN yarn build
 
-CMD ["yarn", "docker:start"]
+CMD ["node", "dist/bot.js"]
