@@ -5,4 +5,7 @@ services:
     restart: always
     environment:
       - BOT_TOKEN
+      - BOT_IMAGE
       - APP_ID
+      - FEEDBACK_WEBHOOK
+      - OWNER_ID
