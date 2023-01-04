@@ -11,6 +11,7 @@ const commandsField = `
 **/covid** - Return COVID stats
 **/dnslookup** - DNS lookup for a domain
 **/dog** - Return a dog image
+**/feedback** - Share your feedback
 **/github** - Get Github user or repository info
 **/help** - Help, I need to say more?
 **/kick** - Kicks a member
