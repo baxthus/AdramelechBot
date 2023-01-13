@@ -29,11 +29,13 @@ export = {
             getIp = getIp.replace('\n', '');
 
             if (getIp.startsWith('No' || '')) {
-                return await interaction.reply({ embeds: [
-                    new EmbedBuilder().setColor('Red')
-                        .setTitle('__Error!__')
-                        .setDescription('Error getting domain IP'),
-                ], ephemeral: true });
+                return await interaction.reply({
+                    embeds: [
+                        new EmbedBuilder().setColor('Red')
+                            .setTitle('__Error!__')
+                            .setDescription('Error getting domain IP'),
+                    ], ephemeral: true,
+                });
             }
 
             if (getIp.includes(',')) {
@@ -47,11 +49,13 @@ export = {
         const res = await (await fetch(`https://ipwho.is/${ip}`)).json();
 
         if (res.success !== true) {
-            return await interaction.reply({ embeds: [
-                new EmbedBuilder().setColor('Red')
-                    .setTitle('__Error!__')
-                    .setDescription('`' + res.message + '`'),
-            ], ephemeral: true });
+            return await interaction.reply({
+                embeds: [
+                    new EmbedBuilder().setColor('Red')
+                        .setTitle('__Error!__')
+                        .setDescription('`' + res.message + '`'),
+                ], ephemeral: true,
+            });
         }
 
         const main_field = `

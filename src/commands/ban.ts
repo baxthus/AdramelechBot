@@ -20,28 +20,34 @@ export = {
         const reason = interaction.options.getString('reason') ?? undefined;
 
         if (member?.id === interaction.user.id) {
-            return interaction.reply({ embeds: [
-                new EmbedBuilder().setColor('Red')
-                    .setTitle('__Error!__')
-                    .setDescription('You cannot ban yourself'),
-            ], ephemeral: true });
+            return interaction.reply({
+                embeds: [
+                    new EmbedBuilder().setColor('Red')
+                        .setTitle('__Error!__')
+                        .setDescription('You cannot ban yourself'),
+                ], ephemeral: true,
+            });
         }
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
         if (member?.guild.roles.highest! > interaction.guild?.roles.highest!) {
-            return interaction.reply({ embeds: [
-                new EmbedBuilder().setColor('Red')
-                    .setTitle('__Error!__')
-                    .setDescription('You cannot ban user who have highest role than you'),
-            ], ephemeral: true });
+            return interaction.reply({
+                embeds: [
+                    new EmbedBuilder().setColor('Red')
+                        .setTitle('__Error!__')
+                        .setDescription('You cannot ban user who have highest role than you'),
+                ], ephemeral: true,
+            });
         }
 
         if (!member?.bannable) {
-            return interaction.reply({ embeds: [
-                new EmbedBuilder().setColor('Red')
-                    .setTitle('__Error!__')
-                    .setDescription('I cannot ban that user'),
-            ], ephemeral: true });
+            return interaction.reply({
+                embeds: [
+                    new EmbedBuilder().setColor('Red')
+                        .setTitle('__Error!__')
+                        .setDescription('I cannot ban that user'),
+                ], ephemeral: true,
+            });
         }
 
         member?.ban({ reason: reason });

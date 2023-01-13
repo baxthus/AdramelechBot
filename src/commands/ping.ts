@@ -5,8 +5,10 @@ export = {
         .setName('ping')
         .setDescription('Replies with Pong!'),
     async execute(interaction: ChatInputCommandInteraction) {
-        await interaction.reply({ embeds: [
-            new EmbedBuilder().setColor([203, 166, 247]).setTitle('Pong!'),
-        ] });
+        await interaction.reply({
+            embeds: [
+                new EmbedBuilder().setColor([203, 166, 247]).setTitle('Pong!'),
+            ],
+        });
     },
 };

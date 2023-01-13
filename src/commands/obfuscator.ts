@@ -27,11 +27,13 @@ export = {
         try {
             res = await r.json();
         } catch {
-            return await interaction.reply({ embeds: [
-                new EmbedBuilder().setColor('Red')
-                    .setTitle('__Error!__')
-                    .setDescription('`' + r.statusText + '`'),
-            ], ephemeral: true });
+            return await interaction.reply({
+                embeds: [
+                    new EmbedBuilder().setColor('Red')
+                        .setTitle('__Error!__')
+                        .setDescription('`' + r.statusText + '`'),
+                ], ephemeral: true,
+            });
         }
 
         const embed = new EmbedBuilder().setColor([203, 166, 247])

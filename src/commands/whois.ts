@@ -24,10 +24,12 @@ export = {
             errorTest.startsWith('Domain not') ||
             errorTest.startsWith('NOT FOUND')
         ) {
-            return await interaction.reply({ embeds: [
-                new EmbedBuilder().setColor('Red')
-                    .setTitle('__Error!__'),
-            ], ephemeral: true });
+            return await interaction.reply({
+                embeds: [
+                    new EmbedBuilder().setColor('Red')
+                        .setTitle('__Error!__'),
+                ], ephemeral: true,
+            });
         }
 
         const file = new AttachmentBuilder(Buffer.from(res), { name: `${local}.txt` });

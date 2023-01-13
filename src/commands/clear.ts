@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } from 'discord.js';
 
-export ={
+export = {
     data: new SlashCommandBuilder()
         .setName('clear')
         .setDescription('Clear the messages')

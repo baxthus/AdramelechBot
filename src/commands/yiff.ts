@@ -6,11 +6,11 @@ const yiff = new Yiffy();
 async function shitFunction(choice: string) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const category_list: any = {
-        'straight': await yiff.furry.yiff.straight('json'),
-        'gay': await yiff.furry.yiff.gay('json'),
-        'lesbian': await yiff.furry.yiff.lesbian('json'),
-        'gynomorph': await yiff.furry.yiff.gynomorph('json'),
-        'andromorph': await yiff.furry.yiff.andromorph('json'),
+        'straight': await yiff.images.furry.yiff.straight(),
+        'gay': await yiff.images.furry.yiff.gay(),
+        'lesbian': await yiff.images.furry.yiff.lesbian(),
+        'gynomorph': await yiff.images.furry.yiff.gynomorph(),
+        'andromorph': await yiff.images.furry.yiff.andromorph(),
     };
 
     return category_list[choice];
@@ -35,11 +35,13 @@ export = {
         // This is horrible, like commented in nsfw.ts
         if (interaction.channel instanceof TextChannel) {
             if (!interaction.channel.nsfw) {
-                await interaction.reply({ embeds: [
-                    new EmbedBuilder().setColor('Red')
-                        .setTitle('__Error!__')
-                        .setDescription('Your not in a NSFW channel'),
-                ], ephemeral: true });
+                await interaction.reply({
+                    embeds: [
+                        new EmbedBuilder().setColor('Red')
+                            .setTitle('__Error!__')
+                            .setDescription('Your not in a NSFW channel'),
+                    ], ephemeral: true,
+                });
                 return;
             }
 
@@ -47,11 +49,13 @@ export = {
         } else if (interaction.channel === null) {
             // continue
         } else {
-            await interaction.reply({ embeds: [
-                new EmbedBuilder().setColor('Red')
-                    .setTitle('__Error!__')
-                    .setDescription('Your not in a Text or DM channel'),
-            ], ephemeral: true });
+            await interaction.reply({
+                embeds: [
+                    new EmbedBuilder().setColor('Red')
+                        .setTitle('__Error!__')
+                        .setDescription('Your not in a Text or DM channel'),
+                ], ephemeral: true,
+            });
         }
 
         const choice = interaction.options.getString('category');
@@ -59,13 +63,15 @@ export = {
 
         // Check if this shit is not being rate limited
         try {
-            img = (await shitFunction(String(choice)))[0].url;
+            img = (await shitFunction(String(choice))).url;
         } catch {
-            return await interaction.reply({ embeds: [
-                new EmbedBuilder().setColor('Red')
-                    .setTitle('__Error!__')
-                    .setDescription('We are being rate limited, sorry for the inconvenience'),
-            ], ephemeral: true });
+            return await interaction.reply({
+                embeds: [
+                    new EmbedBuilder().setColor('Red')
+                        .setTitle('__Error!__')
+                        .setDescription('We are being rate limited, sorry for the inconvenience'),
+                ], ephemeral: true,
+            });
         }
 
         const embed = new EmbedBuilder().setColor([203, 166, 247])

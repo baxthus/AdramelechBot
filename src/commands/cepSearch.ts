@@ -18,11 +18,13 @@ export = {
         if (res.name !== undefined) {
             const errors = '**Name:** `' + res.name + '`\n**Message:** `' + res.message + '`\n**Type:** `' + res.type + '`';
 
-            return await interaction.reply({ embeds: [
-                new EmbedBuilder().setColor('Red')
-                    .setTitle('__Error!__')
-                    .setDescription(errors),
-            ], ephemeral: true });
+            return await interaction.reply({
+                embeds: [
+                    new EmbedBuilder().setColor('Red')
+                        .setTitle('__Error!__')
+                        .setDescription(errors),
+                ], ephemeral: true,
+            });
         }
 
         const main = `

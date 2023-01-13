@@ -22,11 +22,13 @@ export = {
         }
 
         if (res.message !== undefined) {
-            return await interaction.reply({ embeds: [
-                new EmbedBuilder().setColor('Red')
-                    .setTitle('__Error!__')
-                    .setDescription('`' + res.message + '`'),
-            ], ephemeral: true });
+            return await interaction.reply({
+                embeds: [
+                    new EmbedBuilder().setColor('Red')
+                        .setTitle('__Error!__')
+                        .setDescription('`' + res.message + '`'),
+                ], ephemeral: true,
+            });
         }
 
         const message = `

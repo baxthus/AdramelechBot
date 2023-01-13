@@ -48,16 +48,20 @@ export = {
                 embeds: [feedbackEmbed],
             });
         } catch {
-            return await interaction.reply({ embeds: [
-                new EmbedBuilder().setColor('Red')
-                    .setTitle('__Error!__')
-                    .setDescription('Error sending the feedback'),
-            ], ephemeral: true });
+            return await interaction.reply({
+                embeds: [
+                    new EmbedBuilder().setColor('Red')
+                        .setTitle('__Error!__')
+                        .setDescription('Error sending the feedback'),
+                ], ephemeral: true,
+            });
         }
 
-        await interaction.reply({ embeds: [
-            new EmbedBuilder().setColor([203, 166, 247])
-                .setTitle('Feedback successfully sent'),
-        ] });
+        await interaction.reply({
+            embeds: [
+                new EmbedBuilder().setColor([203, 166, 247])
+                    .setTitle('Feedback successfully sent'),
+            ],
+        });
     },
 };

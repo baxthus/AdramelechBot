@@ -15,11 +15,13 @@ async function repoCommand(interaction: ChatInputCommandInteraction) {
     const res = await (await fetch(`https://api.github.com/repos/${user}/${repo}`)).json();
 
     if (res.message) {
-        return await interaction.reply({ embeds: [
-            new EmbedBuilder().setColor('Red')
-                .setTitle('__Error!__')
-                .setDescription('`' + res.message + '`'),
-        ], ephemeral: true });
+        return await interaction.reply({
+            embeds: [
+                new EmbedBuilder().setColor('Red')
+                    .setTitle('__Error!__')
+                    .setDescription('`' + res.message + '`'),
+            ], ephemeral: true,
+        });
     }
 
     const mainField = `
@@ -92,11 +94,13 @@ async function userCommand(interaction: ChatInputCommandInteraction) {
     const res = await (await fetch(`https://api.github.com/users/${user}`)).json();
 
     if (res.message) {
-        return await interaction.reply({ embeds: [
-            new EmbedBuilder().setColor('Red')
-                .setTitle('__Error!__')
-                .setDescription('`' + res.message + '`'),
-        ], ephemeral: true });
+        return await interaction.reply({
+            embeds: [
+                new EmbedBuilder().setColor('Red')
+                    .setTitle('__Error!__')
+                    .setDescription('`' + res.message + '`'),
+            ], ephemeral: true,
+        });
     }
 
     const message = `
@@ -154,19 +158,23 @@ async function gistCommand(interaction: ChatInputCommandInteraction) {
     const res = await (await fetch(`https://api.github.com/users/${user}/gists`)).json();
 
     if (res.message) {
-        return await interaction.reply({ embeds: [
-            new EmbedBuilder().setColor('Red')
-                .setTitle('__Error!__')
-                .setDescription('`' + res.message + '`'),
-        ], ephemeral: true });
+        return await interaction.reply({
+            embeds: [
+                new EmbedBuilder().setColor('Red')
+                    .setTitle('__Error!__')
+                    .setDescription('`' + res.message + '`'),
+            ], ephemeral: true,
+        });
     }
 
     if (!res.length) {
-        return await interaction.reply({ embeds: [
-            new EmbedBuilder().setColor('Red')
-                .setTitle('__Error!__')
-                .setDescription('The user ' + user + ' has no Gists'),
-        ], ephemeral: true });
+        return await interaction.reply({
+            embeds: [
+                new EmbedBuilder().setColor('Red')
+                    .setTitle('__Error!__')
+                    .setDescription('The user ' + user + ' has no Gists'),
+            ], ephemeral: true,
+        });
     }
 
     const userField = `

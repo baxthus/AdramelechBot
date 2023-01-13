@@ -13,22 +13,26 @@ export = {
         // This is horrible, like commented in nsfw.ts
         if (interaction.channel instanceof TextChannel) {
             if (!interaction.channel.nsfw) {
-                return await interaction.reply({ embeds: [
-                    new EmbedBuilder().setColor('Red')
-                        .setTitle('__Error!__')
-                        .setDescription('Your not in a NSFW channel'),
-                ], ephemeral: true });
+                return await interaction.reply({
+                    embeds: [
+                        new EmbedBuilder().setColor('Red')
+                            .setTitle('__Error!__')
+                            .setDescription('Your not in a NSFW channel'),
+                    ], ephemeral: true,
+                });
             }
 
             // continue
         } else if (interaction.channel === null) {
             // continue
         } else {
-            return await interaction.reply({ embeds: [
-                new EmbedBuilder().setColor('Red')
-                    .setTitle('__Error!__')
-                    .setDescription('Your not in a Text or DM channel'),
-            ], ephemeral: true });
+            return await interaction.reply({
+                embeds: [
+                    new EmbedBuilder().setColor('Red')
+                        .setTitle('__Error!__')
+                        .setDescription('Your not in a Text or DM channel'),
+                ], ephemeral: true,
+            });
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -41,10 +45,12 @@ export = {
         try {
             res = await E6.nsfw(choice);
         } catch {
-            return await interaction.reply({ embeds: [
-                new EmbedBuilder().setColor('Red')
-                    .setTitle('__Error!__'),
-            ], ephemeral: true });
+            return await interaction.reply({
+                embeds: [
+                    new EmbedBuilder().setColor('Red')
+                        .setTitle('__Error!__'),
+                ], ephemeral: true,
+            });
         }
 
         const embed = new EmbedBuilder().setColor([203, 166, 247])

@@ -18,22 +18,26 @@ export = {
         // This is a horrible way to check the channel type, but works
         if (interaction.channel instanceof TextChannel) {
             if (!interaction.channel.nsfw) {
-                return await interaction.reply({ embeds: [
-                    new EmbedBuilder().setColor('Red')
-                        .setTitle('__Error!__')
-                        .setDescription('Your not in a NSFW channel'),
-                ], ephemeral: true });
+                return await interaction.reply({
+                    embeds: [
+                        new EmbedBuilder().setColor('Red')
+                            .setTitle('__Error!__')
+                            .setDescription('Your not in a NSFW channel'),
+                    ], ephemeral: true,
+                });
             }
 
             // continue
         } else if (interaction.channel === null) {
             // continue
         } else {
-            return await interaction.reply({ embeds: [
-                new EmbedBuilder().setColor('Red')
-                    .setTitle('__Error!__')
-                    .setDescription('Your not in a Text or DM Channel'),
-            ], ephemeral: true });
+            return await interaction.reply({
+                embeds: [
+                    new EmbedBuilder().setColor('Red')
+                        .setTitle('__Error!__')
+                        .setDescription('Your not in a Text or DM Channel'),
+                ], ephemeral: true,
+            });
         }
 
         const choice = interaction.options.getString('category');

@@ -15,11 +15,13 @@ export = {
                 .setRequired(true)),
     async execute(interaction: ChatInputCommandInteraction) {
         if (interaction.user.id !== config.owner.id) {
-            return await interaction.reply({ embeds: [
-                new EmbedBuilder().setColor('Red')
-                    .setTitle('__Error!__')
-                    .setDescription('Your not the bot owner'),
-            ], ephemeral: true });
+            return await interaction.reply({
+                embeds: [
+                    new EmbedBuilder().setColor('Red')
+                        .setTitle('__Error!__')
+                        .setDescription('Your not the bot owner'),
+                ], ephemeral: true,
+            });
         }
 
         const user = interaction.options.getUser('user');
@@ -28,11 +30,13 @@ export = {
         try {
             await user?.send(String(message));
         } catch {
-            return await interaction.reply({ embeds: [
-                new EmbedBuilder().setColor('Red')
-                    .setTitle('__Error!__')
-                    .setDescription('Error sending message'),
-            ], ephemeral: true });
+            return await interaction.reply({
+                embeds: [
+                    new EmbedBuilder().setColor('Red')
+                        .setTitle('__Error!__')
+                        .setDescription('Error sending message'),
+                ], ephemeral: true,
+            });
         }
 
         const embed = new EmbedBuilder().setColor([203, 166, 247])

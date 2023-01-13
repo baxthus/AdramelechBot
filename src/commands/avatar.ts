@@ -16,14 +16,16 @@ export = {
         const jpg_image = target?.avatarURL({ size: 4096, extension: 'jpg' });
         const webp_image = target?.avatarURL({ size: 4096, extension: 'webp' });
 
-        await interaction.reply({ embeds: [
-            new EmbedBuilder().setColor([203, 166, 247])
-                .setTitle(`Avatar for ${target?.tag}`)
-                .setDescription(`
-                **Link has**
-                [png](${png_image}) | [jpg](${jpg_image}) | [webp](${webp_image})
-                `)
-                .setImage(String(target?.avatarURL({ size: 1024 }))),
-        ] });
+        await interaction.reply({
+            embeds: [
+                new EmbedBuilder().setColor([203, 166, 247])
+                    .setTitle(`Avatar for ${target?.tag}`)
+                    .setDescription(`
+                    **Link has**
+                    [png](${png_image}) | [jpg](${jpg_image}) | [webp](${webp_image})
+                    `)
+                    .setImage(String(target?.avatarURL({ size: 1024 }))),
+            ],
+        });
     },
 };

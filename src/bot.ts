@@ -7,11 +7,13 @@ export class CustomClient extends Client {
     commands: Collection<string, ApplicationCommandData> = new Collection();
 }
 
-const client = new CustomClient({ intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMembers,
-    GatewayIntentBits.GuildPresences,
-] });
+const client = new CustomClient({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildPresences,
+    ],
+});
 
 client.commands = new Collection();
 

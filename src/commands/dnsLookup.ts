@@ -15,11 +15,13 @@ export = {
         const res = await (await fetch(`https://da.gd/dns/${domain}`)).text();
 
         if (res.replace('\n', '') === '') {
-            return await interaction.reply({ embeds: [
-                new EmbedBuilder().setColor('Red')
-                    .setTitle('__Error!__')
-                    .setDescription('Domain not found'),
-            ], ephemeral: true });
+            return await interaction.reply({
+                embeds: [
+                    new EmbedBuilder().setColor('Red')
+                        .setTitle('__Error!__')
+                        .setDescription('Domain not found'),
+                ], ephemeral: true,
+            });
         }
 
         const file = new AttachmentBuilder(Buffer.from(res), { name: `${domain}.zone` });
