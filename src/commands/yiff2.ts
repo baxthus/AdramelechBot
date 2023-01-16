@@ -1,5 +1,6 @@
-import { SlashCommandBuilder, EmbedBuilder, TextChannel, ChatInputCommandInteraction } from 'discord.js';
+import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js';
 import { E6 } from 'furry-wrapper';
+import checkNsfwChannel from './utils/checkNsfwChannel';
 
 export = {
     data: new SlashCommandBuilder()
@@ -10,40 +11,26 @@ export = {
                 .setDescription('Separate categories using space')
                 .setRequired(true)),
     async execute(interaction: ChatInputCommandInteraction) {
-        // This is horrible, like commented in nsfw.ts
-        if (interaction.channel instanceof TextChannel) {
-            if (!interaction.channel.nsfw) {
-                return await interaction.reply({
-                    embeds: [
-                        new EmbedBuilder().setColor('Red')
-                            .setTitle('__Error!__')
-                            .setDescription('Your not in a NSFW channel'),
-                    ], ephemeral: true,
-                });
-            }
-
-            // continue
-        } else if (interaction.channel === null) {
-            // continue
-        } else {
+        if (checkNsfwChannel(interaction)) {
             return await interaction.reply({
                 embeds: [
                     new EmbedBuilder().setColor('Red')
                         .setTitle('__Error!__')
-                        .setDescription('Your not in a Text or DM channel'),
+                        .setDescription('Your not in a NSFW/DM channel'),
                 ], ephemeral: true,
             });
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const choice: any = interaction.options.getString('category');
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let res: any;
+        let img;
 
         // Try to request
         // Why try? because the user can put a screwed up tag and fuck it all up
         try {
-            res = await E6.nsfw(choice);
+            await E6.nsfw(choice).then(res => {
+                img = JSON.parse(JSON.stringify(res));
+            });
         } catch {
             return await interaction.reply({
                 embeds: [
@@ -54,7 +41,7 @@ export = {
         }
 
         const embed = new EmbedBuilder().setColor([203, 166, 247])
-            .setImage((res).file.url)
+            .setImage(String(img))
             .setFooter({ text: 'Powered by https://e621.net' });
 
         await interaction.reply({ embeds: [embed] });

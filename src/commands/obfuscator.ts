@@ -31,7 +31,7 @@ export = {
                 embeds: [
                     new EmbedBuilder().setColor('Red')
                         .setTitle('__Error!__')
-                        .setDescription('`' + r.statusText + '`'),
+                        .setDescription(`\`${r.statusText}\``),
                 ], ephemeral: true,
             });
         }
@@ -42,19 +42,19 @@ export = {
             .addFields(
                 {
                     name: ':outbox_tray: **Destination**',
-                    value: '```' + res.destination + '```',
+                    value: `\`\`\`${res.destination}\`\`\``,
                 },
                 {
                     name: ':inbox_tray: **Result**',
-                    value: '```' + res.result + '```',
+                    value: `\`\`\`${res.result}\`\`\``,
                 },
                 {
                     name: ':information_source: **Prevent scrape**',
-                    value: '```' + res.preventScrape + '```',
+                    value: `\`\`\`${res.preventScrape}\`\`\``,
                 },
                 {
                     name: ':smiling_imp: **Owoify**',
-                    value: '```' + res.owoify + '```',
+                    value: `\`\`\`${res.owoify}\`\`\``,
                 },
                 {
                     name: ':clock1: **Created at**',

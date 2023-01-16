@@ -40,7 +40,7 @@ export = {
             .addFields(
                 {
                     name: ':link: **Domain/IP**',
-                    value: '```' + local + '```',
+                    value: `\`\`\`${local}\`\`\``,
                 }
             )
             .setFooter({ text: 'Powered by https://da.gd' });

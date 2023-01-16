@@ -15,7 +15,7 @@ export = {
             .addFields(
                 {
                     name: 'Server owner',
-                    value: `${guildOwner?.user}` + ' (`' + guildOwner?.user.tag + '`)',
+                    value: `${guildOwner?.user} (\`${guildOwner?.user.tag}\`)`,
                     inline: true,
                 },
                 {
@@ -29,7 +29,7 @@ export = {
                 },
                 {
                     name: 'Server Boost status',
-                    value: interaction.guild?.premiumSubscriptionCount + ' Boosts (`Level ' + interaction.guild?.premiumTier + '`)',
+                    value: `${interaction.guild?.premiumSubscriptionCount} Boosts (\`Level ${interaction.guild?.premiumTier}\`)`,
                 },
                 {
                     name: 'Roles',

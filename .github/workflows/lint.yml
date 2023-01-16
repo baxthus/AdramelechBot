@@ -7,7 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
       - name: Install modules
-        run: yarn install
+        run: pnpm install
       - name: Run ESLint
-        run: yarn lint
+        run: pnpm lint

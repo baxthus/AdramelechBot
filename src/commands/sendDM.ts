@@ -4,7 +4,7 @@ import config from '../config';
 export = {
     data: new SlashCommandBuilder()
         .setName('send-dm')
-        .setDescription('DM a message (bow owner only)')
+        .setDescription('DM a message (bot owner only)')
         .addUserOption(option =>
             option.setName('user')
                 .setDescription('Mention a user')

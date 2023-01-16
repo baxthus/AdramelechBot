@@ -1,31 +1,17 @@
-import { SlashCommandBuilder, EmbedBuilder, TextChannel, ChatInputCommandInteraction } from 'discord.js';
+import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js';
+import checkNsfwChannel from './utils/checkNsfwChannel';
 
 export = {
     data: new SlashCommandBuilder()
         .setName('loli')
         .setDescription('Return a loli image (NSFW)'),
     async execute(interaction: ChatInputCommandInteraction) {
-        // This is horrible, like commented in nsfw.ts
-        if (interaction.channel instanceof TextChannel) {
-            if (!interaction.channel.nsfw) {
-                return await interaction.reply({
-                    embeds: [
-                        new EmbedBuilder().setColor('Red')
-                            .setTitle('__Error!__')
-                            .setDescription('Your not in a NSFW channel'),
-                    ], ephemeral: true,
-                });
-            }
-
-            // continue
-        } else if (interaction.channel === null) {
-            // continue
-        } else {
+        if (checkNsfwChannel(interaction)) {
             return await interaction.reply({
                 embeds: [
                     new EmbedBuilder().setColor('Red')
                         .setTitle('__Error!__')
-                        .setDescription('Your not in a Text or DM channel'),
+                        .setDescription('Your not in a NSFW/DM channel'),
                 ], ephemeral: true,
             });
         }

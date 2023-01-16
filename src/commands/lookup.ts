@@ -1,12 +1,8 @@
 import { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction } from 'discord.js';
 import config from '../config';
 
-async function checkIp(str: string) {
-    // https://melvingeorge.me/blog/check-if-string-is-valid-ip-address-javascript
-    const regexExp = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/gi;
-
-    return regexExp.test(str);
-}
+// https://melvingeorge.me/blog/check-if-string-is-valid-ip-address-javascript
+const regexExp = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/gi;
 
 export = {
     data: new SlashCommandBuilder()
@@ -22,7 +18,7 @@ export = {
 
         // This is horrible
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        if (await checkIp(userInput!)) {
+        if (regexExp.test(userInput!)) {
             ip = userInput;
         } else {
             let getIp = await (await fetch(`https://da.gd/host/${userInput}`)).text();

@@ -16,7 +16,7 @@ export = {
         const res = await (await fetch(`https://brasilapi.com.br/api/cep/v2/${cep}`)).json();
 
         if (res.name !== undefined) {
-            const errors = '**Name:** `' + res.name + '`\n**Message:** `' + res.message + '`\n**Type:** `' + res.type + '`';
+            const errors = `**Name:** \`${res.name}\`\n**Message:** \`${res.message}\`\n**Type:** \`${res.type}\``;
 
             return await interaction.reply({
                 embeds: [

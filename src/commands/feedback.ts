@@ -23,22 +23,22 @@ export = {
         const category = interaction.options.getString('category') ?? '';
         const message = interaction.options.getString('message');
 
-        // create new instance of `WebhookClient`
-        const webhookClient = new WebhookClient({ url: config.bot.feedbackWebhook });
-
         const feedbackEmbed = new EmbedBuilder().setColor([203, 166, 247])
             .setTitle('Adramelech Feedback')
-            .setDescription('From `' + interaction.user.tag + '` (`' + interaction.user.id + '`)')
+            .setDescription(`From \`${interaction.user.tag}\` (\`${interaction.user.id}\`)`)
             .addFields(
                 {
                     name: ':bar_chart: **Type**',
-                    value: '```\n' + category + '\n```',
+                    value: `\`\`\`${category}\`\`\``,
                 },
                 {
                     name: ':page_facing_up: **Message**',
-                    value: '```\n' + message + '\n```',
+                    value: `\`\`\`${message}\`\`\``,
                 }
             );
+
+        // create new instance of `WebhookClient`
+        const webhookClient = new WebhookClient({ url: config.bot.feedbackWebhook });
 
         // try sending the feedback
         try {

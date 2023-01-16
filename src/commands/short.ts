@@ -28,11 +28,11 @@ export = {
             .addFields(
                 {
                     name: ':outbox_tray: **URL**',
-                    value: '```' + url + '```',
+                    value: `\`\`\`${url}\`\`\``,
                 },
                 {
                     name: ':inbox_tray: **Result**',
-                    value: '```' + res + '```',
+                    value: `\`\`\`${res}\`\`\``,
                 }
             )
             .setFooter({ text: 'Powered by https://is.gd' });
