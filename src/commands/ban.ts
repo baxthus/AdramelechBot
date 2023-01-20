@@ -15,8 +15,7 @@ export = {
         .setDMPermission(false),
     async execute(interaction: ChatInputCommandInteraction) {
         const user = interaction.options.getUser('user');
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const member = interaction.guild?.members.cache.get(user!.id);
+        const member = interaction.guild?.members.cache.get(user?.id ?? '');
         const reason = interaction.options.getString('reason') ?? undefined;
 
         if (member?.id === interaction.user.id) {

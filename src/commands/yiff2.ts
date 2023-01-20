@@ -28,6 +28,8 @@ export = {
         // Try to request
         // Why try? because the user can put a screwed up tag and fuck it all up
         try {
+            // this is a horrible way of doing this,
+            // but is the only way I could get it to work
             await E6.nsfw(choice).then(res => {
                 img = JSON.parse(JSON.stringify(res));
             });

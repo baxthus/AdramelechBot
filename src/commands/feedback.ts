@@ -37,10 +37,8 @@ export = {
                 }
             );
 
-        // create new instance of `WebhookClient`
         const webhookClient = new WebhookClient({ url: config.bot.feedbackWebhook });
 
-        // try sending the feedback
         try {
             webhookClient.send({
                 username: 'Adramelech Feedback',

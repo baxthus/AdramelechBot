@@ -14,7 +14,7 @@ export = {
 
         const res = await (await fetch(`https://da.gd/dns/${domain}`)).text();
 
-        if (res.replace('\n', '') === '') {
+        if (!res.replace('\n', '')) {
             return await interaction.reply({
                 embeds: [
                     new EmbedBuilder().setColor('Red')

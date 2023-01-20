@@ -18,7 +18,7 @@ export = {
                 embeds: [
                     new EmbedBuilder().setColor('Red')
                         .setTitle('__Error!__')
-                        .setDescription('`' + res + '`'),
+                        .setDescription(`\`${res}\``),
                 ], ephemeral: true,
             });
         }

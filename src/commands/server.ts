@@ -11,7 +11,10 @@ export = {
         const createdAt = Math.round(interaction.guild!.createdTimestamp / 1000);
 
         const embed = new EmbedBuilder().setColor([203, 166, 247])
-            .setAuthor({ name: String(interaction.guild?.name), iconURL: String(interaction.guild?.iconURL()) })
+            .setAuthor({
+                name: String(interaction.guild?.name),
+                iconURL: String(interaction.guild?.iconURL()),
+            })
             .addFields(
                 {
                     name: 'Server owner',

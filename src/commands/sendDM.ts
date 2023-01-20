@@ -25,10 +25,10 @@ export = {
         }
 
         const user = interaction.options.getUser('user');
-        const message = interaction.options.getString('message');
+        const message = interaction.options.getString('message') ?? '';
 
         try {
-            await user?.send(String(message));
+            await user?.send(message);
         } catch {
             return await interaction.reply({
                 embeds: [

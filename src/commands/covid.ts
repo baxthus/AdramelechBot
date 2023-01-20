@@ -21,12 +21,12 @@ export = {
             local = res.country;
         }
 
-        if (res.message !== undefined) {
+        if (res.message) {
             return await interaction.reply({
                 embeds: [
                     new EmbedBuilder().setColor('Red')
                         .setTitle('__Error!__')
-                        .setDescription('`' + res.message + '`'),
+                        .setDescription(`\`${res.message}\``),
                 ], ephemeral: true,
             });
         }

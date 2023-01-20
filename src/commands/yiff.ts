@@ -43,12 +43,12 @@ export = {
             });
         }
 
-        const choice = interaction.options.getString('category');
+        const choice = interaction.options.getString('category') ?? '';
         let img;
 
         // Check if this shit is not being rate limited
         try {
-            img = (await shitFunction(String(choice))).url;
+            img = (await shitFunction(choice)).url;
         } catch {
             return await interaction.reply({
                 embeds: [

@@ -10,13 +10,12 @@ export = {
                 .setDescription('URL that you want obfuscate')
                 .setRequired(true)),
     async execute(interaction: ChatInputCommandInteraction) {
-        const rawURL = interaction.options.getString('url');
+        const rawURL = interaction.options.getString('url') ?? '';
 
         let url;
         let res;
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        (rawURL!.startsWith('https://' || 'http://')) ? url = rawURL : url = 'https://' + rawURL;
+        (rawURL.startsWith('https://' || 'http://')) ? url = rawURL : url = 'https://' + rawURL;
 
         const r = await fetch('https://owo.vc/generate', {
             method: 'POST',
@@ -58,7 +57,7 @@ export = {
                 },
                 {
                     name: ':clock1: **Created at**',
-                    value: '```' + res.createdAt + '```',
+                    value: `\`\`\`${res.createdAt}\`\`\``,
                 }
             )
             .setFooter({ text: 'Powered by https://owo.vc' });

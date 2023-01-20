@@ -13,12 +13,11 @@ export = {
                 .setDescription('Address that you want to lookup (ip or domain)')
                 .setRequired(true)),
     async execute(interaction: ChatInputCommandInteraction) {
-        const userInput = interaction.options.getString('local');
-        let ip;
+        const userInput = interaction.options.getString('local') ?? '';
+        let ip: string;
 
         // This is horrible
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        if (regexExp.test(userInput!)) {
+        if (regexExp.test(userInput)) {
             ip = userInput;
         } else {
             let getIp = await (await fetch(`https://da.gd/host/${userInput}`)).text();
@@ -44,7 +43,7 @@ export = {
 
         const res = await (await fetch(`https://ipwho.is/${ip}`)).json();
 
-        if (res.success !== true) {
+        if (!res.success) {
             return await interaction.reply({
                 embeds: [
                     new EmbedBuilder().setColor('Red')
@@ -119,8 +118,8 @@ export = {
                     .setLabel('Open location in Google Maps')
                     .setStyle(ButtonStyle.Link)
                     .setURL(`https://www.google.com/maps/search/?api=1&query=${res.latitude},${res.longitude}`)
-                    // "🗺️" is the map emoji
-                    .setEmoji('🗺️')
+                    // "🌎" is the :earth_americas: emoji
+                    .setEmoji('🌎')
             );
 
         await interaction.reply({ embeds: [embed], components: [button] });

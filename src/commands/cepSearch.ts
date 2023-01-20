@@ -65,8 +65,8 @@ export = {
                     .setLabel('Open location in Google Maps')
                     .setStyle(ButtonStyle.Link)
                     .setURL(`https://www.google.com/maps/search/?api=1&query=${res.location.coordinates.latitude},${res.location.coordinates.longitude}`)
-                    // "🗺️" is the map emoji
-                    .setEmoji('🗺️'),
+                    // "🌎" is the :earth_americas: emoji
+                    .setEmoji('🌎'),
             );
 
         await interaction.reply({ embeds: [embed], components: [button] });

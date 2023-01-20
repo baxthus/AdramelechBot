@@ -3,8 +3,7 @@ import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from '
 export = {
     data: new SlashCommandBuilder()
         .setName('avatar')
-        // eslint-disable-next-line quotes
-        .setDescription("Return the selected user's avatar")
+        .setDescription('Return the selected user\'s avatar')
         .addUserOption(option =>
             option.setName('user')
                 .setDescription('Mention a user'))
