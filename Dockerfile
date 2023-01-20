@@ -4,8 +4,10 @@ WORKDIR /app
 
 COPY . .
 
-RUN yarn install
+RUN npm i -g pnpm
 
-RUN yarn build
+RUN pnpm install
+
+RUN pnpm run build
 
 CMD ["node", "dist/bot.js"]
