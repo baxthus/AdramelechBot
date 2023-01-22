@@ -1,5 +1,10 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
-import formatArray from './utils/formatArray';
+
+function formatArray(arr: Array<string>) {
+    return String(arr.map(element => {
+        return element.charAt(0).toUpperCase() + element.slice(1).toLowerCase().replaceAll('-', ' ');
+    })).replace(',', ', ');
+}
 
 export default async function (interaction: ChatInputCommandInteraction) {
     const user = interaction.options.getString('user');
