@@ -4,14 +4,14 @@
   "description": "",
   "main": "dist/bot.js",
   "scripts": {
-    "start": "doppler run -- ts-node src/bot.ts",
-    "deploy": "doppler run -- ts-node src/deployCommands.ts",
+    "start": "doppler run -- tsx src/bot.ts",
+    "deploy": "doppler run -- tsx src/deployCommands.ts",
     "build": "tsc",
     "start:prod": "npm run build && doppler run -- node dist/bot.js",
     "pm2:prod": "npm run build && doppler run -- pm2 start dist/bot.js",
     "lint": "eslint .",
     "docker": "doppler run -- docker-compose up -d",
-    "dev": "doppler run -- ts-node-dev src/bot.ts"
+    "dev": "doppler run -- tsx watch src/bot.ts"
   },
   "author": "Abysmal",
   "license": "MIT",
@@ -28,8 +28,8 @@
     "@typescript-eslint/eslint-plugin": "^5.48.1",
     "@typescript-eslint/parser": "^5.48.1",
     "eslint": "^8.31.0",
-    "ts-node": "^10.9.1",
-    "ts-node-dev": "^2.0.0",
+    "tslib": "^2.4.1",
+    "tsx": "^3.12.2",
     "typescript": "^4.9.4",
     "typescript-eslint": "0.0.1-alpha.0"
   }
