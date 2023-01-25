@@ -20,6 +20,7 @@ const config = {
         image: process.env.BOT_IMAGE ?? '',
         id: process.env.APP_ID ?? '',
         feedbackWebhook: process.env.FEEDBACK_WEBHOOK ?? '',
+        openWeatherKey: process.env.OPEN_WEATHER_KEY ?? '',
     },
     owner: {
         id: process.env.OWNER_ID ?? '',
