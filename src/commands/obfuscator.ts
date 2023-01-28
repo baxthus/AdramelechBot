@@ -1,6 +1,21 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js';
 import config from '../config';
 
+interface IOwO {
+    id: string;
+    destination: string;
+    preventScrape: boolean;
+    owoify: boolean;
+    visits: number;
+    scrapes: number;
+    createdAt: string;
+    status: string;
+    // most of the time is null
+    commentId?: unknown;
+    // ///
+    result: string;
+}
+
 export = {
     data: new SlashCommandBuilder()
         .setName('obfuscator')
@@ -13,7 +28,6 @@ export = {
         const rawURL = interaction.options.getString('url') ?? '';
 
         let url;
-        let res;
 
         (rawURL.startsWith('https://' || 'http://')) ? url = rawURL : url = 'https://' + rawURL;
 
@@ -23,17 +37,17 @@ export = {
             body: JSON.stringify({ 'link': url, 'generator': 'sketchy', 'preventScrape': true }),
         });
 
-        try {
-            res = await r.json();
-        } catch {
+        if (r.status !== 200) {
             return await interaction.reply({
                 embeds: [
                     new EmbedBuilder().setColor('Red')
                         .setTitle('__Error!__')
                         .setDescription(`\`${r.statusText}\``),
-                ], ephemeral: true,
+                ],
             });
         }
+
+        const res: IOwO = await r.json();
 
         const embed = new EmbedBuilder().setColor([203, 166, 247])
             .setTitle('__Adramelech URL Obfuscator__')

@@ -1,6 +1,33 @@
 import { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction } from 'discord.js';
 import config from '../config';
 
+interface ICep {
+    cep: string;
+    state: string;
+    city: string;
+    neighborhood: string;
+    street: string;
+    service: string;
+    location: {
+        type: string;
+        coordinates: {
+            longitude: string;
+            latitude: string;
+        };
+    };
+}
+
+interface ICepError {
+    name: string;
+    message: string;
+    type: string;
+    errors: {
+        name: string;
+        message: string;
+        service: string;
+    }[];
+}
+
 export = {
     data: new SlashCommandBuilder()
         .setName('cep-search')
@@ -15,8 +42,13 @@ export = {
 
         const res = await (await fetch(`https://brasilapi.com.br/api/cep/v2/${cep}`)).json();
 
-        if (res.name !== undefined) {
-            const errors = `**Name:** \`${res.name}\`\n**Message:** \`${res.message}\`\n**Type:** \`${res.type}\``;
+        if (res.name) {
+            const resError: ICepError = res;
+            const errors = `
+            **Name:** \`${resError.name}\`
+            **Message:** \`${resError.message}\`
+            **Type:** \`${resError.type}\`
+            `;
 
             return await interaction.reply({
                 embeds: [
@@ -27,19 +59,21 @@ export = {
             });
         }
 
+        const result: ICep = res;
+
         const main = `
-        **CEP:** ${res.cep}
-        **State:** ${res.state}
-        **City:** ${res.city}
-        **Neighborhood:** ${res.neighborhood}
-        **Street:** ${res.street}
-        **Service:** ${res.service}
+        **CEP:** ${result.cep}
+        **State:** ${result.state}
+        **City:** ${result.city}
+        **Neighborhood:** ${result.neighborhood}
+        **Street:** ${result.street}
+        **Service:** ${result.service}
         `;
 
         const location = `
-        **Type:** ${res.location.type}
-        **Longitude:** ${res.location.coordinates.longitude}
-        **Latitude:** ${res.location.coordinates.latitude}
+        **Type:** ${result.location.type}
+        **Longitude:** ${result.location.coordinates.longitude}
+        **Latitude:** ${result.location.coordinates.latitude}
         `;
 
         const embed = new EmbedBuilder().setColor([203, 166, 247])
@@ -64,7 +98,7 @@ export = {
                 new ButtonBuilder()
                     .setLabel('Open location in Google Maps')
                     .setStyle(ButtonStyle.Link)
-                    .setURL(`https://www.google.com/maps/search/?api=1&query=${res.location.coordinates.latitude},${res.location.coordinates.longitude}`)
+                    .setURL(`https://www.google.com/maps/search/?api=1&query=${result.location.coordinates.latitude},${result.location.coordinates.longitude}`)
                     // "🌎" is the :earth_americas: emoji
                     .setEmoji('🌎'),
             );

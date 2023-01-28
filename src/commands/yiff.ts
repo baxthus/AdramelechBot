@@ -44,7 +44,7 @@ export = {
         }
 
         const choice = interaction.options.getString('category') ?? '';
-        let img;
+        let img: string;
 
         // Check if this shit is not being rate limited
         try {

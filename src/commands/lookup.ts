@@ -4,6 +4,48 @@ import config from '../config';
 // https://melvingeorge.me/blog/check-if-string-is-valid-ip-address-javascript
 const regexExp = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/gi;
 
+interface IIp {
+    ip: string;
+    success: boolean;
+    // just when return error
+    message?: string;
+    // ///
+    type: string;
+    continent: string;
+    continent_code: string;
+    country: string;
+    country_code: string;
+    region: string;
+    region_code: string;
+    city: string;
+    latitude: number;
+    longitude: number;
+    is_eu: boolean;
+    postal: string;
+    calling_code: string;
+    capital: string;
+    borders: string;
+    flags: {
+        img: string;
+        emoji: string;
+        emoji_unicode: string;
+    };
+    connection: {
+        asn: number;
+        org: string;
+        isp: string;
+        domain: string;
+    };
+    timezone: {
+        id: string;
+        abbr: string;
+        is_dst: boolean;
+        offset: number;
+        utc: string;
+        current_time: string;
+    };
+}
+
 export = {
     data: new SlashCommandBuilder()
         .setName('lookup')
@@ -41,7 +83,7 @@ export = {
             }
         }
 
-        const res = await (await fetch(`https://ipwho.is/${ip}`)).json();
+        const res: IIp = await (await fetch(`https://ipwho.is/${ip}`)).json();
 
         if (!res.success) {
             return await interaction.reply({

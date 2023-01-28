@@ -1,6 +1,11 @@
 import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder, WebhookClient } from 'discord.js';
 import config from '../config';
 
+interface IFeedback {
+    category: string;
+    message: string;
+}
+
 export = {
     data: new SlashCommandBuilder()
         .setName('feedback')
@@ -20,20 +25,22 @@ export = {
                 .setDescription('Type your message')
                 .setRequired(true)),
     async execute(interaction: ChatInputCommandInteraction) {
-        const category = interaction.options.getString('category') ?? '';
-        const message = interaction.options.getString('message');
+        const feedback: IFeedback = {
+            category: interaction.options.getString('category') ?? '',
+            message: interaction.options.getString('message') ?? '',
+        };
 
         const feedbackEmbed = new EmbedBuilder().setColor([203, 166, 247])
             .setTitle('Adramelech Feedback')
             .setDescription(`From \`${interaction.user.tag}\` (\`${interaction.user.id}\`)`)
             .addFields(
                 {
-                    name: ':bar_chart: **Type**',
-                    value: `\`\`\`${category}\`\`\``,
+                    name: ':bar_chart: **Category**',
+                    value: `\`\`\`${feedback.category}\`\`\``,
                 },
                 {
                     name: ':page_facing_up: **Message**',
-                    value: `\`\`\`${message}\`\`\``,
+                    value: `\`\`\`${feedback.message}\`\`\``,
                 }
             );
 

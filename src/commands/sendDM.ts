@@ -1,5 +1,10 @@
-import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js';
+import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction, User } from 'discord.js';
 import config from '../config';
+
+interface IMessage {
+    user: User;
+    message: string;
+}
 
 export = {
     data: new SlashCommandBuilder()
@@ -24,11 +29,13 @@ export = {
             });
         }
 
-        const user = interaction.options.getUser('user');
-        const message = interaction.options.getString('message') ?? '';
+        const message: IMessage = {
+            user: interaction.options.getUser('user') ?? interaction.user,
+            message: interaction.options.getString('message') ?? '',
+        };
 
         try {
-            await user?.send(message);
+            await message.user.send(message.message);
         } catch {
             return await interaction.reply({
                 embeds: [
