@@ -35,6 +35,7 @@ export = {
     async execute(interaction: ChatInputCommandInteraction) {
         const subcommand = interaction.options.getSubcommand().toLowerCase();
 
+        // this is shit, should i do everything in one file?
         switch (subcommand) {
             case 'repo':
                 repoCommand(interaction); break;

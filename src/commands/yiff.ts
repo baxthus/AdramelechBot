@@ -46,7 +46,9 @@ export = {
         const choice = interaction.options.getString('category') ?? '';
         let img: string;
 
-        // Check if this shit is not being rate limited
+        // Check if this shit is being rate limited
+        // This will become a problem if a lot of people use this command
+        // Sounds like a big load of not my problem
         try {
             img = (await shitFunction(choice)).url;
         } catch {
