@@ -5,26 +5,11 @@ type ICep = ICep2[]
 
 interface ICep2 {
     cep: string;
-    logradouro: string;
-    complemento: string;
-    bairro: string;
-    localidade: string;
-    uf: string;
-    ibge: string;
-    gia: string;
-    ddd: string;
-    siafi: string;
 }
 
 interface ICoord {
     cep: string;
-    state: string;
-    city: string;
-    neighborhood: string;
-    street: string;
-    service: string;
     location: {
-        type: string;
         coordinates: {
             longitude: string;
             latitude: string;
@@ -33,17 +18,10 @@ interface ICoord {
 }
 
 interface IWeather {
-    coord: {
-        lon: number;
-        lat: number;
-    }
-    weather: [{
-        id: number;
+    weather: {
         main: string;
         description: string;
-        icon: string;
-    }]
-    base: string;
+    }[]
     main: {
         temp: number;
         feels_like: number;
@@ -54,23 +32,11 @@ interface IWeather {
         sea_level: number;
         grnd_level: number;
     }
-    visibility: number;
     wind: {
         speed: number;
         deg: number;
         gust: number;
     }
-    clouds: {
-        all: number;
-    }
-    dt: number;
-    sys: {
-        country: string;
-        sunrise: number;
-        sunset: number;
-    }
-    timezone: number;
-    id: number;
     name: string;
 }
 

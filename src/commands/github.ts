@@ -1,7 +1,7 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
-import repoCommand from './githubSubcommands/repo';
-import userCommand from './githubSubcommands/user';
-import gistCommand from './githubSubcommands/gist';
+import repoCommand from './github/repo';
+import userCommand from './github/user';
+import gistCommand from './github/gist';
 
 export = {
     data: new SlashCommandBuilder()

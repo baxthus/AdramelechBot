@@ -1,15 +1,7 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js';
 
 interface ICat {
-    tags: string[];
-    createdAt: string;
-    updatedAt: string;
-    validated: boolean;
     owner?: string;
-    file: string;
-    mimetype: string;
-    size: number;
-    _id: string;
     url: string;
 }
 
@@ -22,7 +14,7 @@ export = {
 
         const embed = new EmbedBuilder().setColor([203, 166, 247])
             .setImage(`https://cataas.com/${res.url}`)
-            .setFooter({ text: 'Powered by https://cataas.com' });
+            .setFooter({ text: `Owner: ${res.owner}\nPowered by https://cataas.com` });
 
         await interaction.reply({ embeds: [embed] });
     },

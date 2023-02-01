@@ -6,6 +6,33 @@ function formatArray(arr: Array<string>) {
     })).replace(',', ', ');
 }
 
+interface IRepo {
+    id: number;
+    name: string;
+    html_url: string;
+    description: string;
+    fork: boolean;
+    language: string;
+    stargazers_count: number;
+    watchers_count: number;
+    forks_count: number;
+    owner: {
+        login: string;
+        id: number;
+        type: string;
+    }
+    license?: {
+        key: string;
+    }
+}
+
+interface ILicense {
+    name: string;
+    permissions: Array<string>;
+    conditions: Array<string>;
+    limitations: Array<string>;
+}
+
 export default async function (interaction: ChatInputCommandInteraction) {
     const user = interaction.options.getString('user');
     const repo = interaction.options.getString('repository');
@@ -24,25 +51,27 @@ export default async function (interaction: ChatInputCommandInteraction) {
         });
     }
 
+    const content: IRepo = res;
+
     const mainField = `
-    **Name:** ${res.name}
-    **ID:** ${res.id}
-    **Description:** ${(res.description) ? `\`${res.description}\`` : 'None'}
-    **It's a fork:** ${(res.fork) ? 'Yes' : 'No'}
-    **Principal language:** ${res.language}
-    **Starts:** ${res.stargazers_count}
-    **Watchers:** ${res.watchers_count}
-    **Forks:** ${res.forks_count}
+    **Name:** ${content.name}
+    **ID:** ${content.id}
+    **Description:** ${(content.description) ? `\`${content.description}\`` : 'None'}
+    **It's a fork:** ${(content.fork) ? 'Yes' : 'No'}
+    **Principal language:** ${content.language}
+    **Starts:** ${content.stargazers_count}
+    **Watchers:** ${content.watchers_count}
+    **Forks:** ${content.forks_count}
     `;
 
     const ownerField = `
-    **Username:** ${res.owner.login}
-    **ID:** ${res.owner.id}
-    **Type:** ${res.owner.type}
+    **Username:** ${content.owner.login}
+    **ID:** ${content.owner.id}
+    **Type:** ${content.owner.type}
     `;
 
-    if (res.license) {
-        const license = await (await fetch(`https://api.github.com/licenses/${res.license.key}`)).json();
+    if (content.license) {
+        const license: ILicense = await (await fetch(`https://api.github.com/licenses/${content.license.key}`)).json();
 
         licenseField = `
         **Name:** ${license.name}
@@ -76,11 +105,11 @@ export default async function (interaction: ChatInputCommandInteraction) {
             new ButtonBuilder()
                 .setLabel('Open repository')
                 .setStyle(ButtonStyle.Link)
-                .setURL(res.html_url),
+                .setURL(content.html_url),
             new ButtonBuilder()
                 .setLabel('Open repository owner')
                 .setStyle(ButtonStyle.Link)
-                .setURL(`https://github.com/${res.owner.login}`)
+                .setURL(`https://github.com/${content.owner.login}`)
         );
 
     await interaction.reply({ embeds: [embed], components: [buttons] });

@@ -13,7 +13,7 @@ export = {
 
         const res = await (await fetch(`https://is.gd/create.php?format=simple&url=${url}`)).text();
 
-        if (res.startsWith('Error')) {
+        if (res.replace('\n', '').startsWith('Error')) {
             return await interaction.reply({
                 embeds: [
                     new EmbedBuilder().setColor('Red')

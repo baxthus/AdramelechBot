@@ -21,11 +21,6 @@ interface ICepError {
     name: string;
     message: string;
     type: string;
-    errors: {
-        name: string;
-        message: string;
-        service: string;
-    }[];
 }
 
 export = {
@@ -59,21 +54,21 @@ export = {
             });
         }
 
-        const result: ICep = res;
+        const content: ICep = res;
 
         const main = `
-        **CEP:** ${result.cep}
-        **State:** ${result.state}
-        **City:** ${result.city}
-        **Neighborhood:** ${result.neighborhood}
-        **Street:** ${result.street}
-        **Service:** ${result.service}
+        **CEP:** ${content.cep}
+        **State:** ${content.state}
+        **City:** ${content.city}
+        **Neighborhood:** ${content.neighborhood}
+        **Street:** ${content.street}
+        **Service:** ${content.service}
         `;
 
         const location = `
-        **Type:** ${result.location.type}
-        **Longitude:** ${result.location.coordinates.longitude}
-        **Latitude:** ${result.location.coordinates.latitude}
+        **Type:** ${content.location.type}
+        **Longitude:** ${content.location.coordinates.longitude}
+        **Latitude:** ${content.location.coordinates.latitude}
         `;
 
         const embed = new EmbedBuilder().setColor([203, 166, 247])
@@ -98,7 +93,7 @@ export = {
                 new ButtonBuilder()
                     .setLabel('Open location in Google Maps')
                     .setStyle(ButtonStyle.Link)
-                    .setURL(`https://www.google.com/maps/search/?api=1&query=${result.location.coordinates.latitude},${result.location.coordinates.longitude}`)
+                    .setURL(`https://www.google.com/maps/search/?api=1&query=${content.location.coordinates.latitude},${content.location.coordinates.longitude}`)
                     // "🌎" is the :earth_americas: emoji
                     .setEmoji('🌎'),
             );

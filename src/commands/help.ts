@@ -72,7 +72,7 @@ export = {
         const collector = interaction.channel?.createMessageComponentCollector({ filter, time: 15000 });
 
         collector?.on('collect', async (i: CollectedMessageInteraction) => {
-            // This is not the correct way to do it. But who cares?
+            // This is not the correct way to do it. Too bad.
             const startTime = performance.now();
             fetch('https://discord.com/api/v6');
             const endTime = performance.now();
@@ -84,7 +84,7 @@ export = {
                 .setTitle('__Adramelech Velocity Test__')
                 .setDescription(`Response time from our servers to Discord Endpoint is ${responseTime}ms`);
 
-            await i.update({ embeds: [velocityEmbed], components: [] });
+            await i.update({ embeds: [velocityEmbed] });
             return;
         });
 

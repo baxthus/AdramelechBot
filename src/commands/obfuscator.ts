@@ -2,17 +2,10 @@ import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from '
 import config from '../config';
 
 interface IOwO {
-    id: string;
     destination: string;
     preventScrape: boolean;
     owoify: boolean;
-    visits: number;
-    scrapes: number;
     createdAt: string;
-    status: string;
-    // most of the time is null
-    commentId?: unknown;
-    // ///
     result: string;
 }
 

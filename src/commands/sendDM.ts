@@ -29,13 +29,13 @@ export = {
             });
         }
 
-        const message: IMessage = {
+        const content: IMessage = {
             user: interaction.options.getUser('user') ?? interaction.user,
             message: interaction.options.getString('message') ?? '',
         };
 
         try {
-            await message.user.send(message.message);
+            await content.user.send(content.message);
         } catch {
             return await interaction.reply({
                 embeds: [

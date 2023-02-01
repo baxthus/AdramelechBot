@@ -11,7 +11,7 @@ export = {
     async execute(interaction: ChatInputCommandInteraction) {
         const country = interaction.options.getString('country') ?? 'worldwide';
         let res;
-        let local;
+        let local: string;
 
         if (country.toLowerCase() === 'worldwide') {
             res = await (await fetch('https://disease.sh/v3/covid-19/all')).json();

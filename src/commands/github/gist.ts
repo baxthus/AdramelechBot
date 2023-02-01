@@ -1,5 +1,20 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 
+type IGist = IGist2[];
+interface IGist2 {
+    html_url: string;
+    owner: {
+        login: string;
+        id: number;
+        avatar_url: string;
+        html_url: string;
+        type: string;
+    };
+    description: string;
+    id: string;
+    comments: number;
+}
+
 export default async function (interaction: ChatInputCommandInteraction) {
     const user = interaction.options.getString('user');
 
@@ -15,7 +30,9 @@ export default async function (interaction: ChatInputCommandInteraction) {
         });
     }
 
-    if (!res.length) {
+    const content: IGist = res;
+
+    if (!content.length) {
         return await interaction.reply({
             embeds: [
                 new EmbedBuilder().setColor('Red')
@@ -26,20 +43,20 @@ export default async function (interaction: ChatInputCommandInteraction) {
     }
 
     const userField = `
-    **Username:** ${res[0].owner.login}
-    **ID:** \`${res[0].owner.id}\`
-    **Type:** \`${res[0].owner.id}\`
+    **Username:** ${content[0].owner.login}
+    **ID:** \`${content[0].owner.id}\`
+    **Type:** \`${content[0].owner.type}\`
     `;
 
     const latestGistField = `
-    **Description:** ${(res[0].description) ? `\`${res[0].description}\`` : 'No description'}
-    **ID:** \`${res[0].id}\`
-    **Comments:** ${res[0].comments}
+    **Description:** ${(content[0].description) ? `\`${content[0].description}\`` : 'No description'}
+    **ID:** \`${content[0].id}\`
+    **Comments:** ${content[0].comments}
     `;
 
     const embed = new EmbedBuilder().setColor([203, 166, 247])
         .setTitle('__Github User Gists Info__')
-        .setThumbnail(res[0].owner.avatar_url)
+        .setThumbnail(content[0].owner.avatar_url)
         .addFields(
             {
                 name: ':bust_in_silhouette: **User**',
@@ -47,7 +64,7 @@ export default async function (interaction: ChatInputCommandInteraction) {
             },
             {
                 name: ':1234: **Number of Gists**',
-                value: `\`${res.length}\``,
+                value: `\`${content.length}\``,
             },
             {
                 name: ':arrow_up: **Latest Gist**',
@@ -64,11 +81,11 @@ export default async function (interaction: ChatInputCommandInteraction) {
             new ButtonBuilder()
                 .setLabel('Open user Github')
                 .setStyle(ButtonStyle.Link)
-                .setURL(res[0].owner.html_url),
+                .setURL(content[0].owner.html_url),
             new ButtonBuilder()
                 .setLabel('Open latest Gist')
                 .setStyle(ButtonStyle.Link)
-                .setURL(res[0].html_url),
+                .setURL(content[0].html_url),
         );
 
     await interaction.reply({ embeds: [embed], components: [buttons] });

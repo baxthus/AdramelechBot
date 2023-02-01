@@ -4,32 +4,20 @@ import config from '../config';
 // https://melvingeorge.me/blog/check-if-string-is-valid-ip-address-javascript
 const regexExp = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/gi;
 
-interface IIp {
+interface Iip {
     ip: string;
     success: boolean;
     // just when return error
     message?: string;
-    // ///
     type: string;
     continent: string;
-    continent_code: string;
     country: string;
     country_code: string;
     region: string;
-    region_code: string;
     city: string;
     latitude: number;
     longitude: number;
-    is_eu: boolean;
     postal: string;
-    calling_code: string;
-    capital: string;
-    borders: string;
-    flags: {
-        img: string;
-        emoji: string;
-        emoji_unicode: string;
-    };
     connection: {
         asn: number;
         org: string;
@@ -38,11 +26,8 @@ interface IIp {
     };
     timezone: {
         id: string;
-        abbr: string;
-        is_dst: boolean;
         offset: number;
         utc: string;
-        current_time: string;
     };
 }
 
@@ -62,8 +47,7 @@ export = {
         if (regexExp.test(userInput)) {
             ip = userInput;
         } else {
-            let getIp = await (await fetch(`https://da.gd/host/${userInput}`)).text();
-            getIp = getIp.replace('\n', '');
+            const getIp = (await (await fetch(`https://da.gd/host/${userInput}`)).text()).replace('\n', '');
 
             if (getIp.startsWith('No' || '')) {
                 return await interaction.reply({
@@ -83,14 +67,14 @@ export = {
             }
         }
 
-        const res: IIp = await (await fetch(`https://ipwho.is/${ip}`)).json();
+        const res: Iip = await (await fetch(`https://ipwho.is/${ip}`)).json();
 
         if (!res.success) {
             return await interaction.reply({
                 embeds: [
                     new EmbedBuilder().setColor('Red')
                         .setTitle('__Error!__')
-                        .setDescription('`' + res.message + '`'),
+                        .setDescription(`\`${res.message}\``),
                 ], ephemeral: true,
             });
         }

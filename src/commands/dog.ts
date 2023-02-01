@@ -12,7 +12,7 @@ export = {
     async execute(interaction: ChatInputCommandInteraction) {
         const res: IDog = await (await fetch('https://dog.ceo/api/breeds/image/random')).json();
 
-        if (res.message !== 'success') {
+        if (res.status !== 'success') {
             return await interaction.reply({
                 embeds: [
                     new EmbedBuilder().setColor('Red')
