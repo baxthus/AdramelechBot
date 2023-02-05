@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } from 'discord.js';
+import { embedColor } from 'src/config';
 
 export = {
     data: new SlashCommandBuilder()
@@ -18,7 +19,7 @@ export = {
 
         await interaction.channel.bulkDelete(amount);
 
-        const embed = new EmbedBuilder().setColor([203, 166, 247])
+        const embed = new EmbedBuilder().setColor(embedColor)
             .setTitle('__Adramelech Clear__')
             .setDescription(`
             Successfully deleted ${amount} messages

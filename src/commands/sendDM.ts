@@ -1,8 +1,8 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction, User } from 'discord.js';
 import config from '../config';
 
-interface IMessage {
-    user: User;
+type Message = {
+    user: User | null;
     message: string;
 }
 
@@ -29,13 +29,13 @@ export = {
             });
         }
 
-        const content: IMessage = {
-            user: interaction.options.getUser('user') ?? interaction.user,
+        const content: Message = {
+            user: interaction.options.getUser('user'),
             message: interaction.options.getString('message') ?? '',
         };
 
         try {
-            await content.user.send(content.message);
+            await content.user?.send(content.message);
         } catch {
             return await interaction.reply({
                 embeds: [
@@ -46,7 +46,7 @@ export = {
             });
         }
 
-        const embed = new EmbedBuilder().setColor([203, 166, 247])
+        const embed = new EmbedBuilder().setColor(config.bot.embedColor)
             .setTitle('__Adramelech DM Sender__')
             .setDescription('Message send successfully!')
             .setThumbnail(config.bot.image);

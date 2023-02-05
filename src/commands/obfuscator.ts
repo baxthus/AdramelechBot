@@ -1,7 +1,7 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js';
 import config from '../config';
 
-interface IOwO {
+type OwO = {
     destination: string;
     preventScrape: boolean;
     owoify: boolean;
@@ -20,7 +20,7 @@ export = {
     async execute(interaction: ChatInputCommandInteraction) {
         const rawURL = interaction.options.getString('url') ?? '';
 
-        let url;
+        let url: string;
 
         (rawURL.startsWith('https://' || 'http://')) ? url = rawURL : url = 'https://' + rawURL;
 
@@ -40,9 +40,9 @@ export = {
             });
         }
 
-        const res: IOwO = await r.json();
+        const res: OwO = await r.json();
 
-        const embed = new EmbedBuilder().setColor([203, 166, 247])
+        const embed = new EmbedBuilder().setColor(config.bot.embedColor)
             .setTitle('__Adramelech URL Obfuscator__')
             .setThumbnail(config.bot.image)
             .addFields(

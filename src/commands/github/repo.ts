@@ -1,4 +1,5 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
+import { embedColor } from 'src/config';
 
 function formatArray(arr: Array<string>) {
     return String(arr.map(element => {
@@ -6,7 +7,7 @@ function formatArray(arr: Array<string>) {
     })).replace(',', ', ');
 }
 
-interface IRepo {
+type RepoInfo = {
     id: number;
     name: string;
     html_url: string;
@@ -26,7 +27,7 @@ interface IRepo {
     }
 }
 
-interface ILicense {
+type LicenseInfo = {
     name: string;
     permissions: Array<string>;
     conditions: Array<string>;
@@ -51,7 +52,7 @@ export default async function (interaction: ChatInputCommandInteraction) {
         });
     }
 
-    const content: IRepo = res;
+    const content: RepoInfo = res;
 
     const mainField = `
     **Name:** ${content.name}
@@ -71,7 +72,7 @@ export default async function (interaction: ChatInputCommandInteraction) {
     `;
 
     if (content.license) {
-        const license: ILicense = await (await fetch(`https://api.github.com/licenses/${content.license.key}`)).json();
+        const license: LicenseInfo = await (await fetch(`https://api.github.com/licenses/${content.license.key}`)).json();
 
         licenseField = `
         **Name:** ${license.name}
@@ -83,7 +84,7 @@ export default async function (interaction: ChatInputCommandInteraction) {
         licenseField = 'No license';
     }
 
-    const embed = new EmbedBuilder().setColor([203, 166, 247])
+    const embed = new EmbedBuilder().setColor(embedColor)
         .setTitle('__Github Repo Info__')
         .addFields(
             {

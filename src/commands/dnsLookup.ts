@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder, ChatInputCommandInteraction } from 'discord.js';
-import config from '../config';
+import config from 'src/config';
 
 export = {
     data: new SlashCommandBuilder()
@@ -26,7 +26,7 @@ export = {
 
         const file = new AttachmentBuilder(Buffer.from(res), { name: `${domain}.zone` });
 
-        const embed = new EmbedBuilder().setColor([203, 166, 247])
+        const embed = new EmbedBuilder().setColor(config.bot.embedColor)
             .setTitle('__Adramelech DNS Lookup__')
             .setThumbnail(config.bot.image)
             .addFields(

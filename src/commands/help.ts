@@ -1,5 +1,5 @@
-import { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, CollectedMessageInteraction } from 'discord.js';
-import config from '../config';
+import { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction } from 'discord.js';
+import config from 'src/config';
 
 const commandsField = `
 **/avatar** - Return the selected user's avatar
@@ -34,7 +34,7 @@ export = {
         .setName('help')
         .setDescription('Help, I need to say more?'),
     async execute(interaction: ChatInputCommandInteraction) {
-        const embed = new EmbedBuilder().setColor([203, 166, 247])
+        const embed = new EmbedBuilder().setColor(config.bot.embedColor)
             .setTitle('__Adramelech Help Page__')
             .setThumbnail(config.bot.image)
             .addFields({ name: '**__Commands__**', value: commandsField })
@@ -71,7 +71,7 @@ export = {
         const filter = (i: any) => i.customId === 'velocityButton' && i.user.id === interaction.user.id;
         const collector = interaction.channel?.createMessageComponentCollector({ filter, time: 15000 });
 
-        collector?.on('collect', async (i: CollectedMessageInteraction) => {
+        collector?.on('collect', async (i) => {
             // This is not the correct way to do it. Too bad.
             const startTime = performance.now();
             fetch('https://discord.com/api/v6');

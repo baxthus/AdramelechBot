@@ -34,7 +34,7 @@ export = {
 
         const file = new AttachmentBuilder(Buffer.from(res), { name: `${local}.txt` });
 
-        const embed = new EmbedBuilder().setColor([203, 166, 247])
+        const embed = new EmbedBuilder().setColor(config.bot.embedColor)
             .setTitle('Adramelech Whois')
             .setThumbnail(config.bot.image)
             .addFields(

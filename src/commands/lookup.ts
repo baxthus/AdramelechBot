@@ -1,13 +1,11 @@
 import { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction } from 'discord.js';
-import config from '../config';
+import config, { embedColor } from '../config';
 
 // https://melvingeorge.me/blog/check-if-string-is-valid-ip-address-javascript
 const regexExp = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/gi;
 
-interface Iip {
-    ip: string;
+type WhoisInfo = {
     success: boolean;
-    // just when return error
     message?: string;
     type: string;
     continent: string;
@@ -67,7 +65,7 @@ export = {
             }
         }
 
-        const res: Iip = await (await fetch(`https://ipwho.is/${ip}`)).json();
+        const res: WhoisInfo = await (await fetch(`https://ipwho.is/${ip}`)).json();
 
         if (!res.success) {
             return await interaction.reply({
@@ -106,7 +104,7 @@ export = {
         **Offset:** ${res.timezone.offset}
         `;
 
-        const embed = new EmbedBuilder().setColor([203, 166, 247])
+        const embed = new EmbedBuilder().setColor(embedColor)
             .setTitle('__Adramelech Lookup__')
             .setDescription('For best results search by ip')
             .setThumbnail(config.bot.image)

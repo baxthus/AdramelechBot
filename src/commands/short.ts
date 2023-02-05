@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js';
+import { embedColor } from 'src/config';
 
 export = {
     data: new SlashCommandBuilder()
@@ -23,7 +24,7 @@ export = {
             });
         }
 
-        const embed = new EmbedBuilder().setColor([203, 166, 247])
+        const embed = new EmbedBuilder().setColor(embedColor)
             .setTitle('__Adramelech URL Shortener__')
             .addFields(
                 {

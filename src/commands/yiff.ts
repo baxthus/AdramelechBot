@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js';
+import { embedColor } from 'src/config';
 import Yiffy from 'yiffy';
 import checkNsfwChannel from './utils/checkNsfwChannel';
 
@@ -61,7 +62,7 @@ export = {
             });
         }
 
-        const embed = new EmbedBuilder().setColor([203, 166, 247])
+        const embed = new EmbedBuilder().setColor(embedColor)
             .setImage(img)
             .setFooter({ text: 'Powered by https://yiff.rest' });
 

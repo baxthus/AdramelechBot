@@ -1,14 +1,12 @@
 import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
-import config from '../config';
+import config from 'src/config';
 
-type ICep = ICep2[]
+type ViacepResponse = Array<{
+    cep?: string;
+}>
 
-interface ICep2 {
-    cep: string;
-}
-
-interface ICoord {
-    cep: string;
+type BrasilApiResponse = {
+    cep?: string;
     location: {
         coordinates: {
             longitude: string;
@@ -17,11 +15,11 @@ interface ICoord {
     }
 }
 
-interface IWeather {
-    weather: {
-        main: string;
-        description: string;
-    }[]
+type OWResponse = {
+    weather: Array<{
+        main: string
+        description: string
+    }>
     main: {
         temp: number;
         feels_like: number;
@@ -37,7 +35,13 @@ interface IWeather {
         deg: number;
         gust: number;
     }
-    name: string;
+    name?: string;
+}
+
+type Location = {
+    state: string | null
+    city: string | null
+    street: string | null
 }
 
 export = {
@@ -57,13 +61,15 @@ export = {
                 .setDescription('The street to get the weather for')
                 .setRequired(true)),
     async execute(interaction: ChatInputCommandInteraction) {
-        const state = interaction.options.getString('state');
-        const city = interaction.options.getString('city');
-        const street = interaction.options.getString('street');
+        const options: Location = {
+            state: interaction.options.getString('state'),
+            city: interaction.options.getString('city'),
+            street: interaction.options.getString('street'),
+        };
 
         // get cep
         // that shit gave me a lot of headache
-        const resCep: ICep = await (await fetch(`https://viacep.com.br/ws/${state}/${city}/${street}/json`)).json();
+        const resCep: ViacepResponse = await (await fetch(`https://viacep.com.br/ws/${options.state}/${options.state}/${options.city}/json`)).json();
         if (resCep[0].cep === undefined) {
             return await interaction.reply({
                 embeds: [
@@ -73,7 +79,7 @@ export = {
         }
 
         // cep -> coordinates
-        const resCoord: ICoord = await (await fetch(`https://brasilapi.com.br/api/cep/v2/${resCep[0].cep}`)).json();
+        const resCoord: BrasilApiResponse = await (await fetch(`https://brasilapi.com.br/api/cep/v2/${resCep[0].cep}`)).json();
         if (resCoord.cep === undefined) {
             return await interaction.reply({
                 embeds: [
@@ -84,7 +90,7 @@ export = {
 
         // coordinates -> weather
         const url = `https://api.openweathermap.org/data/2.5/weather?lat=${resCoord.location.coordinates.latitude}&lon=${resCoord.location.coordinates.longitude}&appid=${config.bot.openWeatherKey}&units=metric&lang=pt_br`;
-        const resWeather: IWeather = await (await fetch(url)).json();
+        const resWeather: OWResponse = await (await fetch(url)).json();
         if (resWeather.name === undefined) {
             return await interaction.reply({
                 embeds: [
@@ -115,7 +121,7 @@ export = {
         **Gusto:** ${resWeather.wind.gust}m/s
         `;
 
-        const embed = new EmbedBuilder().setColor([203, 166, 247])
+        const embed = new EmbedBuilder().setColor(config.bot.embedColor)
             .setTitle(`__Tempo em ${resWeather.name}__`)
             .addFields(
                 {

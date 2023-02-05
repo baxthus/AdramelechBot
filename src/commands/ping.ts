@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js';
+import { embedColor } from 'src/config';
 
 export = {
     data: new SlashCommandBuilder()
@@ -7,7 +8,7 @@ export = {
     async execute(interaction: ChatInputCommandInteraction) {
         await interaction.reply({
             embeds: [
-                new EmbedBuilder().setColor([203, 166, 247]).setTitle('Pong!'),
+                new EmbedBuilder().setColor(embedColor).setTitle('Pong!'),
             ],
         });
     },

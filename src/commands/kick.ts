@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, ChatInputCommandInteraction } from 'discord.js';
+import { embedColor } from 'src/config';
 
 // This is basically the same as ban.ts
 export = {
@@ -52,7 +53,7 @@ export = {
 
         member.ban({ reason: reason });
 
-        const embed = new EmbedBuilder().setColor([203, 166, 247])
+        const embed = new EmbedBuilder().setColor(embedColor)
             .setTitle('__Adramelech Kick__')
             .setDescription(`
             User ${user} has been kicked

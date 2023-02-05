@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js';
+import { embedColor } from 'src/config';
 
 export = {
     data: new SlashCommandBuilder()
@@ -10,10 +11,10 @@ export = {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const createdAt = Math.round(interaction.guild!.createdTimestamp / 1000);
 
-        const embed = new EmbedBuilder().setColor([203, 166, 247])
+        const embed = new EmbedBuilder().setColor(embedColor)
             .setAuthor({
-                name: String(interaction.guild?.name),
-                iconURL: String(interaction.guild?.iconURL()),
+                name: interaction.guild?.name ?? '',
+                iconURL: interaction.guild?.iconURL() ?? '',
             })
             .addFields(
                 {

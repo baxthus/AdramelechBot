@@ -1,7 +1,7 @@
 import { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction } from 'discord.js';
-import config from '../config';
+import config from 'src/config';
 
-interface ICep {
+type ICep = {
     cep: string;
     state: string;
     city: string;
@@ -17,7 +17,7 @@ interface ICep {
     };
 }
 
-interface ICepError {
+type ICepError = {
     name: string;
     message: string;
     type: string;
@@ -71,7 +71,7 @@ export = {
         **Latitude:** ${content.location.coordinates.latitude}
         `;
 
-        const embed = new EmbedBuilder().setColor([203, 166, 247])
+        const embed = new EmbedBuilder().setColor(config.bot.embedColor)
             .setTitle('__Adramelech CEP Search__')
             .setThumbnail(config.bot.image)
             .addFields(

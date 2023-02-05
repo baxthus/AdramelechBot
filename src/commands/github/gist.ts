@@ -1,7 +1,8 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
+import { embedColor } from 'src/config';
 
-type IGist = IGist2[];
-interface IGist2 {
+type GistInfo = Array<{
+    message?: string;
     html_url: string;
     owner: {
         login: string;
@@ -13,7 +14,7 @@ interface IGist2 {
     description: string;
     id: string;
     comments: number;
-}
+}>
 
 export default async function (interaction: ChatInputCommandInteraction) {
     const user = interaction.options.getString('user');
@@ -30,7 +31,7 @@ export default async function (interaction: ChatInputCommandInteraction) {
         });
     }
 
-    const content: IGist = res;
+    const content: GistInfo = res;
 
     if (!content.length) {
         return await interaction.reply({
@@ -54,7 +55,7 @@ export default async function (interaction: ChatInputCommandInteraction) {
     **Comments:** ${content[0].comments}
     `;
 
-    const embed = new EmbedBuilder().setColor([203, 166, 247])
+    const embed = new EmbedBuilder().setColor(embedColor)
         .setTitle('__Github User Gists Info__')
         .setThumbnail(content[0].owner.avatar_url)
         .addFields(

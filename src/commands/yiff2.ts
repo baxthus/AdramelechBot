@@ -1,8 +1,9 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js';
 import { E6 } from 'furry-wrapper';
+import { embedColor } from 'src/config';
 import checkNsfwChannel from './utils/checkNsfwChannel';
 
-interface IYiff {
+type Yiff = {
     file: {
         url: string;
     };
@@ -32,7 +33,7 @@ export = {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const choice: any = interaction.options.getString('category');
-        let img: IYiff;
+        let img: Yiff;
 
         // Try to request
         // Why try? because the user can put a screwed up tag and fuck it all up
@@ -51,7 +52,7 @@ export = {
             });
         }
 
-        const embed = new EmbedBuilder().setColor([203, 166, 247])
+        const embed = new EmbedBuilder().setColor(embedColor)
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             .setImage(img!.file.url)
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

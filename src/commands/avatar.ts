@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js';
+import { embedColor } from 'src/config';
 
 export = {
     data: new SlashCommandBuilder()
@@ -17,7 +18,7 @@ export = {
 
         await interaction.reply({
             embeds: [
-                new EmbedBuilder().setColor([203, 166, 247])
+                new EmbedBuilder().setColor(embedColor)
                     .setTitle(`Avatar for ${target?.tag}`)
                     .setDescription(`
                     **Link has**

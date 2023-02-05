@@ -1,5 +1,16 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js';
-import config from '../config';
+import config from 'src/config';
+
+type CovidInfo = {
+    message?: string
+    country?: string
+    cases: string
+    todayCases: string
+    deaths: string
+    todayDeaths: string
+    recovered: string
+    todayRecovered: string
+}
 
 export = {
     data: new SlashCommandBuilder()
@@ -10,8 +21,8 @@ export = {
                 .setDescription('This option can be "worldwide"')),
     async execute(interaction: ChatInputCommandInteraction) {
         const country = interaction.options.getString('country') ?? 'worldwide';
-        let res;
-        let local: string;
+        let res: CovidInfo;
+        let local: string | undefined;
 
         if (country.toLowerCase() === 'worldwide') {
             res = await (await fetch('https://disease.sh/v3/covid-19/all')).json();
@@ -40,7 +51,7 @@ export = {
         **Today recovered:** ${res.todayRecovered}
         `;
 
-        const embed = new EmbedBuilder().setColor([203, 166, 247])
+        const embed = new EmbedBuilder().setColor(config.bot.embedColor)
             .setTitle(`__COVID stats in ${local}__`)
             .setDescription(message)
             .setThumbnail(config.bot.image)

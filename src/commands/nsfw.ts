@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js';
+import { embedColor } from 'src/config';
 import checkNsfwChannel from './utils/checkNsfwChannel';
 
 export = {
@@ -30,7 +31,7 @@ export = {
 
         const res = await (await fetch(`https://api.waifu.pics/nsfw/${choice}`)).json();
 
-        const embed = new EmbedBuilder().setColor([203, 166, 247])
+        const embed = new EmbedBuilder().setColor(embedColor)
             .setImage(res.url)
             .setFooter({ text: 'Powered by https://waifu.pics' });
 

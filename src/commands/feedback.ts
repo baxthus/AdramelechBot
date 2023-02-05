@@ -1,7 +1,7 @@
-import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder, WebhookClient } from 'discord.js';
-import config from '../config';
+import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder, WebhookClient, WebhookCreateMessageOptions } from 'discord.js';
+import config from 'src/config';
 
-interface IFeedback {
+type Feedback = {
     category: string;
     message: string;
 }
@@ -25,7 +25,7 @@ export = {
                 .setDescription('Type your message')
                 .setRequired(true)),
     async execute(interaction: ChatInputCommandInteraction) {
-        const feedback: IFeedback = {
+        const feedback: Feedback = {
             category: interaction.options.getString('category') ?? '',
             message: interaction.options.getString('message') ?? '',
         };
@@ -44,14 +44,16 @@ export = {
                 }
             );
 
+        const webhookOptions: WebhookCreateMessageOptions = {
+            username: 'Adramelech Feedback',
+            avatarURL: config.bot.image,
+            embeds: [feedbackEmbed],
+        };
+
         const webhookClient = new WebhookClient({ url: config.bot.feedbackWebhook });
 
         try {
-            webhookClient.send({
-                username: 'Adramelech Feedback',
-                avatarURL: config.bot.image,
-                embeds: [feedbackEmbed],
-            });
+            webhookClient.send(webhookOptions);
         } catch {
             return await interaction.reply({
                 embeds: [
@@ -64,7 +66,7 @@ export = {
 
         await interaction.reply({
             embeds: [
-                new EmbedBuilder().setColor([203, 166, 247])
+                new EmbedBuilder().setColor(config.bot.embedColor)
                     .setTitle('Feedback successfully sent'),
             ],
         });
