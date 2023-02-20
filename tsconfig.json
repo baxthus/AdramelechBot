@@ -18,7 +18,12 @@
             "node_modules/@types"
         ],
         "sourceMap": false,
-        "baseUrl": "./"
+        "baseUrl": "./",
+        "paths": {
+            "@interfaces/*": [
+                "src/interfaces/*"
+            ]
+        }
     },
     "files": [
         "src/bot.ts"

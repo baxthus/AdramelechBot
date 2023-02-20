@@ -1,7 +1,9 @@
-import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js';
-import config from 'src/config';
+import Command from '@interfaces/Command';
+import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
+import { botImage, embedColor } from 'src/config';
+import errorResponse from 'src/utils/errorResponse';
 
-type CovidInfo = {
+interface ICovid {
     message?: string
     country?: string
     cases: string
@@ -12,34 +14,29 @@ type CovidInfo = {
     todayRecovered: string
 }
 
-export = {
+const covid: Command = {
     data: new SlashCommandBuilder()
         .setName('covid')
         .setDescription('Return COVID stats')
         .addStringOption(option =>
             option.setName('country')
-                .setDescription('This option can be "worldwide"')),
-    async execute(interaction: ChatInputCommandInteraction) {
-        const country = interaction.options.getString('country') ?? 'worldwide';
-        let res: CovidInfo;
-        let local: string | undefined;
+                .setDescription('This option can be \'worldwide\'')),
+    async execute(intr) {
+        const country = intr.options.getString('country') ?? 'worldwide';
+        let res: ICovid;
+        let local: string;
 
         if (country.toLowerCase() === 'worldwide') {
             res = await (await fetch('https://disease.sh/v3/covid-19/all')).json();
             local = country.toLowerCase();
         } else {
             res = await (await fetch(`https://disease.sh/v3/covid-19/countries/${country}`)).json();
-            local = res.country;
+            local = res.country ?? '';
         }
 
         if (res.message) {
-            return await interaction.reply({
-                embeds: [
-                    new EmbedBuilder().setColor('Red')
-                        .setTitle('__Error!__')
-                        .setDescription(`\`${res.message}\``),
-                ], ephemeral: true,
-            });
+            await errorResponse(intr, `\`${res.message}\``);
+            return;
         }
 
         const message = `
@@ -51,12 +48,16 @@ export = {
         **Today recovered:** ${res.todayRecovered}
         `;
 
-        const embed = new EmbedBuilder().setColor(config.bot.embedColor)
-            .setTitle(`__COVID stats in ${local}__`)
-            .setDescription(message)
-            .setThumbnail(config.bot.image)
-            .setFooter({ text: 'Powered by https://disease.sh' });
-
-        await interaction.reply({ embeds: [embed] });
+        await intr.reply({
+            embeds: [
+                new EmbedBuilder().setColor(embedColor)
+                    .setTitle(`__COVID stats in ${local}__`)
+                    .setDescription(message)
+                    .setThumbnail(botImage)
+                    .setFooter({ text: 'Powered by https://disease.sh' }),
+            ],
+        });
     },
 };
+
+export default covid;

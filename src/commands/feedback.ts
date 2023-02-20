@@ -1,12 +1,14 @@
-import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder, WebhookClient, WebhookCreateMessageOptions } from 'discord.js';
+import Command from '@interfaces/Command';
+import { EmbedBuilder, SlashCommandBuilder, WebhookClient, WebhookCreateMessageOptions } from 'discord.js';
 import config from 'src/config';
+import errorResponse from 'src/utils/errorResponse';
 
-type Feedback = {
+interface IFeedback {
     category: string;
     message: string;
 }
 
-export = {
+const feedback: Command = {
     data: new SlashCommandBuilder()
         .setName('feedback')
         .setDescription('Share your feedback')
@@ -19,28 +21,24 @@ export = {
                     { name: 'Bug report', value: 'bugReport' },
                     { name: 'Suggestion', value: 'suggestion' },
                     { name: 'Other', value: 'other' }
-                ))
-        .addStringOption(option =>
-            option.setName('message')
-                .setDescription('Type your message')
-                .setRequired(true)),
-    async execute(interaction: ChatInputCommandInteraction) {
-        const feedback: Feedback = {
-            category: interaction.options.getString('category') ?? '',
-            message: interaction.options.getString('message') ?? '',
+                )),
+    async execute(intr) {
+        const feedbackInfo: IFeedback = {
+            category: intr.options.getString('category') ?? '',
+            message: intr.options.getString('message') ?? '',
         };
 
-        const feedbackEmbed = new EmbedBuilder().setColor([203, 166, 247])
+        const feedbackEmbed = new EmbedBuilder().setColor(config.bot.embedColor)
             .setTitle('Adramelech Feedback')
-            .setDescription(`From \`${interaction.user.tag}\` (\`${interaction.user.id}\`)`)
+            .setDescription(`From \`${intr.user.tag}\` (\`${intr.user.id}\`)`)
             .addFields(
                 {
                     name: ':bar_chart: **Category**',
-                    value: `\`\`\`${feedback.category}\`\`\``,
+                    value: `\`\`\`${feedbackInfo.category}\`\`\``,
                 },
                 {
                     name: ':page_facing_up: **Message**',
-                    value: `\`\`\`${feedback.message}\`\`\``,
+                    value: `\`\`\`${feedbackInfo.message}\`\`\``,
                 }
             );
 
@@ -55,16 +53,11 @@ export = {
         try {
             webhookClient.send(webhookOptions);
         } catch {
-            return await interaction.reply({
-                embeds: [
-                    new EmbedBuilder().setColor('Red')
-                        .setTitle('__Error!__')
-                        .setDescription('Error sending the feedback'),
-                ], ephemeral: true,
-            });
+            await errorResponse(intr, 'Error sending the feedback');
+            return;
         }
 
-        await interaction.reply({
+        await intr.reply({
             embeds: [
                 new EmbedBuilder().setColor(config.bot.embedColor)
                     .setTitle('Feedback successfully sent'),
@@ -72,3 +65,5 @@ export = {
         });
     },
 };
+
+export default feedback;

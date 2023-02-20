@@ -1,7 +1,9 @@
-import { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder, ChatInputCommandInteraction } from 'discord.js';
-import config from 'src/config';
+import Command from '@interfaces/Command';
+import { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } from 'discord.js';
+import config, { embedColor } from 'src/config';
+import errorResponse from 'src/utils/errorResponse';
 
-export = {
+const dsnLookup: Command = {
     data: new SlashCommandBuilder()
         .setName('dnslookup')
         .setDescription('DNS Lookup for a domain')
@@ -9,34 +11,28 @@ export = {
             option.setName('domain')
                 .setDescription('Domain that you want lookup')
                 .setRequired(true)),
-    async execute(interaction: ChatInputCommandInteraction) {
-        const domain = interaction.options.getString('domain');
+    async execute(intr) {
+        const domain = intr.options.getString('domain');
 
         const res = await (await fetch(`https://da.gd/dns/${domain}`)).text();
 
         if (!res.replace('\n', '')) {
-            return await interaction.reply({
-                embeds: [
-                    new EmbedBuilder().setColor('Red')
-                        .setTitle('__Error!__')
-                        .setDescription('Domain not found'),
-                ], ephemeral: true,
-            });
+            await errorResponse(intr, 'Domain not found');
+            return;
         }
 
         const file = new AttachmentBuilder(Buffer.from(res), { name: `${domain}.zone` });
 
-        const embed = new EmbedBuilder().setColor(config.bot.embedColor)
+        const embed = new EmbedBuilder().setColor(embedColor)
             .setTitle('__Adramelech DNS Lookup__')
             .setThumbnail(config.bot.image)
-            .addFields(
-                {
-                    name: ':link: **Domain**',
-                    value: `\`\`\`${domain}\`\`\``,
-                }
-            )
-            .setFooter({ text: 'Powered by https://da.gd' });
+            .addFields({
+                name: ':link: **Domain**',
+                value: `\`\`\`${domain}\`\`\``,
+            });
 
-        await interaction.reply({ embeds: [embed], files: [file] });
+        await intr.reply({ embeds: [embed], files: [file] });
     },
 };
+
+export default dsnLookup;

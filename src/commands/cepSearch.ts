@@ -1,7 +1,12 @@
-import { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction } from 'discord.js';
-import config from 'src/config';
+import Command from '@interfaces/Command';
+import { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import { botImage, embedColor } from 'src/config';
+import errorResponse from 'src/utils/errorResponse';
 
-type ICep = {
+interface ICep {
+    name?: string;
+    message?: string;
+    type?: string;
     cep: string;
     state: string;
     city: string;
@@ -17,74 +22,51 @@ type ICep = {
     };
 }
 
-type ICepError = {
-    name: string;
-    message: string;
-    type: string;
-}
-
-export = {
+const cepSearch: Command = {
     data: new SlashCommandBuilder()
         .setName('cep-search')
-        .setDescription('Search for CEP (Brazilian zip code)')
+        .setDescription('Search for CEP (Brazilian postal code)')
         .addStringOption(option =>
             option.setName('cep')
                 .setDescription('CEP that you want search')
                 .setRequired(true)),
-    async execute(interaction: ChatInputCommandInteraction) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const cep = interaction.options.getString('cep')!.replace('-', '');
+    async execute(intr) {
+        const cep = intr.options.getString('cep')?.replace('-', '');
 
-        const res = await (await fetch(`https://brasilapi.com.br/api/cep/v2/${cep}`)).json();
+        const res: ICep = await (await fetch(`https://brasilapi.com.br/api/cep/v2/${cep}`)).json();
 
         if (res.name) {
-            const resError: ICepError = res;
             const errors = `
-            **Name:** \`${resError.name}\`
-            **Message:** \`${resError.message}\`
-            **Type:** \`${resError.type}\`
+            **Name:** \`${res.name}\`
+            **Message:** \`${res.message}\`
+            **Type:** \`${res.type}\`
             `;
 
-            return await interaction.reply({
-                embeds: [
-                    new EmbedBuilder().setColor('Red')
-                        .setTitle('__Error!__')
-                        .setDescription(errors),
-                ], ephemeral: true,
-            });
+            await errorResponse(intr, errors);
+            return;
         }
 
-        const content: ICep = res;
-
         const main = `
-        **CEP:** ${content.cep}
-        **State:** ${content.state}
-        **City:** ${content.city}
-        **Neighborhood:** ${content.neighborhood}
-        **Street:** ${content.street}
-        **Service:** ${content.service}
+        **CEP:** ${res.cep}
+        **State:** ${res.state}
+        **City:** ${res.city}
+        **Neighborhood:** ${res.neighborhood}
+        **Street:** ${res.street}
+        **Service:** ${res.service}
         `;
 
         const location = `
-        **Type:** ${content.location.type}
-        **Longitude:** ${content.location.coordinates.longitude}
-        **Latitude:** ${content.location.coordinates.latitude}
+        **Type:** ${res.location.type}
+        **Longitude:** ${res.location.coordinates.longitude}
+        **Latitude:** ${res.location.coordinates.latitude}
         `;
 
-        const embed = new EmbedBuilder().setColor(config.bot.embedColor)
+        const embed = new EmbedBuilder().setColor(embedColor)
             .setTitle('__Adramelech CEP Search__')
-            .setThumbnail(config.bot.image)
+            .setThumbnail(botImage)
             .addFields(
-                {
-                    name: ':zap: **Main**',
-                    value: main,
-                    inline: true,
-                },
-                {
-                    name: ':earth_americas: **Location**',
-                    value: location,
-                    inline: true,
-                },
+                { name: ':zap: **Main**', value: main, inline: true },
+                { name: ':earth_americas: **Location**', value: location, inline: true }
             )
             .setFooter({ text: 'Powered by https://brasilapi.com.br' });
 
@@ -93,11 +75,13 @@ export = {
                 new ButtonBuilder()
                     .setLabel('Open location in Google Maps')
                     .setStyle(ButtonStyle.Link)
-                    .setURL(`https://www.google.com/maps/search/?api=1&query=${content.location.coordinates.latitude},${content.location.coordinates.longitude}`)
-                    // "🌎" is the :earth_americas: emoji
-                    .setEmoji('🌎'),
+                    .setURL(`https://www.google.com/maps/search/?api=1&query=${res.location.coordinates.latitude},${res.location.coordinates.longitude}`)
+                    // '🌎' == :earth_americas:
+                    .setEmoji('🌎')
             );
 
-        await interaction.reply({ embeds: [embed], components: [button] });
+        await intr.reply({ embeds: [embed], components: [button] });
     },
 };
+
+export default cepSearch;

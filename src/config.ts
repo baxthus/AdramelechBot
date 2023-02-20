@@ -31,3 +31,4 @@ const config: BotConfig = {
 
 export default config;
 export const embedColor = config.bot.embedColor;
+export const botImage = config.bot.image;
