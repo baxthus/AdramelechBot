@@ -55,4 +55,4 @@ const yiff: Command = {
     },
 };
 
-export default yiff;
+export = yiff;

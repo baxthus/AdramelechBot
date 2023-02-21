@@ -49,4 +49,4 @@ const sendDM: Command = {
     },
 };
 
-export default sendDM;
+export = sendDM;

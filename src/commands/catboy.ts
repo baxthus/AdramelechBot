@@ -22,4 +22,4 @@ const catboy: Command = {
     },
 };
 
-export default catboy;
+export = catboy;

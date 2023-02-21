@@ -48,4 +48,4 @@ const whois: Command = {
     },
 };
 
-export default whois;
+export = whois;

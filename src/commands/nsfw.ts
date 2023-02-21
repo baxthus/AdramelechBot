@@ -44,4 +44,4 @@ const nsfw: Command = {
     },
 };
 
-export default nsfw;
+export = nsfw;

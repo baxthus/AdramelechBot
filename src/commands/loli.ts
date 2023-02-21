@@ -33,4 +33,4 @@ const loli: Command = {
     },
 };
 
-export default loli;
+export = loli;

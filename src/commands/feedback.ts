@@ -66,4 +66,4 @@ const feedback: Command = {
     },
 };
 
-export default feedback;
+export = feedback;

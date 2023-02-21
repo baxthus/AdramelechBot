@@ -60,4 +60,4 @@ const covid: Command = {
     },
 };
 
-export default covid;
+export = covid;

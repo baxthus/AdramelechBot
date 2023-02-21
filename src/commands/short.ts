@@ -41,4 +41,4 @@ const short: Command = {
     },
 };
 
-export default short;
+export = short;

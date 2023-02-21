@@ -55,4 +55,4 @@ const server: Command = {
     },
 };
 
-export default server;
+export = server;

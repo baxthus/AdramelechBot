@@ -53,4 +53,4 @@ const ban: Command = {
     },
 };
 
-export default ban;
+export = ban;

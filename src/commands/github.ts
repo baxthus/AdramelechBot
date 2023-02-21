@@ -48,4 +48,4 @@ const github: Command = {
     },
 };
 
-export default github;
+export = github;

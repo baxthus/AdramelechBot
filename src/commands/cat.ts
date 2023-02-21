@@ -24,4 +24,4 @@ const cat: Command = {
     },
 };
 
-export default cat;
+export = cat;

@@ -15,4 +15,4 @@ const ping: Command = {
     },
 };
 
-export default ping;
+export = ping;

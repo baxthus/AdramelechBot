@@ -139,4 +139,4 @@ const weather: Command = {
     },
 };
 
-export default weather;
+export = weather;

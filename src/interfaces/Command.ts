@@ -1,8 +1,10 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 
+// wtf?
+type SlashCommand = Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'> | Omit<SlashCommandBuilder, 'addBooleanOption' | 'addUserOption' | 'addChannelOption' | 'addRoleOption' | 'addAttachmentOption' | 'addMentionableOption' | 'addStringOption' | 'addIntegerOption' | 'addNumberOption'>
+
 interface Command {
-    // wtf?
-    data: Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'> | Omit<SlashCommandBuilder, 'addBooleanOption' | 'addUserOption' | 'addChannelOption' | 'addRoleOption' | 'addAttachmentOption' | 'addMentionableOption' | 'addStringOption' | 'addIntegerOption' | 'addNumberOption'>;
+    data: SlashCommand;
     execute(intr: ChatInputCommandInteraction): Promise<void>
 }
 

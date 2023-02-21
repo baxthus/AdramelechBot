@@ -14,8 +14,6 @@ const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('
 for (const file of commandFiles) {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const command: Command = require(`./commands/${file}`);
-    console.log(file);
-    console.log(command.data);
     commands.push(command.data.toJSON());
 }
 

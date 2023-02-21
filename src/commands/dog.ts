@@ -30,4 +30,4 @@ const dog: Command = {
     },
 };
 
-export default dog;
+export = dog;

@@ -35,4 +35,4 @@ const clear: Command = {
     },
 };
 
-export default clear;
+export = clear;

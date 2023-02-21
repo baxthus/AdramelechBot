@@ -54,4 +54,4 @@ const kick: Command = {
     },
 };
 
-export default kick;
+export = kick;

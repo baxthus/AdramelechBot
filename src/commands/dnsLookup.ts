@@ -35,4 +35,4 @@ const dsnLookup: Command = {
     },
 };
 
-export default dsnLookup;
+export = dsnLookup;

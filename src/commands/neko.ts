@@ -20,4 +20,4 @@ const neko: Command = {
     },
 };
 
-export default neko;
+export = neko;

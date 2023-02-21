@@ -31,4 +31,4 @@ const avatar: Command = {
     },
 };
 
-export default avatar;
+export = avatar;

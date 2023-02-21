@@ -96,4 +96,4 @@ const help: Command = {
     },
 };
 
-export default help;
+export = help;

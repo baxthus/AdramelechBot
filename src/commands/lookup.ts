@@ -123,4 +123,4 @@ const lookup: Command = {
     },
 };
 
-export default lookup;
+export = lookup;

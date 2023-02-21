@@ -72,4 +72,4 @@ const obfuscator: Command = {
     },
 };
 
-export default obfuscator;
+export = obfuscator;

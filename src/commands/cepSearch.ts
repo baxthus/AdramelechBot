@@ -84,4 +84,4 @@ const cepSearch: Command = {
     },
 };
 
-export default cepSearch;
+export = cepSearch;
