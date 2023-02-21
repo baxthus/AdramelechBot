@@ -1,8 +1,10 @@
-import { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, ChatInputCommandInteraction } from 'discord.js';
+import Command from '@interfaces/Command';
+import errorResponse from '@utils/errorResponse';
+import { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } from 'discord.js';
 import { embedColor } from 'src/config';
 
 // This is basically the same as ban.ts
-export = {
+const kick: Command = {
     data: new SlashCommandBuilder()
         .setName('kick')
         .setDescription('Kicks a member')
@@ -15,52 +17,41 @@ export = {
                 .setDescription('The reason of the kick'))
         .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
         .setDMPermission(false),
-    async execute(interaction: ChatInputCommandInteraction) {
-        const user = interaction.options.getUser('user');
-        const member = interaction.guild?.members.cache.get(user?.id ?? '');
-        const reason = interaction.options.getString('reason') ?? undefined;
+    async execute(intr) {
+        const user = intr.options.getUser('user');
+        const member = intr.guild?.members.cache.get(user?.id ?? '');
+        const reason = intr.options.getString('reason') ?? undefined;
 
-        if (member?.id === interaction.user.id) {
-            return interaction.reply({
-                embeds: [
-                    new EmbedBuilder().setColor('Red')
-                        .setTitle('__Error!__')
-                        .setDescription('You cannot kick yourself'),
-                ], ephemeral: true,
-            });
+        if (member?.id === intr.user.id) {
+            await errorResponse(intr, 'You cannot kick yourself');
+            return;
         }
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
-        if (member?.guild.roles.highest! > interaction.guild?.roles.highest!) {
-            return interaction.reply({
-                embeds: [
-                    new EmbedBuilder().setColor('Red')
-                        .setTitle('__Error!__')
-                        .setDescription('You cannot kick user who have highest role than you'),
-                ], ephemeral: true,
-            });
+        if (member?.guild.roles.highest! > intr.guild?.roles.highest!) {
+            await errorResponse(intr, 'You cannot kick user who have highest role than you');
+            return;
         }
 
         if (!member?.bannable) {
-            return interaction.reply({
-                embeds: [
-                    new EmbedBuilder().setColor('Red')
-                        .setTitle('__Error!__')
-                        .setDescription('I cannot kick that user'),
-                ], ephemeral: true,
-            });
+            await errorResponse(intr, 'I cannot kick that user');
+            return;
         }
 
         member.ban({ reason: reason });
 
-        const embed = new EmbedBuilder().setColor(embedColor)
-            .setTitle('__Adramelech Kick__')
-            .setDescription(`
-            User ${user} has been kicked
-            Reason: ${reason}
-            Author: ${interaction.user}
-            `);
-
-        await interaction.reply({ embeds: [embed] });
+        await intr.reply({
+            embeds: [
+                new EmbedBuilder().setColor(embedColor)
+                    .setTitle('__Adramelech Kick__')
+                    .setDescription(`
+                User ${user} has been kicked
+                Reason: ${reason}
+                Author: ${intr.user}
+                `),
+            ],
+        });
     },
 };
+
+export default kick;

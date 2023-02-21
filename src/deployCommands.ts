@@ -2,6 +2,7 @@ import { REST, Routes } from 'discord.js';
 import path from 'node:path';
 import fs from 'node:fs';
 import config from './config';
+import Command from '@interfaces/Command';
 
 const commands = [];
 
@@ -12,7 +13,9 @@ const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('
 // Grab the SlashCommandBuilder#toJSON() output of each command's data for deployment
 for (const file of commandFiles) {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const command = require(`./commands/${file}`);
+    const command: Command = require(`./commands/${file}`);
+    console.log(file);
+    console.log(command.data);
     commands.push(command.data.toJSON());
 }
 

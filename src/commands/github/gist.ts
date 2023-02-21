@@ -1,5 +1,6 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { embedColor } from 'src/config';
+import errorResponse from 'src/utils/errorResponse';
 
 type GistInfo = Array<{
     message?: string;
@@ -16,31 +17,21 @@ type GistInfo = Array<{
     comments: number;
 }>
 
-export default async function (interaction: ChatInputCommandInteraction) {
-    const user = interaction.options.getString('user');
+export default async function (intr: ChatInputCommandInteraction): Promise<void> {
+    const user = intr.options.getString('user');
 
     const res = await (await fetch(`https://api.github.com/users/${user}/gists`)).json();
 
     if (res.message) {
-        return await interaction.reply({
-            embeds: [
-                new EmbedBuilder().setColor('Red')
-                    .setTitle('__Error!__')
-                    .setDescription(`\`${res.message}\``),
-            ], ephemeral: true,
-        });
+        await errorResponse(intr, `\`${res.message}\``);
+        return;
     }
 
     const content: GistInfo = res;
 
     if (!content.length) {
-        return await interaction.reply({
-            embeds: [
-                new EmbedBuilder().setColor('Red')
-                    .setTitle('__Error!__')
-                    .setDescription(`The user ${user} has no Gists`),
-            ], ephemeral: true,
-        });
+        await errorResponse(intr, `The user ${user} has not Gists`);
+        return;
     }
 
     const userField = `
@@ -56,7 +47,7 @@ export default async function (interaction: ChatInputCommandInteraction) {
     `;
 
     const embed = new EmbedBuilder().setColor(embedColor)
-        .setTitle('__Github User Gists Info__')
+        .setTitle('__Adramelech Gists Info__')
         .setThumbnail(content[0].owner.avatar_url)
         .addFields(
             {
@@ -86,8 +77,8 @@ export default async function (interaction: ChatInputCommandInteraction) {
             new ButtonBuilder()
                 .setLabel('Open latest Gist')
                 .setStyle(ButtonStyle.Link)
-                .setURL(content[0].html_url),
+                .setURL(content[0].html_url)
         );
 
-    await interaction.reply({ embeds: [embed], components: [buttons] });
+    await intr.reply({ embeds: [embed], components: [buttons] });
 }

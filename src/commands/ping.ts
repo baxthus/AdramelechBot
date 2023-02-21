@@ -1,15 +1,18 @@
-import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js';
+import Command from '@interfaces/Command';
+import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 import { embedColor } from 'src/config';
 
-export = {
+const ping: Command = {
     data: new SlashCommandBuilder()
         .setName('ping')
         .setDescription('Replies with Pong!'),
-    async execute(interaction: ChatInputCommandInteraction) {
-        await interaction.reply({
+    async execute(intr) {
+        await intr.reply({
             embeds: [
                 new EmbedBuilder().setColor(embedColor).setTitle('Pong!'),
             ],
         });
     },
 };
+
+export default ping;

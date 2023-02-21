@@ -1,7 +1,19 @@
-import { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder, ChatInputCommandInteraction } from 'discord.js';
+import Command from '@interfaces/Command';
+import errorResponse from '@utils/errorResponse';
+import { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } from 'discord.js';
 import config from '../config';
 
-export = {
+const badStrings: Array<string> = [
+    'Malformed',
+    'Wrong',
+    'The queried object does not',
+    'Invalid',
+    'No match',
+    'Domain not',
+    'NOT FOUND',
+];
+
+const whois: Command = {
     data: new SlashCommandBuilder()
         .setName('whois')
         .setDescription('Whois a given domain or IP')
@@ -9,27 +21,14 @@ export = {
             option.setName('local')
                 .setDescription('Domain or IP')
                 .setRequired(true)),
-    async execute(interaction: ChatInputCommandInteraction) {
-        const local = interaction.options.getString('local');
+    async execute(intr) {
+        const local = intr.options.getString('local');
 
         const res = await (await fetch(`https://da.gd/w/${local}`)).text();
 
-        const errorTest = res.replace('\n', '');
-        // That was the best way I found to do it
-        if (errorTest.startsWith('Malformed') ||
-            errorTest.startsWith('Wrong') ||
-            errorTest.startsWith('The queried object does not') ||
-            errorTest.startsWith('Invalid') ||
-            errorTest.startsWith('No match') ||
-            errorTest.startsWith('Domain not') ||
-            errorTest.startsWith('NOT FOUND')
-        ) {
-            return await interaction.reply({
-                embeds: [
-                    new EmbedBuilder().setColor('Red')
-                        .setTitle('__Error!__'),
-                ], ephemeral: true,
-            });
+        if (badStrings.includes(res.replace('\n', ''))) {
+            await errorResponse(intr);
+            return;
         }
 
         const file = new AttachmentBuilder(Buffer.from(res), { name: `${local}.txt` });
@@ -45,6 +44,8 @@ export = {
             )
             .setFooter({ text: 'Powered by https://da.gd' });
 
-        await interaction.reply({ embeds: [embed], files: [file] });
+        await intr.reply({ embeds: [embed], files: [file] });
     },
 };
+
+export default whois;

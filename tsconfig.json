@@ -22,7 +22,10 @@
         "paths": {
             "@interfaces/*": [
                 "src/interfaces/*"
-            ]
+            ],
+            "@utils/*": [
+                "src/utils/*"
+            ],
         }
     },
     "files": [

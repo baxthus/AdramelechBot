@@ -1,24 +1,21 @@
-import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js';
+import Command from '@interfaces/Command';
+import errorResponse from '@utils/errorResponse';
+import isChannelNsfw from '@utils/isChannelNsfw';
+import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 import { embedColor } from 'src/config';
-import Yiffy from 'yiffy';
-import checkNsfwChannel from './utils/checkNsfwChannel';
+import Yiffy, { JSONResponse } from 'yiffy';
 
-const yiff = new Yiffy();
+const yiffF = new Yiffy();
 
-async function shitFunction(choice: string) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const category_list: any = {
-        'straight': await yiff.images.furry.yiff.straight(),
-        'gay': await yiff.images.furry.yiff.gay(),
-        'lesbian': await yiff.images.furry.yiff.lesbian(),
-        'gynomorph': await yiff.images.furry.yiff.gynomorph(),
-        'andromorph': await yiff.images.furry.yiff.andromorph(),
-    };
+const category_list: { [key: string]: Promise<JSONResponse> } = {
+    'straight': yiffF.images.furry.yiff.straight(),
+    'gay': yiffF.images.furry.yiff.gay(),
+    'lesbian': yiffF.images.furry.yiff.lesbian(),
+    'gynomorph': yiffF.images.furry.yiff.gynomorph(),
+    'andromorph': yiffF.images.furry.yiff.andromorph(),
+};
 
-    return category_list[choice];
-}
-
-export = {
+const yiff: Command = {
     data: new SlashCommandBuilder()
         .setName('yiff')
         .setDescription('Return a yiff (furry porn) image (NSFW)')
@@ -33,39 +30,33 @@ export = {
                     { name: 'Gynomorph', value: 'gynomorph' },
                     { name: 'Andromorph', value: 'andromorph' },
                 )),
-    async execute(interaction: ChatInputCommandInteraction) {
-        if (checkNsfwChannel(interaction)) {
-            return await interaction.reply({
-                embeds: [
-                    new EmbedBuilder().setColor('Red')
-                        .setTitle('__Error!__')
-                        .setDescription('Your not in a NSFW/DM channel'),
-                ], ephemeral: true,
-            });
+    async execute(intr) {
+        if (!isChannelNsfw(intr)) {
+            await errorResponse(intr, 'Your not in a NSFW/DM channel');
+            return;
         }
 
-        const choice = interaction.options.getString('category') ?? '';
-        let img: string;
+        const choice = intr.options.getString('category') ?? '';
+        let img: JSONResponse;
 
         // Check if this shit is being rate limited
-        // This will become a problem if a lot of people use this command
+        // This will be bad if a lot of people use this command
         // Sounds like a big load of not my problem
         try {
-            img = (await shitFunction(choice)).url;
+            img = await category_list[choice];
         } catch {
-            return await interaction.reply({
-                embeds: [
-                    new EmbedBuilder().setColor('Red')
-                        .setTitle('__Error!__')
-                        .setDescription('We are being rate limited, sorry for the inconvenience'),
-                ], ephemeral: true,
-            });
+            await errorResponse(intr, 'We are being rate limited, sorry for the inconvenience');
+            return;
         }
 
-        const embed = new EmbedBuilder().setColor(embedColor)
-            .setImage(img)
-            .setFooter({ text: 'Powered by https://yiff.rest' });
-
-        await interaction.reply({ embeds: [embed] });
+        await intr.reply({
+            embeds: [
+                new EmbedBuilder().setColor(embedColor)
+                    .setImage(img.url)
+                    .setFooter({ text: `Artists: ${img.artists.join(', ')}\nPowered by https://yiff.rest` }),
+            ],
+        });
     },
 };
+
+export default yiff;
