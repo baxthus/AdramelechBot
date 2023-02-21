@@ -1,31 +1,33 @@
-import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js';
+import Command from '@interfaces/Command';
+import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 import { embedColor } from 'src/config';
+import errorResponse from 'src/utils/errorResponse';
 
-type IDog = {
+interface IDog {
     status: string;
     message: string;
 }
 
-export = {
+const dog: Command = {
     data: new SlashCommandBuilder()
         .setName('dog')
         .setDescription('Return a dog image'),
-    async execute(interaction: ChatInputCommandInteraction) {
+    async execute(intr) {
         const res: IDog = await (await fetch('https://dog.ceo/api/breeds/image/random')).json();
 
         if (res.status !== 'success') {
-            return await interaction.reply({
-                embeds: [
-                    new EmbedBuilder().setColor('Red')
-                        .setDescription('__Error!__'),
-                ], ephemeral: true,
-            });
+            await errorResponse(intr);
+            return;
         }
 
-        const embed = new EmbedBuilder().setColor(embedColor)
-            .setImage(res.message)
-            .setFooter({ text: 'Powered by https://dog.ceo/api' });
-
-        await interaction.reply({ embeds: [embed] });
+        await intr.reply({
+            embeds: [
+                new EmbedBuilder().setColor(embedColor)
+                    .setImage(res.message)
+                    .setFooter({ text: 'Powered by https://dog.ceo/api' }),
+            ],
+        });
     },
 };
+
+export = dog;

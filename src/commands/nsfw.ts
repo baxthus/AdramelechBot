@@ -1,8 +1,14 @@
-import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js';
+import Command from '@interfaces/Command';
+import errorResponse from '@utils/errorResponse';
+import isChannelNsfw from '@utils/isChannelNsfw';
+import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 import { embedColor } from 'src/config';
-import checkNsfwChannel from './utils/checkNsfwChannel';
 
-export = {
+interface INsfw {
+    url: string;
+}
+
+const nsfw: Command = {
     data: new SlashCommandBuilder()
         .setName('nsfw')
         .setDescription('Return a NSFW image (NSFW)')
@@ -11,30 +17,31 @@ export = {
                 .setDescription('Select the category')
                 .setRequired(true)
                 .addChoices(
+                    // cspell: disable-next
                     { name: 'Waifu', value: 'waifu' },
                     { name: 'Neko', value: 'neko' },
                     { name: 'Trap', value: 'trap' },
                     { name: 'Blowjob', value: 'blowjob' }
                 )),
-    async execute(interaction: ChatInputCommandInteraction) {
-        if (checkNsfwChannel(interaction)) {
-            return await interaction.reply({
-                embeds: [
-                    new EmbedBuilder().setColor('Red')
-                        .setTitle('__Error!__')
-                        .setDescription('Your not in a NSFW/DM channel'),
-                ], ephemeral: true,
-            });
+    async execute(intr) {
+        if (!isChannelNsfw(intr)) {
+            await errorResponse(intr, 'Your not in a NSFW/DM channel');
+            return;
         }
 
-        const choice = interaction.options.getString('category');
+        const choice = intr.options.getString('category');
 
-        const res = await (await fetch(`https://api.waifu.pics/nsfw/${choice}`)).json();
+        const res: INsfw = await (await fetch(`https://api.waifu.pics/nsfw/${choice}`)).json();
 
-        const embed = new EmbedBuilder().setColor(embedColor)
-            .setImage(res.url)
-            .setFooter({ text: 'Powered by https://waifu.pics' });
 
-        await interaction.reply({ embeds: [embed] });
+        await intr.reply({
+            embeds: [
+                new EmbedBuilder().setColor(embedColor)
+                    .setImage(res.url)
+                    .setFooter({ text: 'Powered by https://waifu.pics' }),
+            ],
+        });
     },
 };
+
+export = nsfw;

@@ -1,5 +1,6 @@
-import { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction } from 'discord.js';
-import config from 'src/config';
+import Command from '@interfaces/Command';
+import { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import { botImage, embedColor } from 'src/config';
 
 const commandsField = `
 **/avatar** - Return the selected user's avatar
@@ -29,14 +30,14 @@ const commandsField = `
 **/yiff2** - Return a yiff (furry porn) image (NSFW) (BETA)
 `;
 
-export = {
+const help: Command = {
     data: new SlashCommandBuilder()
         .setName('help')
         .setDescription('Help, I need to say more?'),
-    async execute(interaction: ChatInputCommandInteraction) {
-        const embed = new EmbedBuilder().setColor(config.bot.embedColor)
+    async execute(intr) {
+        const embed = new EmbedBuilder().setColor(embedColor)
             .setTitle('__Adramelech Help Page__')
-            .setThumbnail(config.bot.image)
+            .setThumbnail(botImage)
             .addFields({ name: '**__Commands__**', value: commandsField })
             .setFooter({ text: 'Created by Abysmal#1608', iconURL: 'https://abysmal.eu.org/avatar.png' });
 
@@ -65,11 +66,11 @@ export = {
                     .setDisabled(true),
             );
 
-        await interaction.reply({ embeds: [embed], components: [buttons] });
+        await intr.reply({ embeds: [embed], components: [buttons] });
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const filter = (i: any) => i.customId === 'velocityButton' && i.user.id === interaction.user.id;
-        const collector = interaction.channel?.createMessageComponentCollector({ filter, time: 15000 });
+        const filter = (i: any) => i.customId === 'velocityButton' && i.user.id === intr.user.id;
+        const collector = intr.channel?.createMessageComponentCollector({ filter, time: 15000 });
 
         collector?.on('collect', async (i) => {
             // This is not the correct way to do it. Too bad.
@@ -89,8 +90,10 @@ export = {
         });
 
         collector?.on('end', async () => {
-            await interaction.editReply({ embeds: [embed], components: [buttons_end] });
+            await intr.editReply({ embeds: [embed], components: [buttons_end] });
             return;
         });
     },
 };
+
+export = help;

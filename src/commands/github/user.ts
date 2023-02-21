@@ -1,7 +1,8 @@
+import errorResponse from '@utils/errorResponse';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { embedColor } from 'src/config';
 
-type UserInfo = {
+interface IUser {
     message?: string;
     login: string;
     id: number;
@@ -20,19 +21,14 @@ type UserInfo = {
     html_url: string;
 }
 
-export default async function (interaction: ChatInputCommandInteraction) {
-    const user = interaction.options.getString('user');
+export default async function (intr: ChatInputCommandInteraction): Promise<void> {
+    const user = intr.options.getString('user');
 
-    const res: UserInfo = await (await fetch(`https://api.github.com/users/${user}`)).json();
+    const res: IUser = await (await fetch(`https://api.github.com/users/${user}`)).json();
 
     if (res.message) {
-        return await interaction.reply({
-            embeds: [
-                new EmbedBuilder().setColor('Red')
-                    .setTitle('__Error!__')
-                    .setDescription(`\`${res.message}\``),
-            ], ephemeral: true,
-        });
+        await errorResponse(intr, `\`${res.message}\``);
+        return;
     }
 
     const message = `
@@ -52,7 +48,7 @@ export default async function (interaction: ChatInputCommandInteraction) {
     `;
 
     const embed = new EmbedBuilder().setColor(embedColor)
-        .setTitle('__Github User Info__')
+        .setTitle('__Adramelech User Info__')
         .setThumbnail(res.avatar_url)
         .addFields({
             name: '\u200B',
@@ -83,5 +79,5 @@ export default async function (interaction: ChatInputCommandInteraction) {
             );
     }
 
-    await interaction.reply({ embeds: [embed], components: [buttons] });
+    await intr.reply({ embeds: [embed], components: [buttons] });
 }

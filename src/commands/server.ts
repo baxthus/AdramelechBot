@@ -1,20 +1,20 @@
-import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js';
+import Command from '@interfaces/Command';
+import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 import { embedColor } from 'src/config';
 
-export = {
+const server: Command = {
     data: new SlashCommandBuilder()
         .setName('server')
         .setDescription('Return server information'),
-    async execute(interaction: ChatInputCommandInteraction) {
-        const guildOwner = await interaction.guild?.fetchOwner();
+    async execute(intr) {
+        const guildOwner = await intr.guild?.fetchOwner();
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const createdAt = Math.round(interaction.guild!.createdTimestamp / 1000);
+        const createdAt = Math.round(intr.guild?.createdTimestamp ?? 0 / 1000);
 
         const embed = new EmbedBuilder().setColor(embedColor)
             .setAuthor({
-                name: interaction.guild?.name ?? '',
-                iconURL: interaction.guild?.iconURL() ?? '',
+                name: intr.guild?.name ?? '',
+                iconURL: intr.guild?.iconURL() ?? '',
             })
             .addFields(
                 {
@@ -24,25 +24,25 @@ export = {
                 },
                 {
                     name: 'Server ID',
-                    value: String(interaction.guild?.id),
+                    value: intr.guild?.id ?? '',
                     inline: true,
                 },
                 {
                     name: 'Online members',
-                    value: String(interaction.guild?.members.cache.filter(member => member.presence?.status !== 'offline').size),
+                    value: String(intr.guild?.members.cache.filter(member => member.presence?.status !== 'offline').size),
                 },
                 {
                     name: 'Server Boost status',
-                    value: `${interaction.guild?.premiumSubscriptionCount} Boosts (\`Level ${interaction.guild?.premiumTier}\`)`,
+                    value: `${intr.guild?.premiumSubscriptionCount} Boosts (\`Level ${intr.guild?.premiumTier}\`)`,
                 },
                 {
                     name: 'Roles',
-                    value: String(interaction.guild?.roles.cache.size),
+                    value: String(intr.guild?.roles.cache.size),
                     inline: true,
                 },
                 {
                     name: 'Channels',
-                    value: String(interaction.guild?.channels.cache.size),
+                    value: String(intr.guild?.channels.cache.size),
                     inline: true,
                 },
                 {
@@ -51,6 +51,8 @@ export = {
                 }
             );
 
-        await interaction.reply({ embeds: [embed] });
+        await intr.reply({ embeds: [embed] });
     },
 };
+
+export = server;

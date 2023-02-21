@@ -1,12 +1,14 @@
-import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction, User } from 'discord.js';
+import Command from '@interfaces/Command';
+import errorResponse from '@utils/errorResponse';
+import { SlashCommandBuilder, EmbedBuilder, User } from 'discord.js';
 import config from '../config';
 
-type Message = {
+interface IMessage {
     user: User | null;
     message: string;
 }
 
-export = {
+const sendDM: Command = {
     data: new SlashCommandBuilder()
         .setName('send-dm')
         .setDescription('DM a message (bot owner only)')
@@ -18,39 +20,33 @@ export = {
             option.setName('message')
                 .setDescription('Your message')
                 .setRequired(true)),
-    async execute(interaction: ChatInputCommandInteraction) {
-        if (interaction.user.id !== config.owner.id) {
-            return await interaction.reply({
-                embeds: [
-                    new EmbedBuilder().setColor('Red')
-                        .setTitle('__Error!__')
-                        .setDescription('Your not the bot owner'),
-                ], ephemeral: true,
-            });
+    async execute(intr) {
+        if (intr.user.id !== config.owner.id) {
+            await errorResponse(intr, 'Your not the bot owner');
+            return;
         }
 
-        const content: Message = {
-            user: interaction.options.getUser('user'),
-            message: interaction.options.getString('message') ?? '',
+        const content: IMessage = {
+            user: intr.options.getUser('user'),
+            message: intr.options.getString('message') ?? '',
         };
 
         try {
             await content.user?.send(content.message);
         } catch {
-            return await interaction.reply({
-                embeds: [
-                    new EmbedBuilder().setColor('Red')
-                        .setTitle('__Error!__')
-                        .setDescription('Error sending message'),
-                ], ephemeral: true,
-            });
+            await errorResponse(intr, 'Error sending message');
+            return;
         }
 
-        const embed = new EmbedBuilder().setColor(config.bot.embedColor)
-            .setTitle('__Adramelech DM Sender__')
-            .setDescription('Message send successfully!')
-            .setThumbnail(config.bot.image);
-
-        await interaction.reply({ embeds: [embed] });
+        await intr.reply({
+            embeds: [
+                new EmbedBuilder().setColor(config.bot.embedColor)
+                    .setTitle('__Adramelech DM Sender__')
+                    .setDescription('Message send successfully!')
+                    .setThumbnail(config.bot.image),
+            ],
+        });
     },
 };
+
+export = sendDM;

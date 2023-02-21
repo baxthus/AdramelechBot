@@ -1,12 +1,13 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
+import { SlashCommandBuilder } from 'discord.js';
 import repoCommand from './github/repo';
 import userCommand from './github/user';
 import gistCommand from './github/gist';
+import Command from '@interfaces/Command';
 
-export = {
+const github: Command = {
     data: new SlashCommandBuilder()
         .setName('github')
-        .setDescription('Get Github user or repository info')
+        .setDescription('Get Github related info')
         .addSubcommand(subcommand =>
             subcommand.setName('repo')
                 .setDescription('Info about a repository')
@@ -32,17 +33,19 @@ export = {
                     option.setName('user')
                         .setDescription('Github user')
                         .setRequired(true))),
-    async execute(interaction: ChatInputCommandInteraction) {
-        const subcommand = interaction.options.getSubcommand().toLowerCase();
+    async execute(intr) {
+        const subcommand = intr.options.getSubcommand().toLowerCase();
 
         // this is shit, should i do everything in one file?
         switch (subcommand) {
             case 'repo':
-                repoCommand(interaction); break;
+                repoCommand(intr); break;
             case 'user':
-                userCommand(interaction); break;
+                userCommand(intr); break;
             case 'gist':
-                gistCommand(interaction); break;
+                gistCommand(intr); break;
         }
     },
 };
+
+export = github;

@@ -1,13 +1,10 @@
+import formatArray from '@utils/formatArray';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { embedColor } from 'src/config';
+import errorResponse from '@utils/errorResponse';
 
-function formatArray(arr: Array<string>) {
-    return String(arr.map(element => {
-        return element.charAt(0).toUpperCase() + element.slice(1).toLowerCase().replaceAll('-', ' ');
-    })).replace(',', ', ');
-}
-
-type RepoInfo = {
+interface IRepo {
+    message?: string;
     id: number;
     name: string;
     html_url: string;
@@ -27,52 +24,45 @@ type RepoInfo = {
     }
 }
 
-type LicenseInfo = {
+interface ILicense {
     name: string;
     permissions: Array<string>;
     conditions: Array<string>;
     limitations: Array<string>;
 }
 
-export default async function (interaction: ChatInputCommandInteraction) {
-    const user = interaction.options.getString('user');
-    const repo = interaction.options.getString('repository');
+export default async function (intr: ChatInputCommandInteraction): Promise<void> {
+    const user = intr.options.getString('user');
+    const repo = intr.options.getString('repository');
 
-    let licenseField;
-
-    const res = await (await fetch(`https://api.github.com/repos/${user}/${repo}`)).json();
+    const res: IRepo = await (await fetch(`https://api.github.com/repos/${user}/${repo}`)).json();
 
     if (res.message) {
-        return await interaction.reply({
-            embeds: [
-                new EmbedBuilder().setColor('Red')
-                    .setTitle('__Error!__')
-                    .setDescription(`\`${res.message}\``),
-            ], ephemeral: true,
-        });
+        await errorResponse(intr, `\`${res.message}\``);
+        return;
     }
 
-    const content: RepoInfo = res;
-
     const mainField = `
-    **Name:** ${content.name}
-    **ID:** ${content.id}
-    **Description:** ${(content.description) ? `\`${content.description}\`` : 'None'}
-    **It's a fork:** ${(content.fork) ? 'Yes' : 'No'}
-    **Principal language:** ${content.language}
-    **Starts:** ${content.stargazers_count}
-    **Watchers:** ${content.watchers_count}
-    **Forks:** ${content.forks_count}
+    **Name:** ${res.name}
+    **ID:** ${res.id}
+    **Description:** ${(res.description) ? `\`${res.description}\`` : 'None'}
+    **It's a fork:** ${(res.fork) ? 'Yes' : 'No'}
+    **Principal language:** ${res.language}
+    **Starts:** ${res.stargazers_count}
+    **Watchers:** ${res.watchers_count}
+    **Forks:** ${res.forks_count}
     `;
 
     const ownerField = `
-    **Username:** ${content.owner.login}
-    **ID:** ${content.owner.id}
-    **Type:** ${content.owner.type}
+    **Username:** ${res.owner.login}
+    **ID:** ${res.owner.id}
+    **Type:** ${res.owner.type}
     `;
 
-    if (content.license) {
-        const license: LicenseInfo = await (await fetch(`https://api.github.com/licenses/${content.license.key}`)).json();
+    let licenseField: string;
+
+    if (res.license) {
+        const license: ILicense = await (await fetch(`https://api.github.com/licenses/${res.license.key}`)).json();
 
         licenseField = `
         **Name:** ${license.name}
@@ -85,7 +75,7 @@ export default async function (interaction: ChatInputCommandInteraction) {
     }
 
     const embed = new EmbedBuilder().setColor(embedColor)
-        .setTitle('__Github Repo Info__')
+        .setTitle('__Adramelech Repo Info__')
         .addFields(
             {
                 name: ':zap: **Main**',
@@ -106,12 +96,12 @@ export default async function (interaction: ChatInputCommandInteraction) {
             new ButtonBuilder()
                 .setLabel('Open repository')
                 .setStyle(ButtonStyle.Link)
-                .setURL(content.html_url),
+                .setURL(res.html_url),
             new ButtonBuilder()
                 .setLabel('Open repository owner')
                 .setStyle(ButtonStyle.Link)
-                .setURL(`https://github.com/${content.owner.login}`)
+                .setURL(`https://github.com/${res.owner.login}`)
         );
 
-    await interaction.reply({ embeds: [embed], components: [buttons] });
+    await intr.reply({ embeds: [embed], components: [buttons] });
 }

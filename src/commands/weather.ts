@@ -1,11 +1,13 @@
-import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
+import Command from '@interfaces/Command';
+import errorResponse from '@utils/errorResponse';
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import config from 'src/config';
 
-type ViacepResponse = Array<{
+type ViacepType = Array<{
     cep?: string;
 }>
 
-type BrasilApiResponse = {
+interface IBrasilApi {
     cep?: string;
     location: {
         coordinates: {
@@ -15,7 +17,7 @@ type BrasilApiResponse = {
     }
 }
 
-type OWResponse = {
+interface IOpenWeather {
     weather: Array<{
         main: string
         description: string
@@ -38,13 +40,13 @@ type OWResponse = {
     name?: string;
 }
 
-type Location = {
+interface ILocation {
     state: string | null
     city: string | null
     street: string | null
 }
 
-export = {
+const weather: Command = {
     data: new SlashCommandBuilder()
         .setName('weather')
         .setDescription('Replies with the weather in a given location (Brazil only)')
@@ -60,43 +62,34 @@ export = {
             option.setName('street')
                 .setDescription('The street to get the weather for')
                 .setRequired(true)),
-    async execute(interaction: ChatInputCommandInteraction) {
-        const options: Location = {
-            state: interaction.options.getString('state'),
-            city: interaction.options.getString('city'),
-            street: interaction.options.getString('street'),
+    async execute(intr) {
+        const options: ILocation = {
+            state: intr.options.getString('state'),
+            city: intr.options.getString('city'),
+            street: intr.options.getString('street'),
         };
 
         // get cep
         // that shit gave me a lot of headache
-        const resCep: ViacepResponse = await (await fetch(`https://viacep.com.br/ws/${options.state}/${options.state}/${options.city}/json`)).json();
+        const resCep: ViacepType = await (await fetch(`https://viacep.com.br/ws/${options.state}/${options.state}/${options.city}/json`)).json();
         if (resCep[0].cep === undefined) {
-            return await interaction.reply({
-                embeds: [
-                    new EmbedBuilder().setColor('Red').setTitle('__Error! 1__'),
-                ], ephemeral: true,
-            });
+            await errorResponse(intr);
+            return;
         }
 
         // cep -> coordinates
-        const resCoord: BrasilApiResponse = await (await fetch(`https://brasilapi.com.br/api/cep/v2/${resCep[0].cep}`)).json();
+        const resCoord: IBrasilApi = await (await fetch(`https://brasilapi.com.br/api/cep/v2/${resCep[0].cep}`)).json();
         if (resCoord.cep === undefined) {
-            return await interaction.reply({
-                embeds: [
-                    new EmbedBuilder().setColor('Red').setTitle('__Error! 2__'),
-                ], ephemeral: true,
-            });
+            await errorResponse(intr);
+            return;
         }
 
         // coordinates -> weather
         const url = `https://api.openweathermap.org/data/2.5/weather?lat=${resCoord.location.coordinates.latitude}&lon=${resCoord.location.coordinates.longitude}&appid=${config.bot.openWeatherKey}&units=metric&lang=pt_br`;
-        const resWeather: OWResponse = await (await fetch(url)).json();
+        const resWeather: IOpenWeather = await (await fetch(url)).json();
         if (resWeather.name === undefined) {
-            return await interaction.reply({
-                embeds: [
-                    new EmbedBuilder().setColor('Red').setTitle('__Error! 3__'),
-                ], ephemeral: true,
-            });
+            await errorResponse(intr);
+            return;
         }
 
         const mainField = `
@@ -121,25 +114,29 @@ export = {
         **Gusto:** ${resWeather.wind.gust}m/s
         `;
 
-        const embed = new EmbedBuilder().setColor(config.bot.embedColor)
-            .setTitle(`__Tempo em ${resWeather.name}__`)
-            .addFields(
-                {
-                    name: '__Principal__',
-                    value: mainField,
-                },
-                {
-                    name: '__Vento__',
-                    value: windField,
-                    inline: true,
-                },
-                {
-                    name: '__Tempo__',
-                    value: weatherField,
-                    inline: true,
-                }
-            );
-
-        await interaction.reply({ embeds: [embed] });
+        await intr.reply({
+            embeds: [
+                new EmbedBuilder().setColor(config.bot.embedColor)
+                    .setTitle(`__Tempo em ${resWeather.name}__`)
+                    .addFields(
+                        {
+                            name: '__Principal__',
+                            value: mainField,
+                        },
+                        {
+                            name: '__Vento__',
+                            value: windField,
+                            inline: true,
+                        },
+                        {
+                            name: '__Tempo__',
+                            value: weatherField,
+                            inline: true,
+                        }
+                    ),
+            ],
+        });
     },
 };
+
+export = weather;

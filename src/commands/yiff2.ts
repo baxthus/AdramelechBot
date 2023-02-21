@@ -1,9 +1,11 @@
-import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js';
+import Command from '@interfaces/Command';
+import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 import { E6 } from 'furry-wrapper';
 import { embedColor } from 'src/config';
-import checkNsfwChannel from './utils/checkNsfwChannel';
+import isChannelNsfw from '@utils/isChannelNsfw';
+import errorResponse from '@utils/errorResponse';
 
-type Yiff = {
+interface IYiff {
     file: {
         url: string;
     };
@@ -12,7 +14,7 @@ type Yiff = {
     };
 }
 
-export = {
+const yiff: Command = {
     data: new SlashCommandBuilder()
         .setName('yiff2')
         .setDescription('Return a yiff (furry porn) image (NSFW) (BETA)')
@@ -20,20 +22,15 @@ export = {
             option.setName('category')
                 .setDescription('Separate categories using space')
                 .setRequired(true)),
-    async execute(interaction: ChatInputCommandInteraction) {
-        if (checkNsfwChannel(interaction)) {
-            return await interaction.reply({
-                embeds: [
-                    new EmbedBuilder().setColor('Red')
-                        .setTitle('__Error!__')
-                        .setDescription('Your not in a NSFW/DM channel'),
-                ], ephemeral: true,
-            });
+    async execute(intr) {
+        if (!isChannelNsfw(intr)) {
+            await errorResponse(intr, 'Your not in a NSFW/DM channel');
+            return;
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const choice: any = interaction.options.getString('category');
-        let img: Yiff;
+        const choice: any = intr.options.getString('category');
+        let img: IYiff = JSON.parse('cock');
 
         // Try to request
         // Why try? because the user can put a screwed up tag and fuck it all up
@@ -44,20 +41,18 @@ export = {
                 img = JSON.parse(JSON.stringify(res));
             });
         } catch {
-            return await interaction.reply({
-                embeds: [
-                    new EmbedBuilder().setColor('Red')
-                        .setTitle('__Error!__'),
-                ], ephemeral: true,
-            });
+            await errorResponse(intr);
+            return;
         }
 
-        const embed = new EmbedBuilder().setColor(embedColor)
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            .setImage(img!.file.url)
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            .setFooter({ text: `Artists: ${img!.tags.artist.join(', ')}\nPowered by https://e621.net` });
-
-        await interaction.reply({ embeds: [embed] });
+        await intr.reply({
+            embeds: [
+                new EmbedBuilder().setColor(embedColor)
+                    .setImage(img.file.url)
+                    .setFooter({ text: `Artists: ${img.tags.artist.join(', ')}\nPowered by https://e621.net` }),
+            ],
+        });
     },
 };
+
+export = yiff;

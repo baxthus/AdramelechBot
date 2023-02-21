@@ -1,22 +1,27 @@
-import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js';
+import Command from '@interfaces/Command';
+import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 import { embedColor } from 'src/config';
 
-type ICat = {
+interface ICat {
     owner?: string;
     url: string;
 }
 
-export = {
+const cat: Command = {
     data: new SlashCommandBuilder()
         .setName('cat')
         .setDescription('Return a cat image'),
-    async execute(interaction: ChatInputCommandInteraction) {
+    async execute(intr) {
         const res: ICat = await (await fetch('https://cataas.com/cat?json=true')).json();
 
-        const embed = new EmbedBuilder().setColor(embedColor)
-            .setImage(`https://cataas.com/${res.url}`)
-            .setFooter({ text: `Owner: ${res.owner}\nPowered by https://cataas.com` });
-
-        await interaction.reply({ embeds: [embed] });
+        await intr.reply({
+            embeds: [
+                new EmbedBuilder().setColor(embedColor)
+                    .setImage(`https://cataas.com/${res.url}`)
+                    .setFooter({ text: `Owner: ${res.owner}\nPowered by https://cataas.com` }),
+            ],
+        });
     },
 };
+
+export = cat;

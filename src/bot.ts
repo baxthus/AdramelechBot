@@ -1,10 +1,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { Client, GatewayIntentBits, Collection, ApplicationCommandData } from 'discord.js';
+import { Client, GatewayIntentBits, Collection } from 'discord.js';
 import config from './config';
+import Command from '@interfaces/Command';
 
 export class CustomClient extends Client {
-    commands: Collection<string, ApplicationCommandData> = new Collection();
+    commands: Collection<string, Command> = new Collection();
 }
 
 const client = new CustomClient({
@@ -15,15 +16,13 @@ const client = new CustomClient({
     ],
 });
 
-client.commands = new Collection();
-
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.ts' || '.js'));
 
 for (const file of commandFiles) {
     const filePath = path.join(commandsPath, file);
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const command = require(filePath);
+    const command: Command = require(filePath);
 
     if ('data' in command && 'execute' in command) {
         client.commands.set(command.data.name, command);
