@@ -1,14 +1,16 @@
 import Event from '@interfaces/Event';
-import { CommandInteraction, Events } from 'discord.js';
-import { CustomClient } from 'src/bot';
+import { Events, Interaction } from 'discord.js';
+import client from 'src/bot';
+import ButtonHandler from 'src/buttons/ButtonHandler';
 
-export = {
+const interactionCreate: Event = {
     name: Events.InteractionCreate,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async execute(intr: CommandInteraction) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, complexity
+    async execute(intr: Interaction) {
+        if (intr.isButton()) ButtonHandler(intr);
+
         if (!intr.isChatInputCommand()) return;
 
-        const client = intr.client as CustomClient;
         const command = client.commands.get(intr.commandName);
 
         if (!command) return;
@@ -20,4 +22,6 @@ export = {
             console.error(error);
         }
     },
-} as Event;
+};
+
+export = interactionCreate;

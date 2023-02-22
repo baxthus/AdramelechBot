@@ -26,6 +26,9 @@
             "@utils/*": [
                 "src/utils/*"
             ],
+            "@commands/*": [
+                "src/commands/*"
+            ],
         }
     },
     "files": [
