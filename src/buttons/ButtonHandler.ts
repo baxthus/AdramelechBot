@@ -7,6 +7,9 @@ export default async function (intr: ButtonInteraction): Promise<void> {
     const customId = JSON.parse(intr.customId) as ButtonID;
     if (!customId.file) return;
 
+    // * As you can see, the button custom id is very important,
+    // * and can break if not used properly.
+    // ! Just use file names that is in the buttons folder
     if (customId.music) {
         delete require.cache[require.resolve(`./music/${customId.file}`)];
 
@@ -22,5 +25,5 @@ export default async function (intr: ButtonInteraction): Promise<void> {
         return;
     }
 
-    // TODO: do normal button stuff
+    // ? others things can be implemented here
 }

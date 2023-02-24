@@ -1,4 +1,4 @@
 interface ButtonID {
-    music: boolean;
+    music?: boolean;
     file: string;
 }

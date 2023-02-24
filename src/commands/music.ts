@@ -1,4 +1,5 @@
 import Command from '@interfaces/Command';
+import MusicCommandArgs from '@interfaces/MusicCommandArgs';
 import { AudioFilters } from 'discord-player';
 import { SlashCommandBuilder } from 'discord.js';
 import player from 'src/music';
@@ -7,6 +8,11 @@ import clear from './music/clear';
 import filter from './music/filter';
 import jump from './music/jump';
 import loop from './music/loop';
+import nowPlaying from './music/nowPlaying';
+import pause from './music/pause';
+import play from './music/play';
+import playNext from './music/playNext';
+import queue from './music/queue';
 
 
 const music: Command = {
@@ -65,7 +71,32 @@ const music: Command = {
         // now-playing
         .addSubcommand(subcommand =>
             subcommand.setName('now-playing')
-                .setDescription('Show the current song playing')),
+                .setDescription('Show the current song playing'))
+        // pause
+        .addSubcommand(subcommand =>
+            subcommand.setName('pause')
+                .setDescription('Pause the current track'))
+        // play
+        .addSubcommand(subcommand =>
+            subcommand.setName('play')
+                .setDescription('Play a song')
+                .addStringOption(option =>
+                    option.setName('song')
+                        .setDescription('The song you want to play')
+                        .setRequired(true)))
+        // play-next
+        .addSubcommand(subcommand =>
+            subcommand.setName('play-next')
+                .setDescription('Play a song next in queue')
+                .addStringOption(option =>
+                    option.setName('song')
+                        .setDescription('The song you want to play')
+                        .setRequired(true)))
+        // queue
+        .addSubcommand(subcommand =>
+            subcommand.setName('queue')
+                .setDescription('Show the current queue')),
+    // eslint-disable-next-line complexity
     async execute(intr) {
         const subcommand = intr.options.getSubcommand();
 
@@ -80,6 +111,16 @@ const music: Command = {
                 jump(intr, player); break;
             case 'loop':
                 loop(intr, player); break;
+            case 'now-playing':
+                nowPlaying(intr, player); break;
+            case 'pause':
+                pause({ intr, player } as MusicCommandArgs); break;
+            case 'play':
+                play({ intr, player } as MusicCommandArgs); break;
+            case 'play-next':
+                playNext({ intr, player } as MusicCommandArgs); break;
+            case 'queue':
+                queue({ intr, player } as MusicCommandArgs); break;
         }
     },
 };

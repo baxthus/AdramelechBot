@@ -1,6 +1,6 @@
 import errorResponse from '@utils/errorResponse';
 import { Player } from 'discord-player';
-import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { embedColor } from 'src/config';
 
 export default async function (intr: ChatInputCommandInteraction, player: Player): Promise<void> {
@@ -29,4 +29,35 @@ export default async function (intr: ChatInputCommandInteraction, player: Player
         Requested by: **${track.requestedBy}**\n
         `)
         .setTimestamp();
+
+    const buttons = new ActionRowBuilder<ButtonBuilder>()
+        .setComponents(
+            // save-track
+            new ButtonBuilder()
+                .setLabel('Save this track')
+                .setStyle(ButtonStyle.Danger)
+                .setCustomId(JSON.stringify({ file: 'save-track', music: true } as ButtonID)),
+            // volume-up
+            new ButtonBuilder()
+                .setLabel('Volume up')
+                .setStyle(ButtonStyle.Primary)
+                .setCustomId(JSON.stringify({ file: 'volume-up', music: true } as ButtonID)),
+            // volume-down
+            new ButtonBuilder()
+                .setLabel('Volume down')
+                .setStyle(ButtonStyle.Primary)
+                .setCustomId(JSON.stringify({ file: 'volume-down', music: true } as ButtonID)),
+            // loop
+            new ButtonBuilder()
+                .setLabel('Loop')
+                .setStyle(ButtonStyle.Primary)
+                .setCustomId(JSON.stringify({ file: 'loop', music: true } as ButtonID)),
+            // resume-pause
+            new ButtonBuilder()
+                .setLabel('Resume/Pause')
+                .setStyle(ButtonStyle.Primary)
+                .setCustomId(JSON.stringify({ file: 'resume-pause', music: true } as ButtonID)),
+        );
+
+    intr.reply({ embeds: [embed], components: [buttons] });
 }

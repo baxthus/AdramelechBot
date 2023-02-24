@@ -9,6 +9,9 @@ type BotConfig = {
         feedbackWebhook: string;
         openWeatherKey: string;
         embedColor: ColorResolvable;
+        music: {
+            maxVolume: number;
+        }
     }
     owner: {
         id: string;
@@ -18,11 +21,14 @@ type BotConfig = {
 const config: BotConfig = {
     bot: {
         token: process.env.BOT_TOKEN ?? '',
-        image: process.env.BOT_IMAGE ?? '',
+        image: 'https://cdn.abysmal.eu.org/adramelech.png',
         id: process.env.APP_ID ?? '',
         feedbackWebhook: process.env.FEEDBACK_WEBHOOK ?? '',
         openWeatherKey: process.env.OPEN_WEATHER_KEY ?? '',
         embedColor: [203, 166, 247],
+        music: {
+            maxVolume: 100,
+        },
     },
     owner: {
         id: process.env.OWNER_ID ?? '',
