@@ -13,6 +13,7 @@ const client = new CustomClient({
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildPresences,
+        GatewayIntentBits.GuildVoiceStates,
     ],
 });
 

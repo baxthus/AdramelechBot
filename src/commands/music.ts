@@ -2,6 +2,8 @@ import Command from '@interfaces/Command';
 import MusicCommandArgs from '@interfaces/MusicCommandArgs';
 import { AudioFilters } from 'discord-player';
 import { SlashCommandBuilder } from 'discord.js';
+import config from 'src/config';
+// sorry, this is the best way i could think of doing this
 import player from 'src/music';
 import back from './music/back';
 import clear from './music/clear';
@@ -13,6 +15,15 @@ import pause from './music/pause';
 import play from './music/play';
 import playNext from './music/playNext';
 import queue from './music/queue';
+import remove from './music/remove';
+import resume from './music/resume';
+import save from './music/save';
+import search from './music/search';
+import seek from './music/seek';
+import shuffle from './music/shuffle';
+import skip from './music/skip';
+import stop from './music/stop';
+import volume from './music/volume';
 
 
 const music: Command = {
@@ -95,7 +106,63 @@ const music: Command = {
         // queue
         .addSubcommand(subcommand =>
             subcommand.setName('queue')
-                .setDescription('Show the current queue')),
+                .setDescription('Show the current queue'))
+        // remove
+        .addSubcommand(subcommand =>
+            subcommand.setName('remove')
+                .setDescription('Remove a song from the queue')
+                .addStringOption(option =>
+                    option.setName('song')
+                        .setDescription('The name/url of the track you want to remove'))
+                .addNumberOption(option =>
+                    option.setName('number')
+                        .setDescription('The place in the queue the song is in')))
+        // resume
+        .addSubcommand(subcommand =>
+            subcommand.setName('resume')
+                .setDescription('Resume the current track'))
+        // save
+        .addSubcommand(subcommand =>
+            subcommand.setName('save')
+                .setDescription('Save the current track'))
+        // search
+        .addSubcommand(subcommand =>
+            subcommand.setName('search')
+                .setDescription('Search for a song')
+                .addStringOption(option =>
+                    option.setName('song')
+                        .setDescription('The song you want to search')
+                        .setRequired(true)))
+        // seek
+        .addSubcommand(subcommand =>
+            subcommand.setName('seek')
+                .setDescription('Seek to a particular time in the song')
+                .addStringOption(option =>
+                    option.setName('time')
+                        .setDescription('The time you want to seek to')
+                        .setRequired(true)))
+        // shuffle
+        .addSubcommand(subcommand =>
+            subcommand.setName('shuffle')
+                .setDescription('Shuffle the queue'))
+        // skip
+        .addSubcommand(subcommand =>
+            subcommand.setName('skip')
+                .setDescription('Skip the current song'))
+        // stop
+        .addSubcommand(subcommand =>
+            subcommand.setName('stop')
+                .setDescription('Stop the current song'))
+        // volume
+        .addSubcommand(subcommand =>
+            subcommand.setName('volume')
+                .setDescription('Change the volume of the song')
+                .addNumberOption(option =>
+                    option.setName('volume')
+                        .setDescription('The volume you want to set')
+                        .setMinValue(1)
+                        .setMaxValue(config.bot.music.maxVolume)
+                        .setRequired(true))),
     // eslint-disable-next-line complexity
     async execute(intr) {
         const subcommand = intr.options.getSubcommand();
@@ -121,6 +188,24 @@ const music: Command = {
                 playNext({ intr, player } as MusicCommandArgs); break;
             case 'queue':
                 queue({ intr, player } as MusicCommandArgs); break;
+            case 'remove':
+                remove({ intr, player } as MusicCommandArgs); break;
+            case 'resume':
+                resume({ intr, player } as MusicCommandArgs); break;
+            case 'save':
+                save({ intr, player } as MusicCommandArgs); break;
+            case 'search':
+                search({ intr, player } as MusicCommandArgs); break;
+            case 'seek':
+                seek({ intr, player } as MusicCommandArgs); break;
+            case 'shuffle':
+                shuffle({ intr, player } as MusicCommandArgs); break;
+            case 'skip':
+                skip({ intr, player } as MusicCommandArgs); break;
+            case 'stop':
+                stop({ intr, player } as MusicCommandArgs); break;
+            case 'volume':
+                volume({ intr, player } as MusicCommandArgs); break;
         }
     },
 };

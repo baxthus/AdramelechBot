@@ -1,10 +1,10 @@
-import { REST, Routes } from 'discord.js';
+import { REST, RESTPostAPIApplicationCommandsJSONBody, Routes } from 'discord.js';
 import path from 'node:path';
 import fs from 'node:fs';
 import config from './config';
 import Command from '@interfaces/Command';
 
-const commands = [];
+const commands: Array<RESTPostAPIApplicationCommandsJSONBody> = [];
 
 // Grab all the command files from the commands directory
 const commandsPath = path.join(__dirname, 'commands');
