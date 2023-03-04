@@ -29,7 +29,7 @@ const nsfw: Command = {
             return;
         }
 
-        const choice = intr.options.getString('category');
+        const choice = intr.options.getString('category', true);
 
         const res: INsfw = await (await fetch(`https://api.waifu.pics/nsfw/${choice}`)).json();
 

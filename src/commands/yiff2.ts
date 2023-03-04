@@ -29,7 +29,7 @@ const yiff: Command = {
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const choice: any = intr.options.getString('category');
+        const choice: any = intr.options.getString('category', true);
         let img: IYiff = JSON.parse('cock');
 
         // Try to request

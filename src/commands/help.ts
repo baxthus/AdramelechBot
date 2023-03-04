@@ -1,44 +1,23 @@
 import Command from '@interfaces/Command';
-import { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, AttachmentBuilder } from 'discord.js';
 import { botImage, embedColor } from 'src/config';
-
-const commandsField = `
-**/avatar** - Return the selected user's avatar
-**/ban** - Bans a member
-**/cat** - Return a cat image
-**/catboy** - Return a catboy image (SFW)
-**/cep-search** - Search for CEP (Brazilian zip code)
-**/clear** - Clear the messages
-**/covid** - Return COVID stats
-**/dnslookup** - DNS lookup for a domain
-**/dog** - Return a dog image
-**/feedback** - Share your feedback
-**/github** - Get Github user or repository info
-**/help** - Help, I need to say more?
-**/kick** - Kicks a member
-**/loli** - Return a loli image (NSFW)
-**/lookup** - Lookup for a IP or a domain
-**/neko** - Return a neko image
-**/nsfw** - Return a NSFW image (NSFW)
-**/obfuscator** - Obfuscate your URL
-**/ping** - Replies with Pong!
-**/send-dm** - DM a message (bot owner only)
-**/server** - Return server information
-**/short** - Short your URL
-**/whois** - Whois a given domain or IP
-**/yiff** - Return a yiff (furry porn) image (NSFW)
-**/yiff2** - Return a yiff (furry porn) image (NSFW) (BETA)
-`;
+import fs from 'node:fs';
 
 const help: Command = {
     data: new SlashCommandBuilder()
         .setName('help')
         .setDescription('Help, I need to say more?'),
     async execute(intr) {
+        const commands = fs.readFileSync(__dirname + '/../commands.json');
+        const commandsJson: Array<{ [key: string]: string }> = JSON.parse(commands.toString());
+        const commandsArray = commandsJson.map((command) => `/${Object.keys(command)[0]} - ${Object.values(command)[0]}`);
+
+        const file = new AttachmentBuilder(Buffer.from(commandsArray.join('\n\n')), { name: 'commands.txt' });
+
         const embed = new EmbedBuilder().setColor(embedColor)
             .setTitle('__Adramelech Help Page__')
+            .setDescription('Commands list has been attached to this message')
             .setThumbnail(botImage)
-            .addFields({ name: '**__Commands__**', value: commandsField })
             .setFooter({ text: 'Created by Abysmal#1608', iconURL: 'https://abysmal.eu.org/avatar.png' });
 
         const buttons = new ActionRowBuilder<ButtonBuilder>()
@@ -66,7 +45,7 @@ const help: Command = {
                     .setDisabled(true),
             );
 
-        await intr.reply({ embeds: [embed], components: [buttons] });
+        await intr.reply({ embeds: [embed], components: [buttons], files: [file] });
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const filter = (i: any) => i.customId === 'velocityButton' && i.user.id === intr.user.id;

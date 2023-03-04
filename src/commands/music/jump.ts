@@ -1,9 +1,9 @@
+import MusicCommandArgs from '@interfaces/MusicCommandArgs';
 import errorResponse from '@utils/errorResponse';
-import { Player } from 'discord-player';
-import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import { embedColor } from 'src/config';
 
-export default async function (intr: ChatInputCommandInteraction, player: Player): Promise<void> {
+export default async function ({ intr, player }: MusicCommandArgs): Promise<void> {
     const track = intr.options.getString('song');
     const number = intr.options.getNumber('number');
 
@@ -17,8 +17,7 @@ export default async function (intr: ChatInputCommandInteraction, player: Player
     if (track) {
         for (const song of queue.tracks) {
             if (song.title == track || song.url == track) {
-                // eslint-disable-next-line no-await-in-loop
-                await queue.skipTo(song);
+                queue.skipTo(song);
                 // eslint-disable-next-line no-await-in-loop
                 await intr.reply({
                     embeds: [
@@ -46,5 +45,6 @@ export default async function (intr: ChatInputCommandInteraction, player: Player
                 new EmbedBuilder().setColor(embedColor).setTitle(`Skiped to ${trackName}`),
             ],
         });
+        return;
     }
 }

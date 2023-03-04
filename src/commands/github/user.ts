@@ -22,7 +22,7 @@ interface IUser {
 }
 
 export default async function (intr: ChatInputCommandInteraction): Promise<void> {
-    const user = intr.options.getString('user');
+    const user = intr.options.getString('user', true);
 
     const res: IUser = await (await fetch(`https://api.github.com/users/${user}`)).json();
 

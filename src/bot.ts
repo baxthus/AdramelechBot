@@ -17,6 +17,8 @@ const client = new CustomClient({
     ],
 });
 
+export default client;
+
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.ts' || '.js'));
 
@@ -47,5 +49,3 @@ for (const file of eventFiles) {
 }
 
 client.login(config.bot.token);
-
-export default client;

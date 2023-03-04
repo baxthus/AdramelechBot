@@ -12,7 +12,7 @@ const dsnLookup: Command = {
                 .setDescription('Domain that you want lookup')
                 .setRequired(true)),
     async execute(intr) {
-        const domain = intr.options.getString('domain');
+        const domain = intr.options.getString('domain', true);
 
         const res = await (await fetch(`https://da.gd/dns/${domain}`)).text();
 

@@ -40,7 +40,7 @@ const lookup: Command = {
                 .setDescription('Address that you want to lookup (ip or domain)')
                 .setRequired(true)),
     async execute(intr) {
-        const userInput = intr.options.getString('local') ?? '';
+        const userInput = intr.options.getString('local', true);
         let ip: string;
 
         // This is horrible

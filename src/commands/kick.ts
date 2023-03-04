@@ -18,8 +18,8 @@ const kick: Command = {
         .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
         .setDMPermission(false),
     async execute(intr) {
-        const user = intr.options.getUser('user');
-        const member = intr.guild?.members.cache.get(user?.id ?? '');
+        const user = intr.options.getUser('user', true);
+        const member = intr.guild?.members.cache.get(user.id);
         const reason = intr.options.getString('reason') ?? undefined;
 
         if (member?.id === intr.user.id) {

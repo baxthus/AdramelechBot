@@ -20,7 +20,7 @@ const obfuscator: Command = {
                 .setDescription('URL that you want obfuscate')
                 .setRequired(true)),
     async execute(intr) {
-        const rawURL = intr.options.getString('url') ?? '';
+        const rawURL = intr.options.getString('url', true);
 
         let url: string;
 

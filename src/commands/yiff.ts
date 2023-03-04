@@ -36,7 +36,7 @@ const yiff: Command = {
             return;
         }
 
-        const choice = intr.options.getString('category') ?? '';
+        const choice = intr.options.getString('category', true);
         let img: JSONResponse;
 
         // Check if this shit is being rate limited

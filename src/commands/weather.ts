@@ -41,9 +41,9 @@ interface IOpenWeather {
 }
 
 interface ILocation {
-    state: string | null
-    city: string | null
-    street: string | null
+    state: string
+    city: string
+    street: string
 }
 
 const weather: Command = {
@@ -64,9 +64,9 @@ const weather: Command = {
                 .setRequired(true)),
     async execute(intr) {
         const options: ILocation = {
-            state: intr.options.getString('state'),
-            city: intr.options.getString('city'),
-            street: intr.options.getString('street'),
+            state: intr.options.getString('state', true),
+            city: intr.options.getString('city', true),
+            street: intr.options.getString('street', true),
         };
 
         // get cep

@@ -1,9 +1,10 @@
+import MusicCommandArgs from '@interfaces/MusicCommandArgs';
 import errorResponse from '@utils/errorResponse';
-import { Player, QueueFilters } from 'discord-player';
-import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
+import { QueueFilters } from 'discord-player';
+import { EmbedBuilder } from 'discord.js';
 import { embedColor } from 'src/config';
 
-export default async function (intr: ChatInputCommandInteraction, player: Player): Promise<void> {
+export default async function ({ intr, player }: MusicCommandArgs): Promise<void> {
     const inFilter = intr.options.getString('filter');
     const queue = player.getQueue(intr.guildId ?? '');
 

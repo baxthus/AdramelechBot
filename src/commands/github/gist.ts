@@ -18,7 +18,7 @@ type GistInfo = Array<{
 }>
 
 export default async function (intr: ChatInputCommandInteraction): Promise<void> {
-    const user = intr.options.getString('user');
+    const user = intr.options.getString('user', true);
 
     const res = await (await fetch(`https://api.github.com/users/${user}/gists`)).json();
 

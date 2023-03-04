@@ -31,7 +31,7 @@ const cepSearch: Command = {
                 .setDescription('CEP that you want search')
                 .setRequired(true)),
     async execute(intr) {
-        const cep = intr.options.getString('cep')?.replace('-', '');
+        const cep = intr.options.getString('cep', true).replace('-', '');
 
         const res: ICep = await (await fetch(`https://brasilapi.com.br/api/cep/v2/${cep}`)).json();
 

@@ -1,5 +1,4 @@
 import Command from '@interfaces/Command';
-import MusicCommandArgs from '@interfaces/MusicCommandArgs';
 import { AudioFilters } from 'discord-player';
 import { SlashCommandBuilder } from 'discord.js';
 import config from 'src/config';
@@ -24,7 +23,6 @@ import shuffle from './music/shuffle';
 import skip from './music/skip';
 import stop from './music/stop';
 import volume from './music/volume';
-
 
 const music: Command = {
     data: new SlashCommandBuilder()
@@ -169,43 +167,43 @@ const music: Command = {
 
         switch (subcommand) {
             case 'back':
-                back(intr, player); break;
+                back({ intr, player }); break;
             case 'clear':
-                clear(intr, player); break;
+                clear({ intr, player }); break;
             case 'filter':
-                filter(intr, player); break;
+                filter({ intr, player }); break;
             case 'jump':
-                jump(intr, player); break;
+                jump({ intr, player }); break;
             case 'loop':
-                loop(intr, player); break;
+                loop({ intr, player }); break;
             case 'now-playing':
-                nowPlaying(intr, player); break;
+                nowPlaying({ intr, player }); break;
             case 'pause':
-                pause({ intr, player } as MusicCommandArgs); break;
+                pause({ intr, player }); break;
             case 'play':
-                play({ intr, player } as MusicCommandArgs); break;
+                play({ intr, player }); break;
             case 'play-next':
-                playNext({ intr, player } as MusicCommandArgs); break;
+                playNext({ intr, player }); break;
             case 'queue':
-                queue({ intr, player } as MusicCommandArgs); break;
+                queue({ intr, player }); break;
             case 'remove':
-                remove({ intr, player } as MusicCommandArgs); break;
+                remove({ intr, player }); break;
             case 'resume':
-                resume({ intr, player } as MusicCommandArgs); break;
+                resume({ intr, player }); break;
             case 'save':
-                save({ intr, player } as MusicCommandArgs); break;
+                save({ intr, player }); break;
             case 'search':
-                search({ intr, player } as MusicCommandArgs); break;
+                search({ intr, player }); break;
             case 'seek':
-                seek({ intr, player } as MusicCommandArgs); break;
+                seek({ intr, player }); break;
             case 'shuffle':
-                shuffle({ intr, player } as MusicCommandArgs); break;
+                shuffle({ intr, player }); break;
             case 'skip':
-                skip({ intr, player } as MusicCommandArgs); break;
+                skip({ intr, player }); break;
             case 'stop':
-                stop({ intr, player } as MusicCommandArgs); break;
+                stop({ intr, player }); break;
             case 'volume':
-                volume({ intr, player } as MusicCommandArgs); break;
+                volume({ intr, player }); break;
         }
     },
 };
