@@ -1,6 +1,6 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
-import { embedColor } from 'src/config';
-import errorResponse from 'src/utils/errorResponse';
+import { embedColor } from '@config';
+import errorResponse from '@utils/errorResponse';
 
 type GistInfo = Array<{
     message?: string;
@@ -18,7 +18,7 @@ type GistInfo = Array<{
 }>
 
 export default async function (intr: ChatInputCommandInteraction): Promise<void> {
-    const user = intr.options.getString('user');
+    const user = intr.options.getString('user', true);
 
     const res = await (await fetch(`https://api.github.com/users/${user}/gists`)).json();
 

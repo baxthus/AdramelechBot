@@ -1,6 +1,6 @@
 import errorResponse from '@utils/errorResponse';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
-import { embedColor } from 'src/config';
+import { embedColor } from '@config';
 
 interface IUser {
     message?: string;
@@ -22,7 +22,7 @@ interface IUser {
 }
 
 export default async function (intr: ChatInputCommandInteraction): Promise<void> {
-    const user = intr.options.getString('user');
+    const user = intr.options.getString('user', true);
 
     const res: IUser = await (await fetch(`https://api.github.com/users/${user}`)).json();
 

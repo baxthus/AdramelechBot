@@ -1,6 +1,6 @@
 import formatArray from '@utils/formatArray';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
-import { embedColor } from 'src/config';
+import { embedColor } from '@config';
 import errorResponse from '@utils/errorResponse';
 
 interface IRepo {
@@ -32,8 +32,8 @@ interface ILicense {
 }
 
 export default async function (intr: ChatInputCommandInteraction): Promise<void> {
-    const user = intr.options.getString('user');
-    const repo = intr.options.getString('repository');
+    const user = intr.options.getString('user', true);
+    const repo = intr.options.getString('repository', true);
 
     const res: IRepo = await (await fetch(`https://api.github.com/repos/${user}/${repo}`)).json();
 

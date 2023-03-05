@@ -1,7 +1,7 @@
 import Command from '@interfaces/Command';
 import errorResponse from '@utils/errorResponse';
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
-import { embedColor } from 'src/config';
+import { embedColor } from '@config';
 
 const short: Command = {
     data: new SlashCommandBuilder()
@@ -12,7 +12,7 @@ const short: Command = {
                 .setDescription('URL that you want to short')
                 .setRequired(true)),
     async execute(intr) {
-        const url = intr.options.getString('url');
+        const url = intr.options.getString('url', true);
 
         const res = await (await fetch(`https://is.gd/create.php?format=simple&url=${url}`)).text();
 

@@ -1,7 +1,7 @@
 import Command from '@interfaces/Command';
 import errorResponse from '@utils/errorResponse';
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
-import { embedColor } from 'src/config';
+import { embedColor } from '@config';
 import isChannelNsfw from '@utils/isChannelNsfw';
 
 type Booru = Array<{

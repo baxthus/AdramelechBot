@@ -1,7 +1,7 @@
 import Command from '@interfaces/Command';
 import { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } from 'discord.js';
-import config, { embedColor } from 'src/config';
-import errorResponse from 'src/utils/errorResponse';
+import config, { embedColor } from '@config';
+import errorResponse from '@utils/errorResponse';
 
 const dsnLookup: Command = {
     data: new SlashCommandBuilder()
@@ -12,7 +12,7 @@ const dsnLookup: Command = {
                 .setDescription('Domain that you want lookup')
                 .setRequired(true)),
     async execute(intr) {
-        const domain = intr.options.getString('domain');
+        const domain = intr.options.getString('domain', true);
 
         const res = await (await fetch(`https://da.gd/dns/${domain}`)).text();
 

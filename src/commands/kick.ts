@@ -1,7 +1,7 @@
 import Command from '@interfaces/Command';
 import errorResponse from '@utils/errorResponse';
 import { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } from 'discord.js';
-import { embedColor } from 'src/config';
+import { embedColor } from '@config';
 
 // This is basically the same as ban.ts
 const kick: Command = {
@@ -18,8 +18,8 @@ const kick: Command = {
         .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
         .setDMPermission(false),
     async execute(intr) {
-        const user = intr.options.getUser('user');
-        const member = intr.guild?.members.cache.get(user?.id ?? '');
+        const user = intr.options.getUser('user', true);
+        const member = intr.guild?.members.cache.get(user.id);
         const reason = intr.options.getString('reason') ?? undefined;
 
         if (member?.id === intr.user.id) {

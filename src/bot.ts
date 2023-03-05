@@ -1,3 +1,5 @@
+require('module-alias/register');
+
 import fs from 'node:fs';
 import path from 'node:path';
 import { Client, GatewayIntentBits, Collection } from 'discord.js';
@@ -16,8 +18,10 @@ const client = new CustomClient({
     ],
 });
 
+export default client;
+
 const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.ts' || '.js'));
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('s'));
 
 for (const file of commandFiles) {
     const filePath = path.join(commandsPath, file);

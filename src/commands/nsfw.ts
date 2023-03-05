@@ -2,7 +2,7 @@ import Command from '@interfaces/Command';
 import errorResponse from '@utils/errorResponse';
 import isChannelNsfw from '@utils/isChannelNsfw';
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
-import { embedColor } from 'src/config';
+import { embedColor } from '@config';
 
 interface INsfw {
     url: string;
@@ -29,7 +29,7 @@ const nsfw: Command = {
             return;
         }
 
-        const choice = intr.options.getString('category');
+        const choice = intr.options.getString('category', true);
 
         const res: INsfw = await (await fetch(`https://api.waifu.pics/nsfw/${choice}`)).json();
 

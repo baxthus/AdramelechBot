@@ -1,10 +1,10 @@
 import Command from '@interfaces/Command';
 import errorResponse from '@utils/errorResponse';
 import { SlashCommandBuilder, EmbedBuilder, User } from 'discord.js';
-import config from '../config';
+import config from '@config';
 
 interface IMessage {
-    user: User | null;
+    user: User;
     message: string;
 }
 
@@ -27,12 +27,12 @@ const sendDM: Command = {
         }
 
         const content: IMessage = {
-            user: intr.options.getUser('user'),
-            message: intr.options.getString('message') ?? '',
+            user: intr.options.getUser('user', true),
+            message: intr.options.getString('message', true),
         };
 
         try {
-            await content.user?.send(content.message);
+            await content.user.send(content.message);
         } catch {
             await errorResponse(intr, 'Error sending message');
             return;

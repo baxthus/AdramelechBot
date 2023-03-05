@@ -1,22 +1,30 @@
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
-import catboysF from 'catboys';
-import { embedColor } from 'src/config';
+import { embedColor } from '@config';
 import Command from '@interfaces/Command';
+import errorResponse from '@utils/errorResponse';
 
-const catboys = new catboysF();
+interface ICatboy {
+    url: string;
+    artist: string;
+}
 
 const catboy: Command = {
     data: new SlashCommandBuilder()
         .setName('catboy')
         .setDescription('Return a catboy image (SFW)'),
     async execute(intr) {
-        const image = await catboys.image();
+        const r = await fetch('https://api.catboys.com/img');
+        if (r.status !== 200) {
+            await errorResponse(intr, 'Something went wrong');
+            return;
+        }
+        const res = await r.json() as ICatboy;
 
         await intr.reply({
             embeds: [
                 new EmbedBuilder().setColor(embedColor)
-                    .setImage(image.url)
-                    .setFooter({ text: `Artist: ${image.artist}\nPowered by https://catboys.com` }),
+                    .setImage(res.url)
+                    .setFooter({ text: `Artist: ${res.artist}\nPowered by https://catboys.com` }),
             ],
         });
     },

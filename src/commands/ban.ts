@@ -1,7 +1,7 @@
 import Command from '@interfaces/Command';
 import { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } from 'discord.js';
-import { embedColor } from 'src/config';
-import errorResponse from 'src/utils/errorResponse';
+import { embedColor } from '@config';
+import errorResponse from '@utils/errorResponse';
 
 const ban: Command = {
     data: new SlashCommandBuilder()
@@ -17,8 +17,8 @@ const ban: Command = {
         .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
         .setDMPermission(true),
     async execute(intr) {
-        const user = intr.options.getUser('user');
-        const member = intr.guild?.members.cache.get(user?.id ?? '');
+        const user = intr.options.getUser('user', true);
+        const member = intr.guild?.members.cache.get(user.id);
         const reason = intr.options.getString('reason') ?? undefined;
 
         if (member?.id === intr.user.id) {

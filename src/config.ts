@@ -1,7 +1,7 @@
 import { ColorResolvable } from 'discord.js';
 import process from 'process';
 
-type BotConfig = {
+interface BotConfig {
     bot: {
         token: string;
         image: string;
@@ -18,7 +18,7 @@ type BotConfig = {
 const config: BotConfig = {
     bot: {
         token: process.env.BOT_TOKEN ?? '',
-        image: process.env.BOT_IMAGE ?? '',
+        image: 'https://cdn.abysmal.eu.org/adramelech.png',
         id: process.env.APP_ID ?? '',
         feedbackWebhook: process.env.FEEDBACK_WEBHOOK ?? '',
         openWeatherKey: process.env.OPEN_WEATHER_KEY ?? '',

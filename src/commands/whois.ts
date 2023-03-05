@@ -1,7 +1,7 @@
 import Command from '@interfaces/Command';
 import errorResponse from '@utils/errorResponse';
 import { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } from 'discord.js';
-import config from '../config';
+import config from '@config';
 
 const badStrings: Array<string> = [
     'Malformed',
@@ -22,7 +22,7 @@ const whois: Command = {
                 .setDescription('Domain or IP')
                 .setRequired(true)),
     async execute(intr) {
-        const local = intr.options.getString('local');
+        const local = intr.options.getString('local', true);
 
         const res = await (await fetch(`https://da.gd/w/${local}`)).text();
 

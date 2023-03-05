@@ -6,24 +6,24 @@
   "scripts": {
     "start": "doppler run -- tsx src/bot.ts",
     "deploy": "doppler run -- tsx src/deployCommands.ts",
-    "build": "tsc",
+    "build": "tsc && npm run gen-json && cp src/commands.json dist/commands.json",
     "start:prod": "npm run build && doppler run -- node dist/bot.js",
     "pm2:prod": "npm run build && doppler run -- pm2 start dist/bot.js",
     "lint": "eslint .",
     "docker": "doppler run -- docker-compose up -d",
-    "dev": "doppler run -- tsx watch src/bot.ts"
+    "dev": "doppler run -- tsx watch src/bot.ts",
+    "gen-json": "tsx src/generateJSON.ts"
   },
   "author": "Abysmal",
   "license": "MIT",
   "dependencies": {
-    "catboys": "^1.0.6",
     "discord.js": "^14.7.1",
     "furry-wrapper": "^0.0.5",
-    "moment": "^2.29.4",
-    "nekos.life": "^3.0.0",
-    "yiffy": "^2.3.0"
+    "module-alias": "^2.2.2",
+    "moment": "^2.29.4"
   },
   "devDependencies": {
+    "@types/ms": "^0.7.31",
     "@types/node": "^18.11.18",
     "@typescript-eslint/eslint-plugin": "^5.48.1",
     "@typescript-eslint/parser": "^5.48.1",
@@ -32,5 +32,12 @@
     "tsx": "^3.12.2",
     "typescript": "^4.9.4",
     "typescript-eslint": "0.0.1-alpha.0"
+  },
+  "_moduleAliases": {
+    "@": "dist",
+    "@interfaces": "dist/interfaces",
+    "@utils": "dist/utils",
+    "@commands": "dist/commands",
+    "@config": "dist/config.js"
   }
 }

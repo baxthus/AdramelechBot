@@ -1,7 +1,7 @@
 import Command from '@interfaces/Command';
 import { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
-import { botImage, embedColor } from 'src/config';
-import errorResponse from 'src/utils/errorResponse';
+import { botImage, embedColor } from '@config';
+import errorResponse from '@utils/errorResponse';
 
 interface ICep {
     name?: string;
@@ -31,7 +31,7 @@ const cepSearch: Command = {
                 .setDescription('CEP that you want search')
                 .setRequired(true)),
     async execute(intr) {
-        const cep = intr.options.getString('cep')?.replace('-', '');
+        const cep = intr.options.getString('cep', true).replace('-', '');
 
         const res: ICep = await (await fetch(`https://brasilapi.com.br/api/cep/v2/${cep}`)).json();
 

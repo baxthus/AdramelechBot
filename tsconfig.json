@@ -20,12 +20,10 @@
         "sourceMap": false,
         "baseUrl": "./",
         "paths": {
-            "@interfaces/*": [
-                "src/interfaces/*"
-            ],
-            "@utils/*": [
-                "src/utils/*"
-            ],
+            "@interfaces/*": ["src/interfaces/*"],
+            "@utils/*": ["src/utils/*"],
+            "@commands/*": ["src/commands/*"],
+            "@config": ["src/config.ts"],
         }
     },
     "files": [

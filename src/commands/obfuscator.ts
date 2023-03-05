@@ -1,7 +1,7 @@
 import Command from '@interfaces/Command';
 import errorResponse from '@utils/errorResponse';
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
-import config from '../config';
+import config from '@config';
 
 interface IOwO {
     destination: string;
@@ -20,7 +20,7 @@ const obfuscator: Command = {
                 .setDescription('URL that you want obfuscate')
                 .setRequired(true)),
     async execute(intr) {
-        const rawURL = intr.options.getString('url') ?? '';
+        const rawURL = intr.options.getString('url', true);
 
         let url: string;
 
