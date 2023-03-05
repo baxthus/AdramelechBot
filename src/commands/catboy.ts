@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
-import { embedColor } from 'src/config';
+import { embedColor } from '@config';
 import Command from '@interfaces/Command';
 import errorResponse from '@utils/errorResponse';
 

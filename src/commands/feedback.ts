@@ -1,7 +1,7 @@
 import Command from '@interfaces/Command';
 import { EmbedBuilder, SlashCommandBuilder, WebhookClient, WebhookCreateMessageOptions } from 'discord.js';
-import config from 'src/config';
-import errorResponse from 'src/utils/errorResponse';
+import config from '@config';
+import errorResponse from '@utils/errorResponse';
 
 interface IFeedback {
     category: string;

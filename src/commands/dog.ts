@@ -1,7 +1,7 @@
 import Command from '@interfaces/Command';
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
-import { embedColor } from 'src/config';
-import errorResponse from 'src/utils/errorResponse';
+import { embedColor } from '@config';
+import errorResponse from '@utils/errorResponse';
 
 interface IDog {
     status: string;

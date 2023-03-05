@@ -1,6 +1,6 @@
 import formatArray from '@utils/formatArray';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
-import { embedColor } from 'src/config';
+import { embedColor } from '@config';
 import errorResponse from '@utils/errorResponse';
 
 interface IRepo {

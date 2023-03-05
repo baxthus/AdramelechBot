@@ -2,7 +2,7 @@ import Command from '@interfaces/Command';
 import errorResponse from '@utils/errorResponse';
 import isChannelNsfw from '@utils/isChannelNsfw';
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
-import { embedColor } from 'src/config';
+import { embedColor } from '@config';
 
 interface INsfw {
     url: string;

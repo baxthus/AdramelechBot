@@ -1,6 +1,6 @@
 import ButtonArgs from '@interfaces/ButtonArgs';
 import { EmbedBuilder } from 'discord.js';
-import { embedColor } from 'src/config';
+import { embedColor } from '@config';
 
 export = async function ({ intr }: ButtonArgs): Promise<void> {
     // This is not the correct way to do this. Too bad.

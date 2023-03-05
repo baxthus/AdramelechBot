@@ -1,6 +1,6 @@
 import errorResponse from '@utils/errorResponse';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
-import { embedColor } from 'src/config';
+import { embedColor } from '@config';
 
 interface IUser {
     message?: string;

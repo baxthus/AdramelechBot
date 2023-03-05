@@ -1,6 +1,6 @@
 import Command from '@interfaces/Command';
 import { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, AttachmentBuilder } from 'discord.js';
-import { botImage, embedColor } from 'src/config';
+import { botImage, embedColor } from '@config';
 import fs from 'node:fs';
 import ButtonID from '@interfaces/ButtonID';
 
@@ -9,6 +9,7 @@ const help: Command = {
         .setName('help')
         .setDescription('Help, I need to say more?'),
     async execute(intr) {
+        // this is bad
         const commands = fs.readFileSync(__dirname + '/../commands.json');
         const commandsJson: Array<{ [key: string]: string }> = JSON.parse(commands.toString());
         const commandsArray = commandsJson.map((command) => `/${Object.keys(command)[0]} - ${Object.values(command)[0]}`);

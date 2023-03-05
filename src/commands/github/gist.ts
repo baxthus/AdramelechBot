@@ -1,6 +1,6 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
-import { embedColor } from 'src/config';
-import errorResponse from 'src/utils/errorResponse';
+import { embedColor } from '@config';
+import errorResponse from '@utils/errorResponse';
 
 type GistInfo = Array<{
     message?: string;

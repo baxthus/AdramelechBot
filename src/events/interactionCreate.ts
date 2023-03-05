@@ -1,7 +1,7 @@
 import { Events, Interaction } from 'discord.js';
 import { CustomClient } from '../bot';
-import ButtonHandler from 'src/buttons/ButtonHandler';
 import Event from '@interfaces/Event';
+import ButtonHandler from '../buttons/ButtonHandler';
 
 export = {
     name: Events.InteractionCreate,

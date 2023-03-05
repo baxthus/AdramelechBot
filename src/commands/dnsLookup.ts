@@ -1,7 +1,7 @@
 import Command from '@interfaces/Command';
 import { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } from 'discord.js';
-import config, { embedColor } from 'src/config';
-import errorResponse from 'src/utils/errorResponse';
+import config, { embedColor } from '@config';
+import errorResponse from '@utils/errorResponse';
 
 const dsnLookup: Command = {
     data: new SlashCommandBuilder()

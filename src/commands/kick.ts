@@ -1,7 +1,7 @@
 import Command from '@interfaces/Command';
 import errorResponse from '@utils/errorResponse';
 import { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } from 'discord.js';
-import { embedColor } from 'src/config';
+import { embedColor } from '@config';
 
 // This is basically the same as ban.ts
 const kick: Command = {

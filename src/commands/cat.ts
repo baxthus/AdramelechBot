@@ -1,6 +1,6 @@
 import Command from '@interfaces/Command';
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
-import { embedColor } from 'src/config';
+import { embedColor } from '@config';
 
 interface ICat {
     owner?: string;

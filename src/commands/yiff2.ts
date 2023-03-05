@@ -1,7 +1,7 @@
 import Command from '@interfaces/Command';
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 import { E6 } from 'furry-wrapper';
-import { embedColor } from 'src/config';
+import { embedColor } from '@config';
 import isChannelNsfw from '@utils/isChannelNsfw';
 import errorResponse from '@utils/errorResponse';
 

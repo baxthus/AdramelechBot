@@ -1,7 +1,7 @@
 import Command from '@interfaces/Command';
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
-import { botImage, embedColor } from 'src/config';
-import errorResponse from 'src/utils/errorResponse';
+import { botImage, embedColor } from '@config';
+import errorResponse from '@utils/errorResponse';
 
 interface ICovid {
     message?: string

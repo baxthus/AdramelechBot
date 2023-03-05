@@ -1,7 +1,7 @@
 import { ColorResolvable } from 'discord.js';
 import process from 'process';
 
-type BotConfig = {
+interface BotConfig {
     bot: {
         token: string;
         image: string;
@@ -9,9 +9,6 @@ type BotConfig = {
         feedbackWebhook: string;
         openWeatherKey: string;
         embedColor: ColorResolvable;
-        music: {
-            maxVolume: number;
-        }
     }
     owner: {
         id: string;
@@ -26,9 +23,6 @@ const config: BotConfig = {
         feedbackWebhook: process.env.FEEDBACK_WEBHOOK ?? '',
         openWeatherKey: process.env.OPEN_WEATHER_KEY ?? '',
         embedColor: [203, 166, 247],
-        music: {
-            maxVolume: 100,
-        },
     },
     owner: {
         id: process.env.OWNER_ID ?? '',

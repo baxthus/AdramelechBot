@@ -1,6 +1,6 @@
 import Command from '@interfaces/Command';
 import { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } from 'discord.js';
-import { embedColor } from 'src/config';
+import { embedColor } from '@config';
 
 const clear: Command = {
     data: new SlashCommandBuilder()

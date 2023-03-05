@@ -1,7 +1,7 @@
 import Command from '@interfaces/Command';
 import errorResponse from '@utils/errorResponse';
 import { SlashCommandBuilder, EmbedBuilder, User } from 'discord.js';
-import config from '../config';
+import config from '@config';
 
 interface IMessage {
     user: User;

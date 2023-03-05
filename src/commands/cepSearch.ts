@@ -1,7 +1,7 @@
 import Command from '@interfaces/Command';
 import { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
-import { botImage, embedColor } from 'src/config';
-import errorResponse from 'src/utils/errorResponse';
+import { botImage, embedColor } from '@config';
+import errorResponse from '@utils/errorResponse';
 
 interface ICep {
     name?: string;

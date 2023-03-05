@@ -1,7 +1,7 @@
 import Command from '@interfaces/Command';
 import errorResponse from '@utils/errorResponse';
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
-import config from 'src/config';
+import config from '@config';
 
 type ViacepType = Array<{
     cep?: string;

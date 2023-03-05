@@ -1,7 +1,7 @@
 import Command from '@interfaces/Command';
 import errorResponse from '@utils/errorResponse';
 import { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } from 'discord.js';
-import config from '../config';
+import config from '@config';
 
 const badStrings: Array<string> = [
     'Malformed',

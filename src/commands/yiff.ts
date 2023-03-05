@@ -2,7 +2,7 @@ import Command from '@interfaces/Command';
 import errorResponse from '@utils/errorResponse';
 import isChannelNsfw from '@utils/isChannelNsfw';
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
-import { embedColor } from 'src/config';
+import { embedColor } from '@config';
 
 interface IYiff {
     images: Array<{
@@ -34,7 +34,12 @@ const yiff: Command = {
 
         const category = intr.options.getString('category', true);
 
-        const r = await fetch(`https://v2.yiff.rest/furry/yiff/${category}?notes=disabled`);
+        const r = await fetch(`https://v2.yiff.rest/furry/yiff/${category}?notes=disabled`, {
+            headers: {
+                // this is not ethical. too bad.
+                'User-Agent': 'curl',
+            },
+        });
         if (r.status !== 200) {
             await errorResponse(intr, 'Something went wrong');
             return;
