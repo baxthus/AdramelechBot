@@ -1,10 +1,10 @@
-import MusicButtonArgs from '@interfaces/MusicButtonArgs';
+import ButtonArgs from '@interfaces/ButtonArgs';
 import errorResponse from '@utils/errorResponse';
 import { QueueRepeatMode } from 'discord-player';
 import { EmbedBuilder } from 'discord.js';
 import { embedColor } from 'src/config';
 
-export default async function ({ intr, queue }: MusicButtonArgs): Promise<void> {
+export default async function ({ intr, queue }: ButtonArgs): Promise<void> {
     if (!queue || !queue.playing) {
         await errorResponse(intr, 'No music currently playing');
         return;

@@ -1,4 +1,5 @@
-import MusicButtonArgs from '@interfaces/MusicButtonArgs';
+import ButtonArgs from '@interfaces/ButtonArgs';
+import ButtonID from '@interfaces/ButtonID';
 import { ButtonInteraction } from 'discord.js';
 import client from 'src/bot';
 import player from 'src/music';
@@ -18,12 +19,16 @@ export default async function (intr: ButtonInteraction): Promise<void> {
         const queue = player.getQueue(intr.guildId ?? '');
 
         if (button) {
-            button({ client, intr, customId, queue } as MusicButtonArgs);
-            return;
+            button({ client, intr, customId, queue } as ButtonArgs);
         }
 
         return;
     }
 
-    // ? others things can be implemented here
+    delete require.cache[require.resolve(`./normal/${customId.file}`)];
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const button = require(`./normal/${customId.file}`);
+    if (button) {
+        button({ intr } as ButtonArgs);
+    }
 }

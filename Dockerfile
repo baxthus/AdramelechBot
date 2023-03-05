@@ -8,6 +8,6 @@ RUN npm i -g pnpm
 
 RUN pnpm install
 
-RUN pnpm run build
+RUN pnpm run gen-json
 
-CMD ["node", "dist/bot.js"]
+CMD ["pnpm", "tsx", "src/bot.ts"]

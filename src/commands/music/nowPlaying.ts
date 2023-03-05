@@ -1,3 +1,4 @@
+import ButtonID from '@interfaces/ButtonID';
 import MusicCommandArgs from '@interfaces/MusicCommandArgs';
 import errorResponse from '@utils/errorResponse';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from 'discord.js';

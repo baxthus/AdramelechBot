@@ -1,11 +1,11 @@
-import MusicButtonArgs from '@interfaces/MusicButtonArgs';
+import ButtonArgs from '@interfaces/ButtonArgs';
 import errorResponse from '@utils/errorResponse';
 import { EmbedBuilder } from 'discord.js';
 import config from 'src/config';
 
 const maxVol = config.bot.music.maxVolume;
 
-export default async function ({ intr, queue }: MusicButtonArgs): Promise<void> {
+export default async function ({ intr, queue }: ButtonArgs): Promise<void> {
     if (!queue || !queue.playing) {
         await errorResponse(intr, 'No music currently playing');
         return;

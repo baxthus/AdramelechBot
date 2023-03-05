@@ -7,7 +7,7 @@ export = {
     name: Events.InteractionCreate,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any, complexity
     async execute(intr: Interaction) {
-        // if (intr.isButton()) ButtonHandler(intr);
+        if (intr.isButton()) ButtonHandler(intr);
 
         if (!intr.isChatInputCommand()) return;
 
