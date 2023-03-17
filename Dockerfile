@@ -12,4 +12,4 @@ RUN pnpm run deploy
 
 RUN pnpm run build
 
-CMD ["node", "dist/bot.ts"]
+CMD ["node", "dist/bot.js"]

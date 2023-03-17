@@ -2,6 +2,8 @@ import ButtonArgs from '@interfaces/ButtonArgs';
 import ButtonID from '@interfaces/ButtonID';
 import { ButtonInteraction } from 'discord.js';
 
+type Button = (args: ButtonArgs) => Promise<void>;
+
 export default async function (intr: ButtonInteraction): Promise<void> {
     const customId = JSON.parse(intr.customId) as ButtonID;
     if (!customId.file) return;
@@ -13,8 +15,8 @@ export default async function (intr: ButtonInteraction): Promise<void> {
     delete require.cache[require.resolve(`./normal/${customId.file}`)];
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const button = require(`./normal/${customId.file}`);
+    const button: Button = require(`./normal/${customId.file}`);
     if (button) {
-        button({ intr } as ButtonArgs);
+        button({ intr, customId });
     }
 }

@@ -21,7 +21,7 @@ const client = new CustomClient({
 export default client;
 
 const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('s'));
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js') || file.endsWith('.ts'));
 
 for (const file of commandFiles) {
     const filePath = path.join(commandsPath, file);
