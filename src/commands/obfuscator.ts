@@ -30,7 +30,7 @@ const obfuscator: Command = {
             method: 'POST',
             headers: {
                 'User-Agent': 'AdramelechBot (https://github.com/Abysm0xC/AdramelechBot)',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({ 'link': url, 'generator': 'sketchy', 'metadata': 'IGNORE' }),
         });
