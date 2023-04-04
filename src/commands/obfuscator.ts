@@ -28,7 +28,10 @@ const obfuscator: Command = {
 
         const r = await fetch('https://owo.vc/api/v2/link', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'User-Agent': 'AdramelechBot (https://github.com/Abysm0xC/AdramelechBot)',
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({ 'link': url, 'generator': 'sketchy', 'metadata': 'IGNORE' }),
         });
 
