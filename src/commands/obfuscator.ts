@@ -26,10 +26,13 @@ const obfuscator: Command = {
 
         (rawURL.startsWith('https://' || 'http://')) ? url = rawURL : url = 'https://' + rawURL;
 
-        const r = await fetch('https://owo.vc/generate', {
+        const r = await fetch('https://owo.vc/api/v2/link', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 'link': url, 'generator': 'sketchy', 'preventScrape': true }),
+            headers: {
+                'User-Agent': 'AdramelechBot (https://github.com/Abysm0xC/AdramelechBot)',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 'link': url, 'generator': 'sketchy', 'metadata': 'IGNORE' }),
         });
 
         if (r.status !== 200) {
