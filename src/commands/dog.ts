@@ -12,6 +12,7 @@ const dog: Command = {
     data: new SlashCommandBuilder()
         .setName('dog')
         .setDescription('Return a dog image'),
+    uses: ['https://dog.ceo/api'],
     async execute(intr) {
         const res: IDog = await (await fetch('https://dog.ceo/api/breeds/image/random')).json();
 

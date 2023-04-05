@@ -11,6 +11,7 @@ const short: Command = {
             option.setName('url')
                 .setDescription('URL that you want to short')
                 .setRequired(true)),
+    uses: ['https://is.gd'],
     async execute(intr) {
         const url = intr.options.getString('url', true);
 

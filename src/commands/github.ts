@@ -33,6 +33,7 @@ const github: Command = {
                     option.setName('user')
                         .setDescription('Github user')
                         .setRequired(true))),
+    uses: ['https://docs.github.com/rest'],
     async execute(intr) {
         const subcommand = intr.options.getSubcommand().toLowerCase();
 

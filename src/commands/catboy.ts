@@ -12,6 +12,7 @@ const catboy: Command = {
     data: new SlashCommandBuilder()
         .setName('catboy')
         .setDescription('Return a catboy image (SFW)'),
+    uses: ['https://catboys.com'],
     async execute(intr) {
         const r = await fetch('https://api.catboys.com/img');
         if (r.status !== 200) {

@@ -5,6 +5,8 @@ type SlashCommand = Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGr
 
 interface Command {
     data: SlashCommand;
+    // this is used for the credits command
+    uses?: Array<string>;
     execute(intr: ChatInputCommandInteraction): Promise<void>
 }
 

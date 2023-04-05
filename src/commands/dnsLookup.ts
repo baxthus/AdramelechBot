@@ -11,6 +11,7 @@ const dsnLookup: Command = {
             option.setName('domain')
                 .setDescription('Domain that you want lookup')
                 .setRequired(true)),
+    uses: ['https://da.gd'],
     async execute(intr) {
         const domain = intr.options.getString('domain', true);
 
@@ -29,7 +30,8 @@ const dsnLookup: Command = {
             .addFields({
                 name: ':link: **Domain**',
                 value: `\`\`\`${domain}\`\`\``,
-            });
+            })
+            .setFooter({ text: 'Powered by https://da.gd' });
 
         await intr.reply({ embeds: [embed], files: [file] });
     },

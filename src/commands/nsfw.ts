@@ -23,6 +23,7 @@ const nsfw: Command = {
                     { name: 'Trap', value: 'trap' },
                     { name: 'Blowjob', value: 'blowjob' }
                 )),
+    uses: ['https://waifu.pics'],
     async execute(intr) {
         if (!isChannelNsfw(intr)) {
             await errorResponse(intr, 'Your not in a NSFW/DM channel');

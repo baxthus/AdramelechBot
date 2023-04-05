@@ -39,6 +39,7 @@ const lookup: Command = {
             option.setName('local')
                 .setDescription('Address that you want to lookup (ip or domain)')
                 .setRequired(true)),
+    uses: ['https://da.gd', 'https://ipwho.is'],
     async execute(intr) {
         const userInput = intr.options.getString('local', true);
         let ip: string;
@@ -107,7 +108,7 @@ const lookup: Command = {
                 { name: ':satellite: **Connection**', value: connectionField, inline: true },
                 { name: ':clock1: **Timezone**', value: timezoneField, inline: true }
             )
-            .setFooter({ text: 'Powered by https://ipwhois.io' });
+            .setFooter({ text: 'Powered by https://da.gd and https://ipwhois.io' });
 
         const button = new ActionRowBuilder<ButtonBuilder>()
             .addComponents(

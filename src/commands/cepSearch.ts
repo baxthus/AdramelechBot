@@ -30,6 +30,7 @@ const cepSearch: Command = {
             option.setName('cep')
                 .setDescription('CEP that you want search')
                 .setRequired(true)),
+    uses: ['https://brasilapi.com.br'],
     async execute(intr) {
         const cep = intr.options.getString('cep', true).replace('-', '');
 

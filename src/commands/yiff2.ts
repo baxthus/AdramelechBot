@@ -22,6 +22,7 @@ const yiff: Command = {
             option.setName('category')
                 .setDescription('Separate categories using space')
                 .setRequired(true)),
+    uses: ['https://e621.net (https://www.npmjs.com/package/furry-wrapper)'],
     async execute(intr) {
         if (!isChannelNsfw(intr)) {
             await errorResponse(intr, 'Your not in a NSFW/DM channel');

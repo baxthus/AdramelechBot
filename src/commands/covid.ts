@@ -21,6 +21,7 @@ const covid: Command = {
         .addStringOption(option =>
             option.setName('country')
                 .setDescription('This option can be \'worldwide\'')),
+    uses: ['https://disease.sh'],
     async execute(intr) {
         const country = intr.options.getString('country') ?? 'worldwide';
         let res: ICovid;

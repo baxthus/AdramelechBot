@@ -11,6 +11,7 @@ const cat: Command = {
     data: new SlashCommandBuilder()
         .setName('cat')
         .setDescription('Return a cat image'),
+    uses: ['https://cataas.com'],
     async execute(intr) {
         const res: ICat = await (await fetch('https://cataas.com/cat?json=true')).json();
 

@@ -62,6 +62,7 @@ const weather: Command = {
             option.setName('street')
                 .setDescription('The street to get the weather for')
                 .setRequired(true)),
+    uses: ['https://viacep.com.br', 'https://brasilapi.com.br', 'https://openweathermap.org'],
     async execute(intr) {
         const options: ILocation = {
             state: intr.options.getString('state', true),
@@ -71,7 +72,7 @@ const weather: Command = {
 
         // get cep
         // that shit gave me a lot of headache
-        const resCep: ViacepType = await (await fetch(`https://viacep.com.br/ws/${options.state}/${options.state}/${options.city}/json`)).json();
+        const resCep: ViacepType = await (await fetch(`https://viacep.com.br/ws/${options.state}/${options.city}/${options.street}/json`)).json();
         if (resCep[0].cep === undefined) {
             await errorResponse(intr);
             return;
@@ -133,7 +134,8 @@ const weather: Command = {
                             value: weatherField,
                             inline: true,
                         }
-                    ),
+                    )
+                    .setFooter({ text: 'Powered by:\nhttps://viacep.com.br\nhttps://brasilapi.com.br\nhttps://openweathermap.org' }),
             ],
         });
     },

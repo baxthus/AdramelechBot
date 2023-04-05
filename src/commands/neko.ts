@@ -11,6 +11,7 @@ const neko: Command = {
     data: new SlashCommandBuilder()
         .setName('neko')
         .setDescription('Return a neko image'),
+    uses: ['https://nekos.life'],
     async execute(intr) {
         const r = await fetch('https://nekos.life/api/v2/img/neko');
         if (r.status !== 200) {

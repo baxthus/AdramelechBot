@@ -21,6 +21,7 @@ const whois: Command = {
             option.setName('local')
                 .setDescription('Domain or IP')
                 .setRequired(true)),
+    uses: ['https://da.gd'],
     async execute(intr) {
         const local = intr.options.getString('local', true);
 

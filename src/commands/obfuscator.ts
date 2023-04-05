@@ -19,6 +19,7 @@ const obfuscator: Command = {
             option.setName('url')
                 .setDescription('URL that you want obfuscate')
                 .setRequired(true)),
+    uses: ['https://owo.vc'],
     async execute(intr) {
         const rawURL = intr.options.getString('url', true);
 

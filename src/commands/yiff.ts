@@ -26,6 +26,7 @@ const yiff: Command = {
                     { name: 'Gynomorph', value: 'gynomorph' },
                     { name: 'Andromorph', value: 'andromorph' },
                 )),
+    uses: ['https://yiff.rest'],
     async execute(intr) {
         if (!isChannelNsfw(intr)) {
             await errorResponse(intr, 'Your not in a NSFW/DM channel');

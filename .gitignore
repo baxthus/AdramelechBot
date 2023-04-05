@@ -3,4 +3,4 @@ yarn.lock
 dist
 .vscode
 pnpm-lock.yaml
-src/commands.json
+src/*.json
