@@ -6,13 +6,12 @@
   "scripts": {
     "start": "doppler run -- tsx src/bot.ts",
     "deploy": "doppler run -- tsx src/deployCommands.ts",
-    "build": "tsc && npm run gen-json && cp src/commands.json dist/commands.json && cp src/credits.json dist/credits.json",
+    "build": "tsc",
     "start:prod": "npm run build && doppler run -- node dist/bot.js",
     "pm2:prod": "npm run build && doppler run -- pm2 start dist/bot.js",
     "lint": "eslint .",
     "docker": "doppler run -- docker-compose up -d",
-    "dev": "doppler run -- tsx watch src/bot.ts",
-    "gen-json": "tsx src/generateJson.ts"
+    "dev": "doppler run -- tsx watch src/bot.ts"
   },
   "author": "Abysmal",
   "license": "MIT",

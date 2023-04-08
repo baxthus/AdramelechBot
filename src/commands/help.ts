@@ -1,20 +1,29 @@
 import Command from '@interfaces/Command';
 import { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, AttachmentBuilder } from 'discord.js';
 import { botImage, embedColor } from '@config';
-import fs from 'node:fs';
 import ButtonID from '@interfaces/ButtonID';
+import { CustomClient } from 'src/bot';
 
 const help: Command = {
     data: new SlashCommandBuilder()
         .setName('help')
         .setDescription('Help, I need to say more?'),
     async execute(intr) {
-        // this is bad
-        const commands = fs.readFileSync(__dirname + '/../commands.json');
-        const commandsJson: Array<{ [key: string]: string }> = JSON.parse(commands.toString());
-        const commandsArray = commandsJson.map((command) => `/${Object.keys(command)[0]} - ${Object.values(command)[0]}`);
+        const client = intr.client as CustomClient;
 
-        const file = new AttachmentBuilder(Buffer.from(commandsArray.join('\n\n')), { name: 'commands.txt' });
+        const commandsInfo: Array<Record<string, string>> = [];
+
+        client.commands.map(command => commandsInfo.push({ [command.data.name]: command.data.description }));
+
+        const longestKey = Math.max(...commandsInfo.map(command => Object.keys(command)[0].length));
+
+        const commandsString = commandsInfo.map(command => `${Object.keys(command)[0].padEnd(longestKey)} - ${Object.values(command)[0]}`);
+
+        let finalString;
+        finalString = '=== Commands List ===\n\n';
+        finalString += commandsString.join('\n');
+
+        const file = new AttachmentBuilder(Buffer.from(finalString), { name: 'commands.txt' });
 
         const embed = new EmbedBuilder().setColor(embedColor)
             .setTitle('__Adramelech Help Page__')

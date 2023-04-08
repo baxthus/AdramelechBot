@@ -1,18 +1,32 @@
 import { botImage, embedColor } from '@config';
 import Command from '@interfaces/Command';
 import { AttachmentBuilder, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
-import fs from 'node:fs';
+import { CustomClient } from 'src/bot';
 
 const credits: Command = {
     data: new SlashCommandBuilder()
         .setName('credits')
         .setDescription('Credits list'),
     async execute(intr) {
-        const commands = fs.readFileSync(__dirname + '/../credits.json');
-        const commandsJson: Array<{ [key: string]: string }> = JSON.parse(commands.toString());
-        const commandsArray = commandsJson.map((command) => `Command ${Object.keys(command)[0]} uses ${Object.values(command)[0]}`);
+        const client = intr.client as CustomClient;
 
-        const file = new AttachmentBuilder(Buffer.from(commandsArray.join('\n\n')), { name: 'commands.txt' });
+        const commandsInfo: Array<Record<string, string>> = [];
+
+        client.commands.map(command => {
+            if (command.uses) {
+                commandsInfo.push({ [command.data.name]: command.uses.join(', ') });
+            }
+        });
+
+        const longestKey = Math.max(...commandsInfo.map(command => Object.keys(command)[0].length));
+
+        const commandsString = commandsInfo.map(command => `${Object.keys(command)[0].padEnd(longestKey)} uses ${Object.values(command)}`);
+
+        let finalString;
+        finalString = '=== Credits List ===\n\n';
+        finalString += commandsString.join('\n');
+
+        const file = new AttachmentBuilder(Buffer.from(finalString), { name: 'commands.txt' });
 
         const embed = new EmbedBuilder().setColor(embedColor)
             .setTitle('__Adramelech Credits__')
