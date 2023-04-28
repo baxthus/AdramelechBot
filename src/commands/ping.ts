@@ -12,13 +12,13 @@ const ping: Command = {
         const buttons = new ActionRowBuilder<ButtonBuilder>()
             .addComponents(
                 new ButtonBuilder()
-                    .setLabel('Author')
-                    .setStyle(ButtonStyle.Link)
-                    .setURL('https://abysmal.eu.org'),
-                new ButtonBuilder()
                     .setLabel('Velocity')
                     .setStyle(ButtonStyle.Primary)
-                    .setCustomId(JSON.stringify({ file: 'speedTest' } as ButtonID))
+                    .setCustomId(JSON.stringify({ file: 'speedTest' } as ButtonID)),
+                new ButtonBuilder()
+                    .setLabel('Author')
+                    .setStyle(ButtonStyle.Link)
+                    .setURL('https://abysmal.eu.org')
             );
 
         await intr.reply({

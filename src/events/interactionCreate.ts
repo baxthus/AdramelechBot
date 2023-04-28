@@ -3,9 +3,8 @@ import { CustomClient } from '../bot';
 import Event from '@interfaces/Event';
 import ButtonHandler from '../buttons/ButtonHandler';
 
-export = {
+const interactionCreate: Event = {
     name: Events.InteractionCreate,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any, complexity
     async execute(intr: Interaction) {
         if (intr.isButton()) ButtonHandler(intr);
 
@@ -23,4 +22,6 @@ export = {
             console.error(error);
         }
     },
-} as Event
+};
+
+export = interactionCreate;

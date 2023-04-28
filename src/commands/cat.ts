@@ -1,6 +1,7 @@
 import Command from '@interfaces/Command';
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 import { embedColor } from '@config';
+import errorResponse from '@utils/errorResponse';
 
 interface ICat {
     owner?: string;
@@ -13,7 +14,12 @@ const cat: Command = {
         .setDescription('Return a cat image'),
     uses: ['https://cataas.com'],
     async execute(intr) {
-        const res: ICat = await (await fetch('https://cataas.com/cat?json=true')).json();
+        const r = await fetch('https://cataas.com/cat?json=true');
+        if (r.status !== 200) {
+            errorResponse(intr, "Something went wrong");
+            return;
+        }
+        const res = await r.json() as ICat;
 
         await intr.reply({
             embeds: [

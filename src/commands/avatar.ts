@@ -13,9 +13,9 @@ const avatar: Command = {
     async execute(intr) {
         const target = intr.options.getUser('user') ?? intr.user;
 
-        const png_image = target.avatarURL({ size: 4096, extension: 'png' });
-        const jpg_image = target.avatarURL({ size: 4096, extension: 'jpg' });
-        const webp_image = target.avatarURL({ size: 4096, extension: 'webp' });
+        const pngImage = target.avatarURL({ size: 4096, extension: 'png' });
+        const jpgImage = target.avatarURL({ size: 4096, extension: 'jpg' });
+        const webpImage = target.avatarURL({ size: 4096, extension: 'webp' });
 
         await intr.reply({
             embeds: [
@@ -23,7 +23,7 @@ const avatar: Command = {
                     .setTitle(`Avatar for ${target.tag}`)
                     .setDescription(`
                     **Link has**
-                    [png](${png_image}) | [jpg](${jpg_image}) | [webp](${webp_image})
+                    [png](${pngImage}) | [jpg](${jpgImage}) | [webp](${webpImage})
                     `)
                     .setImage(target.avatarURL({ size: 1024 })),
             ],

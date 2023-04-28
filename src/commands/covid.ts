@@ -4,14 +4,14 @@ import { botImage, embedColor } from '@config';
 import errorResponse from '@utils/errorResponse';
 
 interface ICovid {
-    message?: string
-    country?: string
-    cases: string
-    todayCases: string
-    deaths: string
-    todayDeaths: string
-    recovered: string
-    todayRecovered: string
+    message?: string;
+    country?: string;
+    cases: string;
+    todayCases: string;
+    deaths: string;
+    todayDeaths: string;
+    recovered: string;
+    todayRecovered: string;
 }
 
 const covid: Command = {
@@ -28,7 +28,12 @@ const covid: Command = {
         let local: string;
 
         if (country.toLowerCase() === 'worldwide') {
-            res = await (await fetch('https://disease.sh/v3/covid-19/all')).json();
+            const r = await fetch('https://disease.sh/v3/covid-19/all');
+            if (r.status !== 200) {
+                await errorResponse(intr, 'Something went wrong');
+                return;
+            }
+            res = await r.json();
             local = country.toLowerCase();
         } else {
             res = await (await fetch(`https://disease.sh/v3/covid-19/countries/${country}`)).json();

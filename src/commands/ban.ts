@@ -15,7 +15,7 @@ const ban: Command = {
             option.setName('reason')
                 .setDescription('The reason of the ban'))
         .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
-        .setDMPermission(true),
+        .setDMPermission(false),
     async execute(intr) {
         const user = intr.options.getUser('user', true);
         const member = intr.guild?.members.cache.get(user.id);
@@ -37,7 +37,7 @@ const ban: Command = {
             return;
         }
 
-        member.ban({ reason: reason });
+        await member.ban({ reason: reason });
 
         await intr.reply({
             embeds: [

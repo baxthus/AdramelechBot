@@ -1,6 +1,7 @@
 import Command from '@interfaces/Command';
-import { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } from 'discord.js';
+import { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, TextChannel } from 'discord.js';
 import { embedColor } from '@config';
+import errorResponse from '@utils/errorResponse';
 
 const clear: Command = {
     data: new SlashCommandBuilder()
@@ -15,17 +16,23 @@ const clear: Command = {
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
         .setDMPermission(false),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async execute(intr: any) {
-        const amount = intr.options.getInteger('amount');
+    async execute(intr) {
+        const amount = intr.options.getInteger('amount', true);
 
-        await intr.channel?.bulkDelete(amount);
+        if (!intr.channel?.isTextBased) {
+            await errorResponse(intr, "You are not in a valid text channel");
+            return;
+        }
+
+        const channel = intr.channel as TextChannel
+        const messages = await channel.bulkDelete(amount)
 
         await intr.reply({
             embeds: [
                 new EmbedBuilder().setColor(embedColor)
                     .setTitle('__Adramelech Clear__')
                     .setDescription(`
-                    Successfully deleted ${amount} messages
+                    Successfully deleted ${messages.size} messages
                     Command executed by ${intr.user}
                     `),
             ],
