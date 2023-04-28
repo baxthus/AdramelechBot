@@ -20,12 +20,12 @@ const clear: Command = {
         const amount = intr.options.getInteger('amount', true);
 
         if (!intr.channel?.isTextBased) {
-            await errorResponse(intr, "You are not in a valid text channel");
+            await errorResponse(intr, 'You are not in a valid text channel');
             return;
         }
 
-        const channel = intr.channel as TextChannel
-        const messages = await channel.bulkDelete(amount)
+        const channel = intr.channel as TextChannel;
+        const messages = await channel.bulkDelete(amount);
 
         await intr.reply({
             embeds: [

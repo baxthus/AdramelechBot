@@ -16,7 +16,7 @@ const cat: Command = {
     async execute(intr) {
         const r = await fetch('https://cataas.com/cat?json=true');
         if (r.status !== 200) {
-            errorResponse(intr, "Something went wrong");
+            errorResponse(intr, 'Something went wrong');
             return;
         }
         const res = await r.json() as ICat;
